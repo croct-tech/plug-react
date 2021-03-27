@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: |-
+          npm ci
+          rm -rf ~/.npmrc
+
+      - name: Build package
+        run: |-
+          npm run build
+
+      - name: Prepare release
+        run: |-
+          cp package.json LICENSE README.md build/
+          cd bundle
+          sed -i -e "s~\"version\": \"0.0.0-dev\"~\"version\": \"${GITHUB_REF##*/}\"~" package.json
+
+      - name: Publish pre-release to NPM
+        if: ${{ github.event.release.prerelease }}
+        run: |-
+          cd build
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          npm publish --access public --tag next
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish release to NPM
+        if: ${{ !github.event.release.prerelease }}
+        run: |-
+          cd build
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
+          npm publish --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,84 @@
+{
+  "name": "@croct/plug-react",
+  "version": "0.0.0-dev",
+  "description": "React components and hooks to plug your React applications into Croct.",
+  "author": {
+    "name": "Croct",
+    "url": "https://croct.com",
+    "email": "lib+plug-react@croct.com"
+  },
+  "keywords": [
+    "croct",
+    "personalization",
+    "react",
+    "typescript"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/croct-tech/plug-react.git"
+  },
+  "main": "build/index.js",
+  "module": "build/index.modern.js",
+  "source": "src/index.ts",
+  "types": "build/index.d.ts",
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "lint": "eslint 'src/**/*.ts' 'test/**/*.ts'",
+    "test": "jest -c jest.config.js --coverage",
+    "validate": "tsc --noEmit",
+    "build": "tsc",
+    "bundle": "microbundle --jsx React.createElement --no-compress --format modern,cjs",
+    "storybook": "start-storybook -s ./.storybook/static -p 6006 --no-manager-cache",
+    "build-storybook": "build-storybook"
+  },
+  "peerDependencies": {
+    "@croct/plug": "^0.7.5",
+    "react": "^16.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.13",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@croct/plug": "^0.7.5",
+    "@storybook/addon-actions": "^6.1.21",
+    "@storybook/addon-essentials": "^6.1.21",
+    "@storybook/addon-links": "^6.1.21",
+    "@storybook/react": "^6.1.21",
+    "@testing-library/jest-dom": "^5.11.10",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/react-hooks": "^5.1.1",
+    "@testing-library/user-event": "^13.0.16",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.37",
+    "@types/react": "^16.0.0",
+    "@types/react-dom": "^16.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.19.0",
+    "@typescript-eslint/parser": "^4.19.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.6.3",
+    "babel-loader": "8.1.0",
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-config-standard-react": "^11.0.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
+    "eslint-plugin-react": "^7.23.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "jest": "26.6.0",
+    "microbundle": "^0.13.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "typescript": "^4.1.5",
+    "webpack": "4.44.2"
+  },
+  "files": [
+    "build"
+  ]
+}
