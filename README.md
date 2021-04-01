@@ -13,8 +13,6 @@
     <a href="https://codeclimate.com/repos/60665953e0608a018c001907/maintainability"><img alt="Maintainability" src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/maintainability"/></a>
     <a href="https://codeclimate.com/repos/60665953e0608a018c001907/test_coverage"><img alt="Coverage" src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/test_coverage"/></a>
 
-<a href="https://codeclimate.com/repos/60665953e0608a018c001907/maintainability"><img src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/maintainability" /></a>
-
     <br />
     <br />
     <a href="https://github.com/croct-tech/plug-react/releases">📦Releases</a>
