@@ -8,14 +8,17 @@ jest.mock('@croct/plug', () => ({
     unplug: jest.fn(),
 }));
 
+// eslint-disable-next-line no-console
 const consoleError = console.error;
 
 afterEach(() => {
+    // eslint-disable-next-line no-console
     console.error = consoleError;
 });
 
 describe('<Provider/>', () => {
     it('should fail if nested', () => {
+        // eslint-disable-next-line no-console
         console.error = jest.fn();
 
         expect(() => render(

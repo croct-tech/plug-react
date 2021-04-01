@@ -5,7 +5,10 @@ import {UseFetchOptions, useFetch} from '../hooks/useFetch';
 
 export type Renderer<P> = (props: P) => ReactChild;
 
-export type SlotProps<P extends NullableJsonObject = NullableJsonObject, I extends SlotId = SlotId> = UseFetchOptions<P, I> & {
+export type SlotProps<
+    P extends NullableJsonObject = NullableJsonObject,
+    I extends SlotId = SlotId
+> = UseFetchOptions<P, I> & {
     id: I,
     children: Renderer<SlotContent<I> & P>,
 };
