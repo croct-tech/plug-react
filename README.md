@@ -12,7 +12,6 @@
     <a href="https://github.com/croct-tech/plug-react/actions?query=workflow%3AValidations"><img alt="Build" src="https://github.com/croct-tech/plug-react/workflows/Validations/badge.svg"/></a>
     <a href="https://codeclimate.com/repos/60665953e0608a018c001907/maintainability"><img alt="Maintainability" src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/maintainability"/></a>
     <a href="https://codeclimate.com/repos/60665953e0608a018c001907/test_coverage"><img alt="Coverage" src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/test_coverage"/></a>
-
     <br />
     <br />
     <a href="https://github.com/croct-tech/plug-react/releases">📦Releases</a>
