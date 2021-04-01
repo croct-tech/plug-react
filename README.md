@@ -8,10 +8,13 @@
     React components and hooks to plug your React applications into Croct.
 </p>
 <p align="center">
-    <img alt="Language" src="https://img.shields.io/badge/language-TypeScript-blue" />
-    <img alt="Build" src="https://img.shields.io/badge/build-passing-green" />
-    <img alt="Coverage" src="https://img.shields.io/badge/coverage-100%25-green" />
-    <img alt="Maintainability" src="https://img.shields.io/badge/maintainability-100-green" />
+    <a href="https://www.npmjs.com/package/@croct/plug-react"><img alt="Version" src="https://img.shields.io/npm/v/@croct/plug-react"/></a>
+    <a href="https://github.com/croct-tech/plug-react/actions?query=workflow%3AValidations"><img alt="Build" src="https://github.com/croct-tech/plug-react/workflows/Validations/badge.svg"/></a>
+    <a href="https://codeclimate.com/repos/60665953e0608a018c001907/maintainability"><img alt="Maintainability" src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/maintainability"/></a>
+    <a href="https://codeclimate.com/repos/60665953e0608a018c001907/test_coverage"><img alt="Coverage" src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/test_coverage"/></a>
+
+<a href="https://codeclimate.com/repos/60665953e0608a018c001907/maintainability"><img src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/maintainability" /></a>
+
     <br />
     <br />
     <a href="https://github.com/croct-tech/plug-react/releases">📦Releases</a>
