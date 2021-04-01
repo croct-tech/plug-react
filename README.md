@@ -149,7 +149,7 @@ function ViewDocsLink(): ReactElement {
 export default function OnboardingPage(): ReactElement {
     return (
         <Suspense fallback="Loading...">
-            {/* Using the Personalization component */}
+            {/* Using the <Personalization /> component */}
             <Personalization expression="user's persona is 'developer'" falback={false}>
                 {isDeveloper => (isDeveloper && <a href="/docs">View docs</a>)}
             </Personalization>
@@ -279,7 +279,7 @@ function HomeBanner(): ReactElement {
 export default function HomePage(): ReactElement {
     return (
         <Suspense fallback="Personalizing content...">
-            {/* Using the <Slot/> component */}
+            {/* Using the <Slot /> component */}
             <Slot id="home-banner" fallback={initialBanner}>
                 {({title, subtitle, cta}: HomeBanner) => (
                     <div>
