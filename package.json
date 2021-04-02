@@ -18,10 +18,10 @@
     "type": "git",
     "url": "git+https://github.com/croct-tech/plug-react.git"
   },
-  "main": "index.js",
-  "module": "index.modern.js",
-  "types": "index.d.ts",
-  "source": "src/index.ts",
+  "main": "./build/index.js",
+  "module": "./build/index.modern.js",
+  "types": "./build/index.d.ts",
+  "source": "./src/index.ts",
   "engines": {
     "node": ">=10"
   },
