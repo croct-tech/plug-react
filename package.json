@@ -18,10 +18,10 @@
     "type": "git",
     "url": "git+https://github.com/croct-tech/plug-react.git"
   },
-  "main": "build/index.js",
-  "module": "build/index.modern.js",
+  "main": "index.js",
+  "module": "index.modern.js",
+  "types": "index.d.ts",
   "source": "src/index.ts",
-  "types": "build/index.d.ts",
   "engines": {
     "node": ">=10"
   },
@@ -36,7 +36,7 @@
   },
   "peerDependencies": {
     "@croct/plug": "^0.7.5",
-    "react": "^16.0.0"
+    "react": ">= 16.8"
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",
@@ -79,6 +79,7 @@
     "webpack": "4.44.2"
   },
   "files": [
-    "build"
+    "**/*.js",
+    "**/*.ts"
   ]
 }
