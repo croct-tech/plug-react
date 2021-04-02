@@ -14,11 +14,11 @@
     <a href="https://codeclimate.com/repos/60665953e0608a018c001907/test_coverage"><img alt="Coverage" src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/test_coverage"/></a>
     <br />
     <br />
-    <a href="https://github.com/croct-tech/plug-react/releases">📦Releases</a>
+    <a href="https://github.com/croct-tech/plug-react/releases">📦 Releases</a>
         ·
-    <a href="https://github.com/croct-tech/plug-react/issues/new?labels=bug&template=bug-report.md">🐞Report Bug</a>
+    <a href="https://github.com/croct-tech/plug-react/issues/new?labels=bug&template=bug-report.md">🐞 Report Bug</a>
         ·
-    <a href="https://github.com/croct-tech/plug-react/issues/new?labels=enhancement&template=feature-request.md">✨Request Feature</a>
+    <a href="https://github.com/croct-tech/plug-react/issues/new?labels=enhancement&template=feature-request.md">✨ Request Feature</a>
 </p>
 
 ## Introduction
