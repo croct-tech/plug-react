@@ -1,8 +1,8 @@
 import {ReactChild, ReactElement, Fragment} from 'react';
 import {JsonValue} from '@croct/plug/sdk/json';
-import {UseEvaluationOptions, useEvaluation} from '../hooks/useEvaluation';
+import {UseEvaluationOptions, useEvaluation} from '../../hooks/useEvaluation';
 
-export type Renderer<T extends JsonValue> = (result: T) => ReactChild;
+type Renderer<T extends JsonValue> = (result: T) => ReactChild;
 
 export type PersonalizationProps<T extends JsonValue = JsonValue> = UseEvaluationOptions<T> & {
     expression: string,

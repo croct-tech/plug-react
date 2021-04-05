@@ -52,6 +52,10 @@ export function useSuspense<L extends Loader>(configuration: Configuration<L>): 
             return entry.result;
         }
 
+        if (state !== undefined) {
+            return state;
+        }
+
         throw entry.promise;
     }
 

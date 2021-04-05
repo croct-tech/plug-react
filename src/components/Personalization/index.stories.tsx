@@ -1,6 +1,6 @@
 import {Suspense, FunctionComponent, ReactElement} from 'react';
 import {Story, Meta} from '@storybook/react/types-6-0';
-import {Personalization, PersonalizationProps} from './Personalization';
+import {Personalization, PersonalizationProps} from './index';
 
 export default {
     title: 'Components/Personalization',

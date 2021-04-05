@@ -1,8 +1,8 @@
 import {render} from '@testing-library/react';
-import {Personalization, PersonalizationProps} from './Personalization';
-import {useEvaluation} from '../hooks/useEvaluation';
+import {Personalization, PersonalizationProps} from './index';
+import {useEvaluation} from '../../hooks';
 
-jest.mock('../hooks/useEvaluation', () => ({
+jest.mock('../../hooks/useEvaluation', () => ({
     useEvaluation: jest.fn(),
 }));
 

@@ -40,6 +40,23 @@ describe('useSuspense', () => {
         expect(loader).toBeCalled();
     });
 
+    it('should return the initial state on re-renders', () => {
+        const delay = 10;
+        const loader = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('foo'), delay)));
+
+        const {result, rerender} = renderHook(() => useSuspense({
+            cacheKey: cacheKey.current(),
+            initial: 'bar',
+            loader: loader,
+        }));
+
+        expect(result.current).toBe('bar');
+
+        rerender();
+
+        expect(result.current).toBe('bar');
+    });
+
     it('should return the fallback state on error', async () => {
         const delay = 10;
         // eslint-disable-next-line promise/param-names

@@ -1,6 +1,6 @@
 import {FunctionComponent, ReactElement, Suspense} from 'react';
 import {Story, Meta} from '@storybook/react/types-6-0';
-import {Slot, SlotProps} from './Slot';
+import {Slot, SlotProps} from './index';
 
 export default {
     title: 'Components/Slot',

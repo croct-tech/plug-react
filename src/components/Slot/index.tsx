@@ -1,9 +1,9 @@
 import {ReactChild, ReactElement, Fragment} from 'react';
 import {NullableJsonObject} from '@croct/plug/sdk/json';
 import {SlotContent, SlotId} from '@croct/plug/fetch';
-import {UseContentOptions, useContent} from '../hooks/useContent';
+import {UseContentOptions, useContent} from '../../hooks/useContent';
 
-export type Renderer<P> = (props: P) => ReactChild;
+type Renderer<P> = (props: P) => ReactChild;
 
 export type SlotProps<
     P extends NullableJsonObject = NullableJsonObject,

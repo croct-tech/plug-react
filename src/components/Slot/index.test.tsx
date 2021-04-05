@@ -1,8 +1,8 @@
 import {render} from '@testing-library/react';
-import {Slot, SlotProps} from './Slot';
-import {useContent} from '../hooks/useContent';
+import {Slot, SlotProps} from './index';
+import {useContent} from '../../hooks';
 
-jest.mock('../hooks/useContent', () => ({
+jest.mock('../../hooks/useContent', () => ({
     useContent: jest.fn(),
 }));
 
