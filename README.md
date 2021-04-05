@@ -59,7 +59,7 @@ You connect Croct to React with the `<CroctProvider/ >` component. The `<CroctPr
 We suggest putting the `<CroctProvider/ >` somewhere high in your app, above any component that might be personalized, 
 ideally in the top-level `<App/>` component.
 
-```jsx
+```tsx
 import React from 'react';
 import {render} from 'react-dom';
 import {CroctProvider} from '@croct/plug-react';
@@ -161,7 +161,7 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
-For a full list of the available options, please refer to the API documentation. 
+For a full list of the available options, please refer to the [API documentation](#component-api-reference).
 
 ### Using slots
 
@@ -170,9 +170,9 @@ changes too often, this approach can be overkill. For those cases, we encourage 
 Using slots gives your team the flexibility to change the content or personalization rules whenever needed without 
 touching the component code.
 
-To render a slot, all you need to do is providing the `id` you configured in your Croct workspace. Based on the 
+To render a slot, all you need to do is provide the `id` you configured in your Croct workspace. Based on the 
 slot's personalization rules and the user's context, the component will decide which content show to that user. 
-Notice that there's no logic on the client-side, meaning that your marketing or product team can freely change the 
+Notice that there's no logic on the client side, meaning that your marketing or product team can freely change the 
 slot content as they need without requiring an update to your React app.
 
 For the next example, we assume that you have already defined a slot with id `home-banner` in your Croct workspace 
@@ -246,9 +246,6 @@ content is loading. To prevent the UI from suspending, you can provide an initia
 In this case, the component will render the initial content while the slot content is loading. As soon as slot content 
 is loaded, the hook will cause the component to be re-rendered with the personalized slot content.
 
-We strongly recommend always specifying the `fallback` property to ensure your app behaves the same way regardless of
-the personalization. In this way, the UI will still be fully functional even in maintenance windows.
-
 The following example shows how to specify a fallback state for the `home-banner` slot:
 
 ```tsx
@@ -297,7 +294,8 @@ export default function HomePage(): ReactElement {
 }
 ```
 
-For a full list of the available options, please refer to the API documentation.
+Again, we strongly recommend always providing a value for the `fallback` property. For a full list of the available options, 
+please refer to the [API documentation](#component-api-reference).
 
 #### 💡 ProTip
 
@@ -350,7 +348,50 @@ export default function DeveloperButton(): ReactElement {
 
 ## Component API reference
 
-This reference documents all hooks components.
+This reference documents all components available in the library.
+
+### &lt;CroctProvider /&gt;
+
+The `<CroctProvider />` component  leverages [React's Context API](https://reactjs.org/docs/context.html) to 
+make a configured [Plug instance](https://github.com/croct-tech/plug-js/blob/master/docs/plug.md) available throughout 
+a React component tree.
+
+#### Properties
+
+The component takes the followings properties:
+
+| Option                  | Type         | Required | Default Value | Description                                                                                                                                                                                               |
+|-------------------------|--------------|----------|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `appId`                 | string       | Yes      | None          | The ID of the application you set up on Croct.
+| `debug`                 | boolean      | No       | `false`       | If `true`, turns on debug mode, which logs helpful messages to the console.                                                                                                                               |
+| `track`                 | boolean      | No       | `true`        | If `true`, enables the automatic event tracking on initialization.
+| `token`                 | string\|null | No       | None          | The JWT token issued by Croct. If `null`, clears any token specified on previous calls.
+| `userId`                | string       | No       | None          | The ID of the user logged into the application. Internally, the SDK will issue a token using the specified ID as the subject claim of the token. The `token` and `userId` options are mutually exclusive.
+| `tokenScope`            | string       | No       | `global`      | Defines how the SDK should synchronize the token across multiple tabs, see [token scopes](#token-scopes) for more details.
+| `eventMetadata`         | JSON         | No       | None          | Any additional information that may be useful to include as part of the event metadata. A common use case is to record the version of the application for future reference.
+| `logger`                | object       | No       | None          | A custom logger to handle log messages. By default, all logs are suppressed.
+| `urlSanitizer`          | function     | No       | None          | A function to sanitize URLs that allows removing sensitive information from URLs, such as tokens, that should not be sent to the platform.
+| `trackerEndpointUrl`    | string       | No       | None          | The URL of the tracker service, used by Croct's development team for testing purposes.
+| `evaluationEndpointUrl` | string       | No       | None          | The URL of the evaluation service, used by Croct's development team for testing purposes.
+| `bootstrapEndpointUrl`  | string       | No       | None          | The URL of the bootstrap service, used by Croct's development team for testing purposes.
+
+#### Code Sample
+
+Here's a simple example showing how to initialize the Plug instance:
+
+```tsx
+import {CroctProvider} from '@croct/plug-react';
+
+function App() {
+    return (
+        <CroctProvider appId="00000000-0000-0000-0000-000000000000">
+            <div>
+                <h1>My first personalized app 🚀</h1>
+            </div>
+        </CroctProvider>
+    );
+}
+```
 
 ### &lt;Personalization /&gt;
 
@@ -429,7 +470,7 @@ function HeroBanner(): ReactElement {
 
 ## Hook API reference
 
-This reference documents all hooks available.
+This reference documents all hooks available in the library.
 
 ### useCroct
 
