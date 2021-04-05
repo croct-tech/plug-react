@@ -1,7 +1,7 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {useCroct} from './useCroct';
 import {useSuspense} from './useSuspense';
-import {useFetch} from './useFetch';
+import {useContent} from './useContent';
 
 jest.mock('./useCroct', () => ({
     useCroct: jest.fn(),
@@ -11,7 +11,7 @@ jest.mock('./useSuspense', () => ({
     useSuspense: jest.fn(),
 }));
 
-describe('useFetch', () => {
+describe('useContent', () => {
     it('should evaluate an expression', () => {
         const fetch = jest.fn().mockResolvedValue({
             payload: {
@@ -24,7 +24,7 @@ describe('useFetch', () => {
 
         const slotId = 'home-banner';
 
-        const {result} = renderHook(() => useFetch<{title: string}>(slotId, {
+        const {result} = renderHook(() => useContent<{title: string}>(slotId, {
             cacheKey: 'unique',
             initial: {
                 title: 'loading',

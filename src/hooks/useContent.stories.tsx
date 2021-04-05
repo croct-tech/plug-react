@@ -1,9 +1,9 @@
 import {FunctionComponent, ReactElement, Suspense} from 'react';
 import {Story, Meta} from '@storybook/react/types-6-0';
-import {UseFetchOptions, useFetch} from './useFetch';
+import {UseContentOptions, useContent} from './useContent';
 
 export default {
-    title: 'Hooks/useFetch',
+    title: 'Hooks/useContent',
     decorators: [DecoratedStory => (
         <div className="card">
             <DecoratedStory />
@@ -28,8 +28,8 @@ type HomeBannerProps = {
     },
 };
 
-const HomeBanner: FunctionComponent<UseFetchOptions<HomeBannerProps>> = (options): ReactElement => {
-    const {title, subtitle, cta} = useFetch<HomeBannerProps>('home-banner', options);
+const HomeBanner: FunctionComponent<UseContentOptions<HomeBannerProps>> = (options): ReactElement => {
+    const {title, subtitle, cta} = useContent<HomeBannerProps>('home-banner', options);
 
     return (
         <div className="home-banner">
@@ -40,7 +40,7 @@ const HomeBanner: FunctionComponent<UseFetchOptions<HomeBannerProps>> = (options
     );
 };
 
-export const WithSuspense: Story<UseFetchOptions<HomeBannerProps>> = args => (
+export const WithSuspense: Story<UseContentOptions<HomeBannerProps>> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <HomeBanner {...args} />
     </Suspense>
@@ -50,7 +50,7 @@ WithSuspense.args = {
     cacheKey: 'suspense',
 };
 
-export const WithInitialState: Story<UseFetchOptions<HomeBannerProps>> = args => (
+export const WithInitialState: Story<UseContentOptions<HomeBannerProps>> = args => (
     <HomeBanner {...args} />
 );
 

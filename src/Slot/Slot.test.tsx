@@ -1,9 +1,9 @@
 import {render} from '@testing-library/react';
 import {Slot, SlotProps} from './Slot';
-import {useFetch} from '../hooks/useFetch';
+import {useContent} from '../hooks/useContent';
 
-jest.mock('../hooks/useFetch', () => ({
-    useFetch: jest.fn(),
+jest.mock('../hooks/useContent', () => ({
+    useContent: jest.fn(),
 }));
 
 describe('<Slot/>', () => {
@@ -17,7 +17,7 @@ describe('<Slot/>', () => {
 
         const result = {title: 'result'};
 
-        (useFetch as jest.Mock).mockReturnValue(result);
+        (useContent as jest.Mock).mockReturnValue(result);
 
         const {getByText} = render(
             <Slot id={id} {...options}>
@@ -25,7 +25,7 @@ describe('<Slot/>', () => {
             </Slot>,
         );
 
-        expect(useFetch).toHaveBeenCalledWith(id, options);
+        expect(useContent).toHaveBeenCalledWith(id, options);
         expect(children).toHaveBeenCalledWith(result);
         expect(getByText(result.title)).not.toBeNull();
     });

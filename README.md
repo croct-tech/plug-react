@@ -189,7 +189,7 @@ type HomeBanner = {
 };
 ```
 
-To render the content of the slot, you can either use the `<Slot />` component or the `useFetch` hook.
+To render the content of the slot, you can either use the `<Slot />` component or the `useContent` hook.
 
 Here's how to use the `<Slot />` component:
 
@@ -214,14 +214,14 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
-And here's an example using the `useFetch` hook:
+And here's an example using the `useContent` hook:
 
 ```tsx
 import {ReactElement} from 'react';
-import {useFetch} from '@croct/plug-react';
+import {useContent} from '@croct/plug-react';
 
 function HomeBanner(): ReactElement {
-    const {title, subtitle, cta} = useFetch<HomeBanner>('home-banner');
+    const {title, subtitle, cta} = useContent<HomeBanner>('home-banner');
 
     return (
         <div>
@@ -250,7 +250,7 @@ The following example shows how to specify a fallback state for the `home-banner
 
 ```tsx
 import {Suspense, ReactElement} from 'react';
-import {Slot, useFetch} from '@croct/plug-react';
+import {Slot, useContent} from '@croct/plug-react';
 
 const initialBanner: HomeBanner = {
     title: 'Default title',
@@ -262,7 +262,7 @@ const initialBanner: HomeBanner = {
 };
 
 function HomeBanner(): ReactElement {
-    const {title, subtitle, cta} = useFetch<HomeBanner>('home-banner', {initial: initialBanner});
+    const {title, subtitle, cta} = useContent<HomeBanner>('home-banner', {initial: initialBanner});
 
     return (
         <div>
@@ -287,7 +287,7 @@ export default function HomePage(): ReactElement {
                 )}
             </Slot>
 
-            {/* Using the useFetch hook */}
+            {/* Using the useContent hook */}
             <HomeBanner />
         </Suspense>
     )
@@ -538,16 +538,16 @@ function PersonaBadge(): ReactElement {
 }
 ```
 
-### useFetch
+### useContent
 
-The `useFetch` hook fetches the content of a slot.
+The `useContent` hook fetches the content of a slot.
 
 #### Signature
 
 The hook has the following signature:
 
 ```ts
-function useFetch<Content extends NullableJsonObject>(slotId: string, options: Options = {}): Content
+function useContent<Content extends NullableJsonObject>(slotId: string, options: Options = {}): Content
 ```
 
 These are the currently supported options:
@@ -565,10 +565,10 @@ Here's a simple example showing how to fetch the content for a banner:
 
 ```tsx
 import {ReactElement, Fragment} from 'react';
-import {useFetch} from '@croct/plug-react';
+import {useContent} from '@croct/plug-react';
 
 function HeroBanner(): ReactElement {
-    const {title, subtitle} = useFetch<HeroBanner>('hero');
+    const {title, subtitle} = useContent<HeroBanner>('hero');
 
     return (
         <div>
