@@ -26,7 +26,7 @@
 The React Plug library provides components and hooks for personalizing applications in real-time that are easy for your marketing team to scale and maintain.
 
 - **Easy integration**: personalize existing components without touching their code.
-- **Suspense-ready**: take advantage of the latest React features to improve user experience
+- **Suspense-ready**: take advantage of the latest React features to improve user experience.
 - **Zero configuration**: no setup steps are required.
 - **Type-safety**: Typescript typings are included for improved development experience.
 - **Blazing-fast queries**: double-digit millisecond latency for real-time evaluations.
@@ -105,7 +105,7 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
-Now, let's create an `ViewDocsLink` component to see the `useEvaluation` hook in action:
+Now, let's create a `ViewDocsLink` component to see the `useEvaluation` hook in action:
 
 ```tsx
 import {ReactElement, Fragment} from 'react';
@@ -172,7 +172,7 @@ touching the component code.
 
 To render a slot, all you need to do is provide the `id` you configured in your Croct workspace. Based on the 
 slot's personalization rules and the user's context, the component will decide which content show to that user. 
-Notice that there's no logic on the client side, meaning that your marketing or product team can freely change the 
+Notice that there's no logic on the client-side, meaning that your marketing or product team can freely change the 
 slot content as they need without requiring an update to your React app.
 
 For the next example, we assume that you have already defined a slot with id `home-banner` in your Croct workspace 
