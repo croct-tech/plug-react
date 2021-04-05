@@ -15,7 +15,7 @@ export function useEvaluation<T extends JsonValue>(expression: string, options: 
     const croct = useCroct();
 
     return useSuspense({
-        cacheKey: `evaluation:${cacheKey ?? ''}:${expression}:${JSON.stringify(options.attributes ?? '')}`,
+        cacheKey: `useEvaluation:${cacheKey ?? ''}:${expression}:${JSON.stringify(options.attributes ?? '')}`,
         loader: () => croct.evaluate<T>(expression, evaluationOptions),
         fallback: fallback,
         initial: initial,

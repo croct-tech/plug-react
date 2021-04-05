@@ -18,7 +18,7 @@ export function useContent<P extends NullableJsonObject, I extends SlotId = Slot
     const croct = useCroct();
 
     return useSuspense({
-        cacheKey: `content:${cacheKey ?? ''}:${slotId}`,
+        cacheKey: `useContent:${cacheKey ?? ''}:${slotId}`,
         loader: () => croct.fetch<P>(slotId).then(({payload}) => payload),
         fallback: fallback,
         initial: initial,

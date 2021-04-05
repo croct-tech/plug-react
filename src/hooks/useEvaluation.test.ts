@@ -38,7 +38,7 @@ describe('useEvaluation', () => {
 
         expect(useCroct).toBeCalled();
         expect(useSuspense).toBeCalledWith({
-            cacheKey: 'evaluation:unique:location:{"foo":"bar"}',
+            cacheKey: 'useEvaluation:unique:location:{"foo":"bar"}',
             initial: 'loading',
             fallback: 'error',
             expiration: 50,

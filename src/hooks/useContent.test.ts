@@ -37,7 +37,7 @@ describe('useContent', () => {
 
         expect(useCroct).toBeCalled();
         expect(useSuspense).toBeCalledWith({
-            cacheKey: 'slot:unique:home-banner',
+            cacheKey: 'useContent:unique:home-banner',
             initial: {
                 title: 'loading',
             },
