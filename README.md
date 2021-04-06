@@ -130,7 +130,9 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
-> 💡 To see how to assign a persona to the user, see [Accessing the Plug instance](#accessing-the-plug-instance).
+If you run the application, you probably won't see the button as it is only shown for developers. Check out 
+[Accessing the Plug instance](#accessing-the-plug-instance) for an example of how to save information in a 
+user's profile.
 
 We strongly recommend always specifying the `fallback` property to ensure your app behaves the same way regardless of 
 the personalization. In this way, the UI will still be fully functional even in maintenance windows.
