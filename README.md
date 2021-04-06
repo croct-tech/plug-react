@@ -112,7 +112,7 @@ import {ReactElement, Fragment} from 'react';
 import {useEvaluation} from '@croct/plug-react';
 
 function ViewDocsLink(): ReactElement {
-    const isDeveloper = useEvaluation<boolean>("user's persona is 'developer'", {initial: false});
+    const isDeveloper = useEvaluation<boolean>("user's persona is 'developer'");
 
     return <Fragment>{isDeveloper && <a href="/docs">View docs</a>}</Fragment>
 }
@@ -126,22 +126,17 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
-As we don't provide an initial state in the previous examples, the component will suspend the rendering until the 
-evaluation result is available. To prevent the UI from suspending, you can provide an initial state through the 
-`initial` property. In this case, the component will render the initial state until the evaluation completes. 
-Once the evaluation completes, the component will re-render to reflect the evaluation result.
-
 We strongly recommend always specifying the `fallback` property to ensure your app behaves the same way regardless of 
 the personalization. In this way, the UI will still be fully functional even in maintenance windows.
 
-The following example shows how to specify a fallback behaviour for the docs link:
+The following example shows how you can specify a fallback behaviour for the docs link:
 
 ```tsx
 import {ReactElement} from 'react';
 import {Personalization, useEvaluation} from '@croct/plug-react';
 
 function ViewDocsLink(): ReactElement {
-    const isDeveloper = useEvaluation<boolean>("user's persona is 'developer'", {initial: false});
+    const isDeveloper = useEvaluation<boolean>("user's persona is 'developer'", {fallback: false});
 
     return <Fragment>{isDeveloper && <a href="/docs">View docs</a>}</Fragment>
 }
@@ -241,18 +236,13 @@ export default function HomePage(): ReactElement {
 }
 ```
 
-As we don't provide an initial state in the previous examples, the component will suspend the rendering while the slot 
-content is loading. To prevent the UI from suspending, you can provide an initial state through the `initial` property. 
-In this case, the component will render the initial content while the slot content is loading. As soon as slot content 
-is loaded, the hook will cause the component to be re-rendered with the personalized slot content.
-
-The following example shows how to specify a fallback state for the `home-banner` slot:
+The following example shows how you can specify a fallback state for the `home-banner` slot:
 
 ```tsx
 import {Suspense, ReactElement} from 'react';
 import {Slot, useContent} from '@croct/plug-react';
 
-const initialBanner: HomeBanner = {
+const fallbackBanner: HomeBanner = {
     title: 'Default title',
     subtitle: 'Default subtitle',
     cta: {
@@ -262,7 +252,7 @@ const initialBanner: HomeBanner = {
 };
 
 function HomeBanner(): ReactElement {
-    const {title, subtitle, cta} = useContent<HomeBanner>('home-banner', {initial: initialBanner});
+    const {title, subtitle, cta} = useContent<HomeBanner>('home-banner', {fallback: fallbackBanner});
 
     return (
         <div>
@@ -277,7 +267,7 @@ export default function HomePage(): ReactElement {
     return (
         <Suspense fallback="Personalizing content...">
             {/* Using the <Slot /> component */}
-            <Slot id="home-banner" fallback={initialBanner}>
+            <Slot id="home-banner" fallback={fallbackBanner}>
                 {({title, subtitle, cta}: HomeBanner) => (
                     <div>
                         <strong>{title}</strong>
@@ -405,7 +395,6 @@ The component takes the followings properties:
 |--------------|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | `expression` | string   | Yes      | The CQL query to evaluate.
 | `children`   | Function | Yes      | A callback to render the result.
-| `initial`    | Result   | No       | A value to render while the evaluation is in progress. If not specified, the component will suspend.
 | `fallback`   | Result   | No       | A value to render when the evaluation fails. If not specified, the hook will throw an exception in case of failures.
 | `timeout`    | number   | No       | The maximum evaluation time in milliseconds. Once reached, the evaluation will fail.
 | `attributes` | JSON     | No       | A map of attributes to inject in the evaluation context. For example, passing the attributes `{cities: ['New York', 'San Francisco']}` you can reference them in expressions like `context's cities include location's city`.
@@ -441,7 +430,6 @@ The component takes the followings properties:
 |--------------|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 | `id`         | string   | Yes      | The ID of the slot to fetch.
 | `children`   | Function | Yes      | A callback to render the result.
-| `initial`    | Result   | No       | A value to render while fetching the content. If not specified, the component will suspend.
 | `fallback`   | Result   | No       | A value to render when the fetch fails. If not specified, the hook will throw an exception in case of failures.
 | `cacheKey`   | string   | No       | An identifier that allows keeping the cached result separate from other cached items. By default, the cache key is formed from the expression and attributes.
 | `expiration` | number   | No       | The cache expiration time in milliseconds, extended on every render. If negative, the cache never expires. By default, the cache lifespan is set to 60000 (1 minute).
@@ -516,7 +504,6 @@ These are the currently supported options:
 
 | Option       | Type    | Description
 |--------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| `initial`    | Result  | The value returned while the evaluation is in progress. If not specified, the component will suspend.
 | `fallback`   | Result  | The value returned when the evaluation fails. If not specified, the hook will throw an exception in case of failures. 
 | `timeout`    | number  | The maximum evaluation time in milliseconds. Once reached, the evaluation will fail.
 | `attributes` | JSON    | The map of attributes to inject in the evaluation context. For example, passing the attributes `{cities: ['New York', 'San Francisco']}` you can reference them in expressions like `context's cities include location's city`.
@@ -554,7 +541,6 @@ These are the currently supported options:
 
 | Option       | Type    | Description
 |--------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| `initial`    | Content | The content returned while fetching the content. If not specified, the component will suspend.
 | `fallback`   | Content | The content returned when the fetch fails. If not specified, the hook will throw an exception in case of failures.
 | `cacheKey`   | string  | An identifier that allows keeping the cached content separate from other cached items. By default, the cache key is formed from the slot ID.
 | `expiration` | number  | The cache expiration time in milliseconds, extended on every render. If negative, the cache never expires. By default, the cache lifespan is set to 60000 (1 minute).

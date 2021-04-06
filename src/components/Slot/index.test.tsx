@@ -11,7 +11,6 @@ describe('<Slot/>', () => {
         const {id, children, ...options}: SlotProps<{title: string}> = {
             id: 'home-banner',
             children: jest.fn(({title}) => title),
-            initial: {title: 'initial'},
             fallback: {title: 'fallback'},
         };
 

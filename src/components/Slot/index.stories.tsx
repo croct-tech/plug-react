@@ -46,25 +46,7 @@ export const WithSuspense: Story<SlotProps<HomeBannerProps>> = args => (
 );
 
 WithSuspense.args = {
-    cacheKey: 'suspense',
-};
-
-export const WithInitialState: Story<SlotProps<HomeBannerProps>> = args => (
-    <Slot {...args} id="home-banner">
-        {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
-    </Slot>
-);
-
-WithInitialState.args = {
-    cacheKey: 'initial-state',
-    initial: {
-        title: 'Unlock the power of the personalization',
-        subtitle: 'Dive into the world of one-to-one engagement.',
-        cta: {
-            label: 'Try now',
-            link: 'https://croct.com',
-        },
-    },
+    cacheKey: 'default',
 };
 
 export const WithFallbackState: Story<SlotProps<HomeBannerProps>> = args => (

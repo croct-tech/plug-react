@@ -11,7 +11,6 @@ describe('<Personalization/>', () => {
         const {expression, children, ...options}: PersonalizationProps<string> = {
             expression: '"example"',
             children: jest.fn(result => result),
-            initial: 'initial',
             fallback: 'fallback',
         };
 

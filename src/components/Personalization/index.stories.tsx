@@ -31,8 +31,8 @@ const NewsWidget: FunctionComponent<NewsWidgetProps> = ({link, children}): React
     </div>
 );
 
-export const WithSuspense: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
-    <Suspense fallback="Personalizing content...">
+export const Default: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
+    <Suspense fallback="✨ Personalizing content...">
         <Personalization {...args} expression="location's city">
             {(city: string) => (
                 <NewsWidget link="https://croct.com">
@@ -45,29 +45,12 @@ export const WithSuspense: Story<Omit<PersonalizationProps<string>, 'expression'
     </Suspense>
 );
 
-WithSuspense.args = {
-    cacheKey: 'suspense',
-};
-
-export const WithInitialState: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
-    <Personalization {...args} expression="location's city">
-        {(city: string) => (
-            <NewsWidget link="https://croct.com">
-                See how our customers from
-                <span>{city}</span>
-                to reach their business goals
-            </NewsWidget>
-        )}
-    </Personalization>
-);
-
-WithInitialState.args = {
-    cacheKey: 'initial-state',
-    initial: 'your city',
+Default.args = {
+    cacheKey: 'default',
 };
 
 export const WithFallbackState: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
-    <Suspense fallback="Personalizing content...">
+    <Suspense fallback="✨ Personalizing content...">
         <Personalization {...args} expression="location's city">
             {(city: string) => (
                 <NewsWidget link="https://croct.com">

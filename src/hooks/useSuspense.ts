@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 
 type Loader = (...args: any) => Promise<any>;
 type LoaderReturn<L extends Loader> = ReturnType<L> extends PromiseLike<infer U> ? U : never;
@@ -7,7 +7,6 @@ export type Configuration<L extends Loader> = {
     cacheKey: string,
     loader: L,
     fallback?: LoaderReturn<L>,
-    initial?: LoaderReturn<L>,
     expiration?: number,
 };
 
@@ -24,12 +23,9 @@ const DEFAULT_EXPIRATION = 60 * 1000;
 const cache: Record<string, CacheEntry> = {};
 
 export function useSuspense<L extends Loader>(configuration: Configuration<L>): LoaderReturn<L> {
-    const {cacheKey, loader, initial, fallback, expiration = DEFAULT_EXPIRATION} = configuration;
-    const [state, setState] = useState(initial);
-    let isMounted: boolean = true;
+    const {cacheKey, loader, fallback, expiration = DEFAULT_EXPIRATION} = configuration;
 
     useEffect(() => () => {
-        isMounted = false;
         cache[cacheKey]?.dispose();
     }, []);
 
@@ -45,15 +41,15 @@ export function useSuspense<L extends Loader>(configuration: Configuration<L>): 
         }
 
         if (entry.error !== undefined) {
+            if (fallback !== undefined) {
+                return fallback;
+            }
+
             throw entry.error;
         }
 
         if (entry.result !== undefined) {
             return entry.result;
-        }
-
-        if (state !== undefined) {
-            return state;
         }
 
         throw entry.promise;
@@ -76,24 +72,12 @@ export function useSuspense<L extends Loader>(configuration: Configuration<L>): 
             .then((result): LoaderReturn<L> => {
                 entry.result = result;
 
-                if (isMounted) {
-                    setState(result);
-                }
-
                 return result;
             })
             .catch(error => {
-                if (fallback === undefined) {
-                    entry.error = error;
-                } else {
-                    entry.result = fallback;
-                }
+                entry.error = error;
 
-                if (isMounted) {
-                    setState(fallback ?? undefined);
-                }
-
-                return fallback;
+                throw error;
             })
             .finally(() => {
                 entry.dispose();
@@ -101,10 +85,6 @@ export function useSuspense<L extends Loader>(configuration: Configuration<L>): 
     };
 
     cache[cacheKey] = entry;
-
-    if (state !== undefined) {
-        return state;
-    }
 
     throw entry.promise;
 }

@@ -13,6 +13,10 @@ jest.mock('./useSuspense', () => ({
 }));
 
 describe('useEvaluation', () => {
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
     it('should evaluate an expression', () => {
         const evaluationOptions: EvaluationOptions = {
             timeout: 100,
@@ -31,7 +35,6 @@ describe('useEvaluation', () => {
         const {result} = renderHook(() => useEvaluation(expression, {
             ...evaluationOptions,
             cacheKey: 'unique',
-            initial: 'loading',
             fallback: 'error',
             expiration: 50,
         }));
@@ -39,7 +42,6 @@ describe('useEvaluation', () => {
         expect(useCroct).toBeCalled();
         expect(useSuspense).toBeCalledWith({
             cacheKey: 'useEvaluation:unique:location:{"foo":"bar"}',
-            initial: 'loading',
             fallback: 'error',
             expiration: 50,
             loader: expect.any(Function),
@@ -50,5 +52,25 @@ describe('useEvaluation', () => {
         expect(evaluate).toBeCalledWith(expression, evaluationOptions);
 
         expect(result.current).toBe('foo');
+    });
+
+    it('should remove undefined evaluation options', () => {
+        const evaluationOptions: EvaluationOptions = {
+            timeout: undefined,
+            attributes: undefined,
+        };
+
+        const evaluate = jest.fn();
+
+        (useCroct as jest.Mock).mockReturnValue({evaluate: evaluate});
+        (useSuspense as jest.Mock).mockReturnValue('foo');
+
+        const expression = 'location';
+
+        renderHook(() => useEvaluation(expression, evaluationOptions));
+
+        (useSuspense as jest.Mock).mock.calls[0][0].loader();
+
+        expect(evaluate).toBeCalledWith(expression, {});
     });
 });

@@ -40,28 +40,12 @@ const HomeBanner: FunctionComponent<UseContentOptions<HomeBannerProps>> = (optio
     );
 };
 
-export const WithSuspense: Story<UseContentOptions<HomeBannerProps>> = args => (
+export const Default: Story<UseContentOptions<HomeBannerProps>> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <HomeBanner {...args} />
     </Suspense>
 );
 
-WithSuspense.args = {
-    cacheKey: 'suspense',
-};
-
-export const WithInitialState: Story<UseContentOptions<HomeBannerProps>> = args => (
-    <HomeBanner {...args} />
-);
-
-WithInitialState.args = {
-    cacheKey: 'initial-state',
-    initial: {
-        title: 'Unlock the power of the personalization',
-        subtitle: 'Dive into the world of one-to-one engagement.',
-        cta: {
-            label: 'Try now',
-            link: 'https://croct.com',
-        },
-    },
+Default.args = {
+    cacheKey: 'default',
 };

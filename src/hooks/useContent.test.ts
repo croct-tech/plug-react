@@ -26,9 +26,6 @@ describe('useContent', () => {
 
         const {result} = renderHook(() => useContent<{title: string}>(slotId, {
             cacheKey: 'unique',
-            initial: {
-                title: 'loading',
-            },
             fallback: {
                 title: 'error',
             },
@@ -38,9 +35,6 @@ describe('useContent', () => {
         expect(useCroct).toBeCalled();
         expect(useSuspense).toBeCalledWith({
             cacheKey: 'useContent:unique:home-banner',
-            initial: {
-                title: 'loading',
-            },
             fallback: {
                 title: 'error',
             },

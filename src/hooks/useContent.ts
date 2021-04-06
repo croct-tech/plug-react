@@ -14,14 +14,13 @@ export function useContent<P extends NullableJsonObject, I extends SlotId = Slot
     slotId: I,
     options: UseContentOptions<P, I> = {},
 ): SlotContent<I> & P {
-    const {initial, fallback, cacheKey, expiration} = options;
+    const {fallback, cacheKey, expiration} = options;
     const croct = useCroct();
 
     return useSuspense({
         cacheKey: `useContent:${cacheKey ?? ''}:${slotId}`,
         loader: () => croct.fetch<P>(slotId).then(({payload}) => payload),
         fallback: fallback,
-        initial: initial,
         expiration: expiration,
     });
 }

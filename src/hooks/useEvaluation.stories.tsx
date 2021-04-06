@@ -34,21 +34,12 @@ const NewsWidget: FunctionComponent<UseEvaluationOptions<string>> = (options): R
     );
 };
 
-export const WithSuspense: Story<UseEvaluationOptions<string>> = args => (
+export const Default: Story<UseEvaluationOptions<string>> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <NewsWidget {...args} />
     </Suspense>
 );
 
-WithSuspense.args = {
-    cacheKey: 'suspense',
-};
-
-export const WithInitialState: Story<UseEvaluationOptions<string>> = args => (
-    <NewsWidget {...args} />
-);
-
-WithInitialState.args = {
-    cacheKey: 'initial-state',
-    initial: 'your city',
+Default.args = {
+    cacheKey: 'default',
 };
