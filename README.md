@@ -91,14 +91,18 @@ and a render function, which tells the component how to render the UI, depending
 This is what our component would look like:
 
 ```tsx
-import {ReactElement} from 'react';
+import {ReactElement, Fragment} from 'react';
 import {Personalization} from '@croct/plug-react';
 
-export default function OnboardingPage(): ReactElement {
+function OnboardingPage(): ReactElement {
     return (
         <Suspense fallback="Loading...">
-            <Personalization expression="user's persona is 'developer'">
-                {isDeveloper => (isDeveloper && <a href="/docs">View docs</a>)}
+            <Personalization expression="user's persona is not 'developer'">
+                {(isDeveloper: boolean) => (
+                    <Fragment>
+                        {isDeveloper && <a href="/docs">View docs</a>}
+                    </Fragment>
+                )}
             </Personalization>
         </Suspense>
     )
@@ -126,6 +130,8 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
+> 💡 To see how to assign a persona to the user, see [Accessing the Plug instance](#accessing-the-plug-instance).
+
 We strongly recommend always specifying the `fallback` property to ensure your app behaves the same way regardless of 
 the personalization. In this way, the UI will still be fully functional even in maintenance windows.
 
@@ -146,7 +152,11 @@ export default function OnboardingPage(): ReactElement {
         <Suspense fallback="Loading...">
             {/* Using the <Personalization /> component */}
             <Personalization expression="user's persona is 'developer'" falback={false}>
-                {isDeveloper => (isDeveloper && <a href="/docs">View docs</a>)}
+                {(isDeveloper: boolean) => (
+                    <Fragment>
+                        {isDeveloper && <a href="/docs">View docs</a>}
+                    </Fragment>
+                )}
             </Personalization>
 
             {/* Using useEvaluation hook */}
