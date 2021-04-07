@@ -587,7 +587,7 @@ Here are some alternative ways to get help from the Croct community.
 Someone else from the community may have already asked a similar question or may be able to help with your problem.
 
 The Croct team will also monitor posts with the "croct" tag. If there aren't any existing questions that help,
-please [ask a new one](https://stackoverflow.com/questions/ask?tags=croct%20export).
+please [ask a new one](https://stackoverflow.com/questions/ask?tags=croct%20plug-react%20react).
 
 ### GitHub
 
