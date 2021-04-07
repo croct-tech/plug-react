@@ -48,7 +48,7 @@ The recommended way to install the library is via [NPM](https://npmjs.com).
 Run the following command to add the client as a dependency to your project and then install it:
 
 ```sh
-npm install @croct/plug-react
+npm install @croct/plug @croct/plug-react
 ```
 
 ### Plugging in
