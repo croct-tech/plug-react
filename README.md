@@ -83,7 +83,9 @@ Once your application is plugged in, you're ready to start personalizing your co
 component or the `useEvaluation` hook.
 
 We'll go through a simple example that shows how  you can implement feature flags (also known as feature toggles)
-to conditionally renders a link depending on the user's persona.
+to conditionally renders a different button depending on the user's persona.
+
+![Evaluation Example](https://user-images.githubusercontent.com/943036/116588852-6a114200-a8f2-11eb-9d88-c346f002e2a1.png)
 
 Let's first implement the use-case using the `<Personalization/>` component. It takes an expression (e.g. `user's persona`) 
 and a render function, which tells the component how to render the UI, depending on the evaluation result.
@@ -98,11 +100,10 @@ function OnboardingPage(): ReactElement {
     return (
         <Suspense fallback="Loading...">
             <Personalization expression="user's persona is not 'developer'">
-                {(isDeveloper: boolean) => (
-                    <Fragment>
-                        {isDeveloper && <a href="/docs">View docs</a>}
-                    </Fragment>
-                )}
+                {(isDeveloper: boolean) => isDeveloper
+                    ? <a href="/docs">View docs</a>
+                    : <a href="/share">Share with your developer</a>
+                }
             </Personalization>
         </Suspense>
     )
@@ -118,7 +119,11 @@ import {useEvaluation} from '@croct/plug-react';
 function ViewDocsLink(): ReactElement {
     const isDeveloper = useEvaluation<boolean>("user's persona is 'developer'");
 
-    return <Fragment>{isDeveloper && <a href="/docs">View docs</a>}</Fragment>
+    return (
+        isDeveloper
+            ? <a href="/docs">View docs</a>
+            : <a href="/share">Share with your developer</a>
+    );
 }
 
 export default function OnboardingPage(): ReactElement {
@@ -130,8 +135,9 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
-If you run the application, you probably won't see the button as it is only shown for developers. Check out 
-[Accessing the Plug instance](#accessing-the-plug-instance) for an example of how to save information in a 
+If you run the application and there is no persona assigned to your profile, you will see the button for non-developers 
+— otherwise, the button for sharing the code with developers.
+Check out [Accessing the Plug instance](#accessing-the-plug-instance) for an example of how to save information in a 
 user's profile.
 
 We strongly recommend always specifying the `fallback` property to ensure your app behaves the same way regardless of 
@@ -176,6 +182,8 @@ Evaluating expression is a flexible and powerful way to customize your UI. Howev
 changes too often, this approach can be overkill. For those cases, we encourage you to use the Slots feature instead. 
 Using slots gives your team the flexibility to change the content or personalization rules whenever needed without 
 touching the component code.
+
+![Slot Example](https://user-images.githubusercontent.com/943036/116586841-44833900-a8f0-11eb-8d32-acec2eacee01.png)
 
 To render a slot, all you need to do is provide the `id` you configured in your Croct workspace. Based on the 
 slot's personalization rules and the user's context, the component will decide which content show to that user. 
