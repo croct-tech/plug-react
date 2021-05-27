@@ -1,5 +1,6 @@
 import {FunctionComponent, ReactElement, Suspense} from 'react';
 import {Story, Meta} from '@storybook/react/types-6-0';
+import {SlotContent} from '@croct/plug/fetch';
 import {Slot, SlotProps} from './index';
 
 export default {
@@ -20,51 +21,62 @@ export default {
     },
 } as Meta;
 
-type HomeBannerProps = {
-    title: string,
-    subtitle: string,
+type BannerSlotProps = SlotProps<{loading?: boolean}, 'home-banner'>;
+type BannerProps = SlotContent<'home-banner'> & {loading?: boolean};
+
+const defaultProps: BannerProps = {
+    title: 'Unlock the power of the personalization',
+    subtitle: 'Dive into the world of one-to-one engagement.',
     cta: {
-        label: string,
-        link: string,
+        label: 'Try now',
+        link: 'https://croct.com',
     },
 };
 
-const HomeBanner: FunctionComponent<HomeBannerProps> = ({title, subtitle, cta}): ReactElement => (
-    <div className="home-banner">
+const HomeBanner: FunctionComponent<BannerProps> = ({loading, title, subtitle, cta}): ReactElement => (
+    <div className={`home-banner${loading ? ' loading' : ''}`}>
         <h1>{title}</h1>
         <p>{subtitle}</p>
         <a href={cta.link} className="cta">{cta.label}</a>
     </div>
 );
 
-export const WithSuspense: Story<SlotProps<HomeBannerProps>> = args => (
+export const WithSuspense: Story<BannerSlotProps> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Slot {...args} id="home-banner">
-            {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
+            {(props: BannerProps) => (<HomeBanner {...props} />)}
         </Slot>
     </Suspense>
 );
 
 WithSuspense.args = {
-    cacheKey: 'default',
+    cacheKey: 'suspense',
 };
 
-export const WithFallbackState: Story<SlotProps<HomeBannerProps>> = args => (
+export const WithInitialState: Story<BannerSlotProps> = args => (
+    <Slot {...args} id="home-banner">
+        {(props: BannerProps) => (<HomeBanner {...props} />)}
+    </Slot>
+);
+
+WithInitialState.args = {
+    cacheKey: 'initial-state',
+    initial: {
+        loading: true,
+        ...defaultProps,
+    },
+};
+
+export const WithFallbackState: Story<BannerSlotProps> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Slot {...args} id="wrong-banner-id">
-            {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
+            {(props: BannerProps) => (<HomeBanner {...props} />)}
         </Slot>
     </Suspense>
 );
 
 WithFallbackState.args = {
     cacheKey: 'fallback-state',
-    fallback: {
-        title: 'Unlock the power of the personalization',
-        subtitle: 'Dive into the world of one-to-one engagement.',
-        cta: {
-            label: 'Try now',
-            link: 'https://croct.com',
-        },
-    },
+    fallback: defaultProps,
 };
+

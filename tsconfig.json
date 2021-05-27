@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "build",
     "target": "esnext",
     "module": "esnext",
     "lib": [
@@ -31,7 +31,6 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true
   },
   "include": [
     "src/**/*.ts",

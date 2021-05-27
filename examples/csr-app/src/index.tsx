@@ -1,0 +1,19 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import {CroctProvider} from '@croct/plug-react';
+
+ReactDOM.render(
+  <React.StrictMode>
+      <CroctProvider appId="00000000-0000-0000-0000-000000000000">
+          <App />
+      </CroctProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

@@ -118,6 +118,11 @@ body {
 .news-widget {
     align-items: center;
     display: flex;
+    transition: opacity ease-in 500ms;
+}
+
+.news-widget.loading {
+    opacity: 0;
 }
 
 .news-widget > a > span {
@@ -145,6 +150,11 @@ body {
 
 .home-banner {
     max-width: 376px;
+    transition: opacity ease-in 500ms;
+}
+
+.home-banner.loading {
+    opacity: 0;
 }
 
 .home-banner > h1 {

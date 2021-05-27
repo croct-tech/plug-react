@@ -1,5 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks';
-import {useSuspense} from './useSuspense';
+import {useLoader} from './useLoader';
 
 describe('useSuspense', () => {
     const cacheKey = {
@@ -31,7 +31,7 @@ describe('useSuspense', () => {
     it('should return the load the value and cache on success', async () => {
         const loader = jest.fn().mockResolvedValue('foo');
 
-        const {result, waitForNextUpdate, rerender} = renderHook(() => useSuspense({
+        const {result, waitForNextUpdate, rerender} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             loader: loader,
         }));
@@ -49,7 +49,7 @@ describe('useSuspense', () => {
         const error = new Error('fail');
         const loader = jest.fn().mockRejectedValue(error);
 
-        const {result, waitForNextUpdate, rerender} = renderHook(() => useSuspense({
+        const {result, waitForNextUpdate, rerender} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             loader: loader,
         }));
@@ -66,7 +66,7 @@ describe('useSuspense', () => {
     it('should return the fallback state on error', async () => {
         const loader = jest.fn().mockRejectedValue(new Error('fail'));
 
-        const {result, waitForNextUpdate} = renderHook(() => useSuspense({
+        const {result, waitForNextUpdate} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             fallback: 'foo',
             loader: loader,
@@ -84,7 +84,7 @@ describe('useSuspense', () => {
 
         const loader = jest.fn().mockResolvedValue('foo');
 
-        const {waitForNextUpdate, rerender} = renderHook(() => useSuspense({
+        const {waitForNextUpdate, rerender} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             loader: loader,
             expiration: 15,
@@ -116,7 +116,7 @@ describe('useSuspense', () => {
 
         const loader = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('foo'), 10)));
 
-        const {waitForNextUpdate, rerender} = renderHook(() => useSuspense({
+        const {waitForNextUpdate, rerender} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             loader: loader,
             expiration: -1,
@@ -149,7 +149,7 @@ describe('useSuspense', () => {
         const delay = 10;
         const loader = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('foo'), delay)));
 
-        const firstTime = renderHook(() => useSuspense({
+        const firstTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             expiration: expiration,
             loader: loader,
@@ -163,7 +163,7 @@ describe('useSuspense', () => {
 
         expect(firstTime.result.current).toBe('foo');
 
-        const secondTime = renderHook(() => useSuspense({
+        const secondTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             expiration: expiration,
             loader: loader,
@@ -175,7 +175,7 @@ describe('useSuspense', () => {
 
         jest.advanceTimersByTime(step);
 
-        const thirdTime = renderHook(() => useSuspense({
+        const thirdTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             expiration: expiration,
             loader: loader,
@@ -198,7 +198,7 @@ describe('useSuspense', () => {
         const delay = 10;
         const loader = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('foo'), delay)));
 
-        const firstTime = renderHook(() => useSuspense({
+        const firstTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             expiration: 5,
             loader: loader,
@@ -214,7 +214,7 @@ describe('useSuspense', () => {
 
         await flushPromises();
 
-        const secondTime = renderHook(() => useSuspense({
+        const secondTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             expiration: 5,
             loader: loader,
