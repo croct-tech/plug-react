@@ -4,10 +4,11 @@ import {useCroct} from './useCroct';
 import {CroctContext} from '../CroctProvider';
 
 describe('useCroct', () => {
-    it('should fail if used out of the <Provider/> component', () => {
+    it('should fail if used out of the <CroctProvider/> component', () => {
         const {result} = renderHook(() => useCroct());
 
-        expect(result.error?.message).toBe('useCroct() can only be used in the context of a <Provider> component.');
+        expect(result.error?.message)
+            .toBe('useCroct() can only be used in the context of a <CroctProvider> component.');
     });
 
     it('should return the Plug instance', () => {

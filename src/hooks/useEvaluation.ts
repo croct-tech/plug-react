@@ -2,7 +2,7 @@ import {JsonValue} from '@croct/plug/sdk/json';
 import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
-import {isSsr} from '../ssr';
+import {isSsr} from '../ssr-polyfills';
 
 function cleanEvaluationOptions(options: EvaluationOptions): EvaluationOptions {
     const result: EvaluationOptions = {};

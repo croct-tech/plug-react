@@ -2,7 +2,7 @@ import {SlotContent, SlotId, SlotMap} from '@croct/plug/fetch';
 import {NullableJsonObject} from '@croct/plug/sdk/json';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
-import {isSsr} from '../ssr';
+import {isSsr} from '../ssr-polyfills';
 
 export type UseContentOptions<I, F> = {
     fallback?: F,

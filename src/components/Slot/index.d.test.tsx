@@ -1,7 +1,7 @@
 import {join as pathJoin} from 'path';
 import {create} from 'ts-node';
 
-const tsService = create({
+const ts = create({
     cwd: __dirname,
     transpileOnly: false,
     ignore: [
@@ -11,12 +11,12 @@ const tsService = create({
 
 const testFilename = pathJoin(__dirname, 'test.tsx');
 
-describe('Validations for Slot component typing', () => {
+describe('<Slot /> typing', () => {
     const header = `
         import {Slot} from './index';
     `;
 
-    const typeMapping = `
+    const slotMapping = `
         import {NullableJsonObject} from '@croct/plug/sdk/json';
 
         type HomeBannerProps = {
@@ -31,12 +31,19 @@ describe('Validations for Slot component typing', () => {
         }
     `;
 
-    type CodeOptions = { code: string, withMapping: boolean };
-    type AssembledCode = { code: string, codePosition: number };
+    type CodeOptions = {
+        code: string,
+        mapping: boolean,
+    };
 
-    function assembleCode({code, withMapping}: CodeOptions): AssembledCode {
-        const prefix = withMapping
-            ? header + typeMapping
+    type AssembledCode = {
+        code: string,
+        codePosition: number,
+    };
+
+    function assembleCode({code, mapping}: CodeOptions): AssembledCode {
+        const prefix = mapping
+            ? header + slotMapping
             : header;
 
         const fullCode = prefix + code.trim();
@@ -48,13 +55,13 @@ describe('Validations for Slot component typing', () => {
     }
 
     function compileCode(opts: CodeOptions) {
-        tsService.compile(assembleCode(opts).code, testFilename);
+        ts.compile(assembleCode(opts).code, testFilename);
     }
 
     function getParameterType(opts: CodeOptions): string {
         const assembledCode = assembleCode(opts);
 
-        const info = tsService.getTypeInfo(assembledCode.code, testFilename, assembledCode.codePosition);
+        const info = ts.getTypeInfo(assembledCode.code, testFilename, assembledCode.codePosition);
 
         const match = info.name.match(/function\(\w+: (.+?)\):/s);
 
@@ -65,144 +72,131 @@ describe('Validations for Slot component typing', () => {
         return info.name;
     }
 
-    it('should compile with type narrowing without mapped slots', () => {
+    it('should allow a renderer that accepts nullable JSON objects or covariants for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
                     {(params: {foo: string}) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
     });
 
-    it('should not compile without wither type narrowing nor mapped slots', () => {
-        const code: CodeOptions = {
-            code: `
-                <Slot id={'home-banner'}>
-                    {params => typeof params}
-                </Slot>;
-            `,
-            withMapping: false,
-        };
-
-        expect(() => compileCode(code)).toThrowError();
-    });
-
-    it('should not compile with type narrowing not assignable to a nullable json object without mapped slots', () => {
+    it('should require a renderer that accepts nullable JSON objects or covariants for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
                     {(params: true) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should compile with type narrowing and initial and without mapped slots', () => {
+    it('should allow a renderer that accepts the initial value for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
                     {(params: {foo: string}|boolean) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
     });
 
-    it('should not compile with type narrowing excluding the type of initial value without mapped slots', () => {
+    it('should require a renderer that accepts the initial value for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
                     {(params: {foo: string}) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should compile with type narrowing and fallback value without mapped slots', () => {
+    it('should allow a renderer that accepts the fallback value for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
                     {(params: {foo: string}|boolean) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
     });
 
-    it('should not compile with type narrowing excluding the type of fallback value without mapped slots', () => {
+    it('should require a renderer that accepts the fallback value for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
                     {(params: {foo: string}) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should compile with type narrowing, initial value and fallback value without mapped slots', () => {
+    it('should allow a renderer that accepts both the initial and fallback values for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
                     {(params: {foo: string}|boolean|number) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
     });
 
-    it('should not compile with type narrowing including only the type of initial value without mapped slots', () => {
+    it('should require a renderer that accepts both the initial and fallback values for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
                     {(params: {foo: string}|boolean) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should not compile with type narrowing including only the type of fallback value without mapped slots', () => {
+    it('should require a renderer that accepts both the fallback and initial values for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
                     {(params: {foo: string}|number) => typeof params}
                 </Slot>;
             `,
-            withMapping: false,
+            mapping: false,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should compile the base case with mapped slots', () => {
+    it('should infer the renderer parameter type for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
                     {params => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
@@ -210,40 +204,40 @@ describe('Validations for Slot component typing', () => {
         expect(getParameterType(code)).toBe('HomeBannerProps');
     });
 
-    it('should compile with type narrowing and mapped slots', () => {
+    it('should allow a covariant renderer parameter type for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
                     {(params: {title: string}) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
     });
 
-    it('should not compile with type narrowing incompatible with mapped slots', () => {
+    it('should require a compatible renderer for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
                     {(params: {foo: string}) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should compile with initial value and mapped slots', () => {
+    it('should infer the renderer parameter type also from the initial value for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
                     {params => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
@@ -251,40 +245,40 @@ describe('Validations for Slot component typing', () => {
         expect(getParameterType(code)).toBe('boolean | HomeBannerProps');
     });
 
-    it('should compile with type narrowing, initial value and mapped slots', () => {
+    it('should allow a renderer that accepts the initial value for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
                     {(params: {title: string}|boolean) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
     });
 
-    it('should not compile with type narrowing excluding type of initial value with mapped slots', () => {
+    it('should require a renderer that accepts the initial value for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
                     {(params: {title: string}) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should compile with fallback value and mapped slots', () => {
+    it('should infer the renderer parameter type also from the fallback value for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
                     {params => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
@@ -292,40 +286,40 @@ describe('Validations for Slot component typing', () => {
         expect(getParameterType(code)).toBe('boolean | HomeBannerProps');
     });
 
-    it('should compile with type narrowing, fallback value and mapped slots', () => {
+    it('should allow a renderer that accepts the fallback value for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
                     {(params: {title: string}|boolean) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
     });
 
-    it('should not compile type narrowing excluding type of fallback value with mapped slots', () => {
+    it('should require a renderer that accepts the fallback value for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
                     {(params: {title: string}) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should compile with initial value, fallback value and mapped slots', () => {
+    it('should infer the renderer parameter type from both the initial and fallback values for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
                     {params => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
@@ -333,40 +327,40 @@ describe('Validations for Slot component typing', () => {
         expect(getParameterType(code)).toBe('number | boolean | HomeBannerProps');
     });
 
-    it('should compile with type narrowing, initial value, fallback value and mapped slots', () => {
+    it('should allow a renderer that accepts both the initial and fallback values for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
                     {(params: {title: string}|boolean|number) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).not.toThrowError();
     });
 
-    it('should not compile with type narrowing including only the type of initial value with mapped slots', () => {
+    it('should require a renderer that accepts both the initial and fallback values for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
                     {(params: {title: string}|boolean) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).toThrowError();
     });
 
-    it('should not compile with type narrowing including only the type of fallback value with mapped slots', () => {
+    it('should require a renderer that accepts both the fallback and initial values for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
                     {(params: {title: string}|number) => typeof params}
                 </Slot>;
             `,
-            withMapping: true,
+            mapping: true,
         };
 
         expect(() => compileCode(code)).toThrowError();

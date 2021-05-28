@@ -11,7 +11,7 @@ const tsService = create({
 
 const testFilename = pathJoin(__dirname, 'test.tsx');
 
-describe('Validations for useEvaluation hook typing', () => {
+describe('useEvaluation typing', () => {
     const header = `
         import {useEvaluation} from './useEvaluation';
     `;
@@ -44,7 +44,7 @@ describe('Validations for useEvaluation hook typing', () => {
         return info.name;
     }
 
-    it('should compile the base case', () => {
+    it('should define the return type as a JSON object by default', () => {
         const code = `    
             useEvaluation('x');
         `;
@@ -56,7 +56,7 @@ describe('Validations for useEvaluation hook typing', () => {
         expect(getReturnType(code)).toBe('JsonValue');
     });
 
-    it('should allow for restricting the return type', () => {
+    it('should allow narrowing the return type', () => {
         const code = `
             useEvaluation<string>('x');
         `;
@@ -68,7 +68,7 @@ describe('Validations for useEvaluation hook typing', () => {
         expect(getReturnType(code)).toBe('string');
     });
 
-    it('should include the type of the initial value on the return', () => {
+    it('should include the type of the initial value on the return type', () => {
         const code = `
             useEvaluation('x', {initial: undefined});
         `;
@@ -80,7 +80,7 @@ describe('Validations for useEvaluation hook typing', () => {
         expect(getReturnType(code)).toBe('JsonValue | undefined');
     });
 
-    it('should include the type of the fallback value on the return', () => {
+    it('should include the type of the fallback value on the return type', () => {
         const code = `
             useEvaluation('x', {fallback: new Error()});
         `;
@@ -92,7 +92,7 @@ describe('Validations for useEvaluation hook typing', () => {
         expect(getReturnType(code)).toBe('Error | JsonValue');
     });
 
-    it('should include the types of both the initial and the fallback values on the return', () => {
+    it('should include the types of both the initial and fallback values on the return type', () => {
         const code = `
             useEvaluation('x', {initial: undefined, fallback: new Error()});
         `;
@@ -104,7 +104,7 @@ describe('Validations for useEvaluation hook typing', () => {
         expect(getReturnType(code)).toBe('Error | JsonValue | undefined');
     });
 
-    it('should accept typed initial and fallback values', () => {
+    it('should allow specifying the type of the initial and fallback values', () => {
         const code = `
             useEvaluation<string, undefined, Error>('x', {initial: undefined, fallback: new Error()});
         `;
@@ -116,7 +116,7 @@ describe('Validations for useEvaluation hook typing', () => {
         expect(getReturnType(code)).toBe('string | Error | undefined');
     });
 
-    it('should not compile with return type that is not valid json', () => {
+    it('should require specifying a JSON value as return type', () => {
         const code = `
             useEvaluation<undefined>('x');
         `;

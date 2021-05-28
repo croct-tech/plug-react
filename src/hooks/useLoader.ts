@@ -1,14 +1,14 @@
 import {useEffect, useState} from 'react';
-import {Loader, EntryOptions} from './loader';
+import {Cache, EntryOptions} from './Cache';
 
-const loader = new Loader(60 * 1000);
+const cache = new Cache(60 * 1000);
 
 export type CacheOptions<R> = EntryOptions<R> & {
     initial?: R,
 };
 
 export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
-    const loadedValue: R|undefined = loader.get<R>(options.cacheKey)?.result;
+    const loadedValue: R|undefined = cache.get<R>(options.cacheKey)?.result;
     const [value, setValue] = useState(loadedValue !== undefined ? loadedValue : initial);
     const [isUnmounted, setUnmounted] = useState(false);
 
@@ -16,7 +16,7 @@ export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
         () => {
             if (initial !== undefined) {
                 try {
-                    setValue(loader.load(options));
+                    setValue(cache.load(options));
                 } catch (result) {
                     if (!(result instanceof Promise)) {
                         setValue(undefined);
@@ -33,7 +33,6 @@ export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
             }
 
             return () => {
-                loader.dispose(options.cacheKey);
                 setUnmounted(true);
             };
         },
@@ -41,7 +40,7 @@ export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
     );
 
     if (value === undefined) {
-        return loader.load(options);
+        return cache.load(options);
     }
 
     return value;

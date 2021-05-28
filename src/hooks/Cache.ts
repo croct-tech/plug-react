@@ -15,7 +15,7 @@ type Entry<R = any> = {
     error?: any,
 };
 
-export class Loader {
+export class Cache {
     private readonly cache: Record<string, Entry> = {};
 
     private readonly defaultExpiration: number;
@@ -93,9 +93,5 @@ export class Loader {
         }
 
         return entry;
-    }
-
-    public dispose(cacheKey: string): void {
-        this.cache[cacheKey]?.dispose();
     }
 }
