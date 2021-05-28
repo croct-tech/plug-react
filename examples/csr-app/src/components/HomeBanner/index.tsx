@@ -12,8 +12,8 @@ const defaultContent: SlotProps = {
     subtitle: 'Deliver tailored experiences that drive satisfaction and growth.',
     cta: {
         label: 'Discover how',
-        link: 'https://croct.link/demo'
-    }
+        link: 'https://croct.link/demo',
+    },
 };
 
 const initialContent: SlotProps = {
