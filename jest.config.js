@@ -1,5 +1,14 @@
 module.exports = {
-    transformIgnorePatterns: [
-        'node_modules/(?!@croct)',
+    projects: [
+        {
+            displayName: 'browser',
+            testEnvironment: 'jsdom',
+            testRegex: '(?<!\\.ssr)\\.test.tsx?$',
+        },
+        {
+            displayName: 'server',
+            testEnvironment: 'node',
+            testRegex: '\\.ssr\\.test.tsx?$',
+        },
     ],
 };

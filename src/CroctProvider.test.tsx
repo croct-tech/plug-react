@@ -1,11 +1,14 @@
 import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
-import croct from '@croct/plug';
+import {croct} from './ssr-polyfills';
 import {CroctContext, CroctProvider, CroctProviderProps} from './CroctProvider';
 
-jest.mock('@croct/plug', () => ({
-    plug: jest.fn(),
-    unplug: jest.fn(),
+jest.mock('./ssr-polyfills', () => ({
+    ...jest.requireActual('./ssr-polyfills'),
+    croct: {
+        plug: jest.fn(),
+        unplug: jest.fn(),
+    },
 }));
 
 // eslint-disable-next-line no-console
@@ -16,7 +19,7 @@ afterEach(() => {
     console.error = consoleError;
 });
 
-describe('<Provider/>', () => {
+describe('<CroctProvider/>', () => {
     it('should fail if nested', () => {
         // eslint-disable-next-line no-console
         console.error = jest.fn();

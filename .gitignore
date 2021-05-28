@@ -1,3 +1,5 @@
-coverage
+coverage/
 node_modules/
 build/
+.storybook/
+storybook-static/

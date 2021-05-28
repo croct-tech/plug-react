@@ -1,5 +1,6 @@
-import {createContext, FunctionComponent, ReactElement, useContext, useEffect} from 'react';
-import croct, {Configuration, Plug} from '@croct/plug';
+import {createContext, FunctionComponent, ReactElement, useContext} from 'react';
+import {Configuration, Plug} from '@croct/plug';
+import {croct, useIsomorphicEffect} from './ssr-polyfills';
 
 export const CroctContext = createContext<Plug|null>(null);
 CroctContext.displayName = 'CroctContext';
@@ -16,10 +17,12 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = ({children, 
         );
     }
 
-    croct.plug(configuration);
+    useIsomorphicEffect(() => {
+        croct.plug(configuration);
 
-    useEffect(() => () => {
-        croct.unplug();
+        return () => {
+            croct.unplug();
+        };
     }, []);
 
     return (
@@ -28,4 +31,3 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = ({children, 
         </CroctContext.Provider>
     );
 };
-

@@ -20,6 +20,7 @@ export default {
 } as Meta;
 
 type HomeBannerProps = {
+    loading?: true,
     title: string,
     subtitle: string,
     cta: {
@@ -28,24 +29,63 @@ type HomeBannerProps = {
     },
 };
 
-const HomeBanner: FunctionComponent<UseContentOptions<HomeBannerProps>> = (options): ReactElement => {
-    const {title, subtitle, cta} = useContent<HomeBannerProps>('home-banner', options);
-
-    return (
-        <div className="home-banner">
-            <h1>{title}</h1>
-            <p>{subtitle}</p>
-            <a href={cta.link} className="cta">{cta.label}</a>
-        </div>
-    );
+const defaultHomeBannerProps: HomeBannerProps = {
+    title: 'Unlock the power of the personalization',
+    subtitle: 'Dive into the world of one-to-one engagement.',
+    cta: {
+        label: 'Try now',
+        link: 'https://croct.com',
+    },
 };
 
-export const Default: Story<UseContentOptions<HomeBannerProps>> = args => (
+const HomeBanner: FunctionComponent<HomeBannerProps> = ({loading, title, subtitle, cta}): ReactElement => (
+    <div className={`home-banner${loading ? ' loading' : ''}`}>
+        <h1>{title}</h1>
+        <p>{subtitle}</p>
+        <a href={cta.link} className="cta">{cta.label}</a>
+    </div>
+);
+
+type HeroOptions = UseContentOptions<HomeBannerProps, HomeBannerProps> & {
+    slotId?: 'home-banner',
+};
+
+const PersonalizedHomeBanner: FunctionComponent<HeroOptions> = ({slotId = 'home-banner', ...options}): ReactElement => {
+    const props = useContent<HomeBannerProps>(slotId, options);
+
+    return (<HomeBanner {...props} />);
+};
+
+export const WithSuspense: Story<HeroOptions> = args => (
     <Suspense fallback="✨ Personalizing content...">
-        <HomeBanner {...args} />
+        <PersonalizedHomeBanner {...args} />
     </Suspense>
 );
 
-Default.args = {
+WithSuspense.args = {
+    cacheKey: 'suspense',
+};
+
+export const WithInitialState: Story<HeroOptions> = args => (
+    <PersonalizedHomeBanner {...args} />
+);
+
+WithInitialState.args = {
+    cacheKey: 'initial-state',
+    initial: {
+        loading: true,
+        ...defaultHomeBannerProps,
+    },
+};
+
+export const WithFallbackState: Story<HeroOptions> = args => (
+    <Suspense fallback="✨ Personalizing content...">
+        <PersonalizedHomeBanner {...args} />
+    </Suspense>
+);
+
+WithFallbackState.args = {
     cacheKey: 'default',
+    slotId: 'wrong-slot-id' as 'home-banner',
+    fallback: defaultHomeBannerProps,
 };

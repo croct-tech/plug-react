@@ -27,6 +27,7 @@ The React Plug library provides components and hooks for personalizing applicati
 
 - **Easy integration**: personalize existing components without touching their code.
 - **Suspense-ready**: take advantage of the latest React features to improve user experience.
+- **Server-side rendering**: seamless integration with server-side frameworks like Next.js.
 - **Zero configuration**: no setup steps are required.
 - **Type-safety**: Typescript typings are included for improved development experience.
 - **Blazing-fast queries**: double-digit millisecond latency for real-time evaluations.
@@ -98,7 +99,7 @@ import {Personalization} from '@croct/plug-react';
 
 function OnboardingPage(): ReactElement {
     return (
-        <Suspense fallback="Loading...">
+        <Suspense fallback="✨ Personalizing...">
             <Personalization expression="user's persona is not 'developer'">
                 {(isDeveloper: boolean) => isDeveloper
                     ? <a href="/docs">View docs</a>
@@ -106,6 +107,24 @@ function OnboardingPage(): ReactElement {
                 }
             </Personalization>
         </Suspense>
+    )
+}
+```
+
+If you don't want your component to suspend while loading, you can provide an `initial` state to be rendered instead:
+
+```tsx
+import {ReactElement, Fragment} from 'react';
+import {Personalization} from '@croct/plug-react';
+
+function OnboardingPage(): ReactElement {
+    return (
+        <Personalization expression="user's persona is not 'developer'" initial={false}>
+            {(isDeveloper: boolean) => isDeveloper
+                ? <a href="/docs">View docs</a>
+                : <a href="/share">Share with your developer</a>
+            }
+        </Personalization>
     )
 }
 ```
@@ -128,7 +147,7 @@ function ViewDocsLink(): ReactElement {
 
 export default function OnboardingPage(): ReactElement {
     return (
-        <Suspense fallback="Loading...">
+        <Suspense fallback="✨ Personalizing...">
             <ViewDocsLink />
         </Suspense>
     )
@@ -140,7 +159,9 @@ If you run the application and there is no persona assigned to your profile, you
 Check out [Accessing the Plug instance](#accessing-the-plug-instance) for an example of how to save information in a 
 user's profile.
 
-We strongly recommend always specifying the `fallback` property to ensure your app behaves the same way regardless of 
+#### Fault tolerance
+
+We strongly recommend always specifying the `fallback` property to ensure your app behaves the same way regardless of
 the personalization. In this way, the UI will still be fully functional even in maintenance windows.
 
 The following example shows how you can specify a fallback behaviour for the docs link:
@@ -157,7 +178,7 @@ function ViewDocsLink(): ReactElement {
 
 export default function OnboardingPage(): ReactElement {
     return (
-        <Suspense fallback="Loading...">
+        <Suspense fallback="✨ Personalizing...">
             {/* Using the <Personalization /> component */}
             <Personalization expression="user's persona is 'developer'" falback={false}>
                 {(isDeveloper: boolean) => (
@@ -214,7 +235,7 @@ import {Slot} from '@croct/plug-react';
 
 export default function OnboardingPage(): ReactElement {
     return (
-        <Suspense fallback="Personalizing content...">
+        <Suspense fallback="✨ Personalizing content...">
             <Slot id="home-banner">
                 {({title, subtitle, cta}: HomeBanner) => (
                     <div>
@@ -229,6 +250,31 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
+To avoid the component to suspend while loading you can provide an `initial` state to be rendered instead:
+
+```tsx
+import {Suspense, ReactElement} from 'react';
+import {Slot} from '@croct/plug-react';
+
+export default function OnboardingPage(): ReactElement {
+    return (
+        <Slot id="home-banner" initial={null}>
+            {(props: HomeBanner|null) => (
+                props === null 
+                    ? '✨ Personalizing...'
+                    : (
+                        <div>
+                            <strong>{title}</strong>
+                            <p>{subtitle}</p>
+                            <a href={cta.link}>{cta.label}</a>
+                        </div>    
+                    )
+            )}
+        </Slot>
+    )
+}
+```
+
 And here's an example using the `useContent` hook:
 
 ```tsx
@@ -236,7 +282,7 @@ import {ReactElement} from 'react';
 import {useContent} from '@croct/plug-react';
 
 function HomeBanner(): ReactElement {
-    const {title, subtitle, cta} = useContent<HomeBanner>('home-banner');
+    const banner = useContent<HomeBanner>('home-banner');
 
     return (
         <div>
@@ -255,6 +301,8 @@ export default function HomePage(): ReactElement {
     )
 }
 ```
+
+#### Fault tolerance
 
 The following example shows how you can specify a fallback state for the `home-banner` slot:
 
@@ -331,6 +379,13 @@ If you use an IDE with Typescript code completion support, you will get autocomp
 slot IDs and content properties as a bonus:
 
 ![Autocomplete](https://user-images.githubusercontent.com/943036/113335703-b1101580-92fb-11eb-973d-3720ea133a95.gif)
+
+### Server-side rendering
+
+You can use the same components and hooks on the server-side by simply providing an `initial` state which is used to pre-render on the server - the personalization happens transparently on the client during the initial render. 
+That means it's SEO friendly and can be cached with no performance overhead.
+
+Notice that the methods exposed by the Plug work only on the client-side. Therefore, if you are using `useCroct`, the operations have to be executed inside the useEffect hook or client-side callbacks, such as `onClick` or `onChange`, for example.
 
 ### Accessing the Plug instance
 
@@ -416,6 +471,7 @@ The component takes the followings properties:
 | `expression` | string   | Yes      | The CQL query to evaluate.
 | `children`   | Function | Yes      | A callback to render the result.
 | `fallback`   | Result   | No       | A value to render when the evaluation fails. If not specified, the hook will throw an exception in case of failures.
+| `initial`    | Result   | SSR only | A value to render while loading, required for server-side rendering. If not specified, the rendering will suspend.
 | `timeout`    | number   | No       | The maximum evaluation time in milliseconds. Once reached, the evaluation will fail.
 | `attributes` | JSON     | No       | A map of attributes to inject in the evaluation context. For example, passing the attributes `{cities: ['New York', 'San Francisco']}` you can reference them in expressions like `context's cities include location's city`.
 | `cacheKey`   | string   | No       | An identifier that allows keeping the cached result separate from other cached items. By default, the cache key is formed from the expression and attributes.
@@ -451,6 +507,7 @@ The component takes the followings properties:
 | `id`         | string   | Yes      | The ID of the slot to fetch.
 | `children`   | Function | Yes      | A callback to render the result.
 | `fallback`   | Result   | No       | A value to render when the fetch fails. If not specified, the hook will throw an exception in case of failures.
+| `initial`    | Result   | SSR only | A value to render while loading, required for server-side rendering. If not specified, the rendering will suspend.
 | `cacheKey`   | string   | No       | An identifier that allows keeping the cached result separate from other cached items. By default, the cache key is formed from the expression and attributes.
 | `expiration` | number   | No       | The cache expiration time in milliseconds, extended on every render. If negative, the cache never expires. By default, the cache lifespan is set to 60000 (1 minute).
 

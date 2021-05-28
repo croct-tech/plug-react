@@ -2,18 +2,19 @@ import {renderHook} from '@testing-library/react-hooks';
 import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
 import {useEvaluation} from './useEvaluation';
 import {useCroct} from './useCroct';
-import {useSuspense} from './useSuspense';
+import {useLoader} from './useLoader';
 
 jest.mock('./useCroct', () => ({
     useCroct: jest.fn(),
 }));
 
-jest.mock('./useSuspense', () => ({
-    useSuspense: jest.fn(),
+jest.mock('./useLoader', () => ({
+    useLoader: jest.fn(),
 }));
 
 describe('useEvaluation', () => {
-    afterEach(() => {
+    beforeEach(() => {
+        jest.resetModules();
         jest.resetAllMocks();
     });
 
@@ -28,7 +29,7 @@ describe('useEvaluation', () => {
         const evaluate = jest.fn();
 
         (useCroct as jest.Mock).mockReturnValue({evaluate: evaluate});
-        (useSuspense as jest.Mock).mockReturnValue('foo');
+        (useLoader as jest.Mock).mockReturnValue('foo');
 
         const expression = 'location';
 
@@ -40,14 +41,14 @@ describe('useEvaluation', () => {
         }));
 
         expect(useCroct).toBeCalled();
-        expect(useSuspense).toBeCalledWith({
+        expect(useLoader).toBeCalledWith({
             cacheKey: 'useEvaluation:unique:location:{"foo":"bar"}',
             fallback: 'error',
             expiration: 50,
             loader: expect.any(Function),
         });
 
-        (useSuspense as jest.Mock).mock.calls[0][0].loader();
+        (useLoader as jest.Mock).mock.calls[0][0].loader();
 
         expect(evaluate).toBeCalledWith(expression, evaluationOptions);
 
@@ -63,13 +64,13 @@ describe('useEvaluation', () => {
         const evaluate = jest.fn();
 
         (useCroct as jest.Mock).mockReturnValue({evaluate: evaluate});
-        (useSuspense as jest.Mock).mockReturnValue('foo');
+        (useLoader as jest.Mock).mockReturnValue('foo');
 
         const expression = 'location';
 
         renderHook(() => useEvaluation(expression, evaluationOptions));
 
-        (useSuspense as jest.Mock).mock.calls[0][0].loader();
+        (useLoader as jest.Mock).mock.calls[0][0].loader();
 
         expect(evaluate).toBeCalledWith(expression, {});
     });

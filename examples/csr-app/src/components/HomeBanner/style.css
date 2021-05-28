@@ -1,0 +1,57 @@
+.hero {
+  margin: 0 auto;
+  max-width: 54rem;
+  opacity: 1;
+  text-align: center;
+  transition: opacity ease-in 500ms;
+}
+
+.hero.loading {
+  opacity: 0;
+}
+
+.hero .logo {
+  margin-bottom: 2rem;
+  width: 5rem;
+}
+
+.hero h1 {
+  font-size: 3.75rem;
+  line-height: 1;
+}
+
+.hero .subtitle {
+  color: #6B7280;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  margin: 1.5rem auto;
+  max-width: 32rem;
+}
+
+@media (max-width: 640px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero .subtitle {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+}
+
+.cta {
+  background-color: #4F46E5;
+  border-radius: 0.375rem;
+  color: #fff;
+  display: inline-flex;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+  text-decoration: none;
+}
+
+.cta:hover {
+  background-color: #4338CA;
+}

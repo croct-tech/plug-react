@@ -1,0 +1,25 @@
+.persona-selector {
+    color: #6B7280;
+    display: flex;
+    position: relative;
+}
+
+.persona-selector select {
+    appearance: none;
+    border-radius: .375rem;
+    border: 1px solid #e5e7eb;
+    box-sizing: border-box;
+    display: inline-block;
+    font-family: inherit;
+    font-size: .875rem;
+    font-weight: 500;
+    height: 2.25rem;
+    line-height: 1.25rem;
+    padding: 0 2rem 0 .875rem;
+}
+
+.persona-selector .icon-arrow {
+    height: 100%;
+    position: absolute;
+    right: .875rem;
+}

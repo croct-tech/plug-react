@@ -71,6 +71,7 @@
     "no-continue": "off",
     "no-multiple-empty-lines": ["error", {"max":  1}],
     "no-plusplus": "off",
+    "no-redeclare": "off",
     "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
     "no-unused-vars": "off",
     "no-use-before-define": "off",
@@ -80,6 +81,7 @@
     "padding-line-between-statements": ["error",{ "blankLine": "always", "prev": "*", "next": ["return", "if", "function", "block-like"]}],
     "require-await": "error",
     "react/prop-types": "off",
+    "react/no-unused-prop-types": "off",
     "react/react-in-jsx-scope": "off"
   },
   "overrides": [

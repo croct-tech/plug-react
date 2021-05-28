@@ -1,26 +1,62 @@
+import {SlotContent, SlotId, SlotMap} from '@croct/plug/fetch';
 import {NullableJsonObject} from '@croct/plug/sdk/json';
-import {SlotContent, SlotId} from '@croct/plug/fetch';
-import {useSuspense} from './useSuspense';
+import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
+import {isSsr} from '../ssr-polyfills';
 
-export type UseContentOptions<P extends NullableJsonObject = NullableJsonObject, I extends SlotId = SlotId> = {
-    fallback?: SlotContent<I> & P,
-    initial?: SlotContent<I> & P,
+export type UseContentOptions<I, F> = {
+    fallback?: F,
+    initial?: I,
     cacheKey?: string,
     expiration?: number,
 };
 
-export function useContent<P extends NullableJsonObject, I extends SlotId = SlotId>(
-    slotId: I,
-    options: UseContentOptions<P, I> = {},
-): SlotContent<I> & P {
-    const {fallback, cacheKey, expiration} = options;
+function useCsrContent<I, F>(id: SlotId, options: UseContentOptions<I, F> = {}): SlotContent<SlotId> | I | F {
+    const {fallback, initial, cacheKey, expiration} = options;
     const croct = useCroct();
 
-    return useSuspense({
-        cacheKey: `useContent:${cacheKey ?? ''}:${slotId}`,
-        loader: () => croct.fetch<P>(slotId).then(({payload}) => payload),
+    return useLoader({
+        cacheKey: `useContent:${cacheKey ?? ''}:${id}`,
+        loader: () => croct.fetch<SlotContent<SlotId>>(id).then(({payload}) => payload),
+        initial: initial,
         fallback: fallback,
         expiration: expiration,
     });
 }
+
+function useSsrContent<I, F>(_: SlotId, {initial}: UseContentOptions<I, F> = {}): SlotContent<SlotId> | I | F {
+    if (initial === undefined) {
+        throw new Error('The initial value is required for server-side rendering (SSR).');
+    }
+
+    return initial;
+}
+
+type UseContentHook = {
+    <P extends NullableJsonObject, I = P, F = P>(
+        id: keyof SlotMap extends never ? string : never,
+        options?: UseContentOptions<I, F>
+    ): P | I | F,
+
+    <S extends keyof SlotMap>(
+        id: S,
+        options?: UseContentOptions<never, never>
+    ): SlotContent<S>,
+
+    <I, S extends keyof SlotMap>(
+        id: S,
+        options?: UseContentOptions<I, never>
+    ): SlotContent<S> | I,
+
+    <F, S extends keyof SlotMap>(
+        id: S,
+        options?: UseContentOptions<never, F>
+    ): SlotContent<S> | F,
+
+    <I, F, S extends keyof SlotMap>(
+        id: S,
+        options?: UseContentOptions<I, F>
+    ): SlotContent<S> | I | F,
+};
+
+export const useContent: UseContentHook = isSsr() ? useSsrContent : useCsrContent;

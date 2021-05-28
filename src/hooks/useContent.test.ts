@@ -1,14 +1,14 @@
 import {renderHook} from '@testing-library/react-hooks';
 import {useCroct} from './useCroct';
-import {useSuspense} from './useSuspense';
+import {useLoader} from './useLoader';
 import {useContent} from './useContent';
 
 jest.mock('./useCroct', () => ({
     useCroct: jest.fn(),
 }));
 
-jest.mock('./useSuspense', () => ({
-    useSuspense: jest.fn(),
+jest.mock('./useLoader', () => ({
+    useLoader: jest.fn(),
 }));
 
 describe('useContent', () => {
@@ -20,7 +20,7 @@ describe('useContent', () => {
         });
 
         (useCroct as jest.Mock).mockReturnValue({fetch: fetch});
-        (useSuspense as jest.Mock).mockReturnValue('foo');
+        (useLoader as jest.Mock).mockReturnValue('foo');
 
         const slotId = 'home-banner';
 
@@ -33,7 +33,7 @@ describe('useContent', () => {
         }));
 
         expect(useCroct).toBeCalled();
-        expect(useSuspense).toBeCalledWith({
+        expect(useLoader).toBeCalledWith({
             cacheKey: 'useContent:unique:home-banner',
             fallback: {
                 title: 'error',
@@ -42,7 +42,7 @@ describe('useContent', () => {
             loader: expect.any(Function),
         });
 
-        (useSuspense as jest.Mock).mock.calls[0][0].loader();
+        (useLoader as jest.Mock).mock.calls[0][0].loader();
 
         expect(fetch).toBeCalledWith(slotId);
 
