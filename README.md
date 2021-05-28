@@ -33,7 +33,7 @@ The React Plug library provides components and hooks for personalizing applicati
 - **Blazing-fast queries**: double-digit millisecond latency for real-time evaluations.
 - **Playground integration**: one-click to connect, no configuration needed.
 
-Check out the [Storybook](croct-tech.github.io/plug-react) to learn about all the features and see some examples in action, 
+Check out the [Storybook](croct-tech.github.io/plug-react) to see some minimal examples in action, 
 or the [example folder](examples) for full code examples.
 
 ## Getting Started
