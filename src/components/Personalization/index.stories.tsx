@@ -1,4 +1,4 @@
-import {Suspense, FunctionComponent, ReactElement} from 'react';
+import {FunctionComponent, ReactElement, Suspense} from 'react';
 import {Story, Meta} from '@storybook/react/types-6-0';
 import {Personalization, PersonalizationProps} from './index';
 
@@ -21,43 +21,52 @@ export default {
 } as Meta;
 
 type NewsWidgetProps = {
-    link: string,
+    city: string|null,
 };
 
-const NewsWidget: FunctionComponent<NewsWidgetProps> = ({link, children}): ReactElement => (
-    <div className="news-widget">
+const NewsWidget: FunctionComponent<NewsWidgetProps> = ({city}): ReactElement => (
+    <div className={`news-widget ${city === null ? ' loading' : ''}`}>
         <span className="badge">Case Study</span>
-        <a href={link}>{children}</a>
+        <a href="https://croct.com">
+            See how our customers from
+            <span>{city ?? 'your city'}</span>
+            to reach their business goals
+        </a>
     </div>
 );
 
-export const Default: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
+export const WithSuspense: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Personalization {...args} expression="location's city">
             {(city: string) => (
-                <NewsWidget link="https://croct.com">
-                    See how our customers from
-                    <span>{city}</span>
-                    to reach their business goals
-                </NewsWidget>
+                <NewsWidget city={city} />
             )}
         </Personalization>
     </Suspense>
 );
 
-Default.args = {
-    cacheKey: 'default',
+WithSuspense.args = {
+    cacheKey: 'suspense',
+};
+
+export const WithInitialState: Story<Omit<PersonalizationProps<string, null>, 'expression'>> = args => (
+    <Personalization {...args} expression="location's city">
+        {(city: string|null) => (
+            <NewsWidget city={city} />
+        )}
+    </Personalization>
+);
+
+WithInitialState.args = {
+    cacheKey: 'initial-state',
+    initial: null,
 };
 
 export const WithFallbackState: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Personalization {...args} expression="location's city">
             {(city: string) => (
-                <NewsWidget link="https://croct.com">
-                    See how our customers from
-                    <span>{city}</span>
-                    to reach their business goals
-                </NewsWidget>
+                <NewsWidget city={city} />
             )}
         </Personalization>
     </Suspense>

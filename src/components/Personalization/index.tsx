@@ -4,7 +4,7 @@ import {UseEvaluationOptions, useEvaluation} from '../../hooks';
 
 type Renderer<T> = (result: T) => ReactChild;
 
-export type PersonalizationProps<T extends JsonValue = JsonValue, I = never, F = never> = UseEvaluationOptions<I, F> & {
+export type PersonalizationProps<T extends JsonValue = JsonValue, I = T, F = T> = UseEvaluationOptions<I, F> & {
     expression: string,
     children: Renderer<T | I | F>,
 };
@@ -22,46 +22,3 @@ export function Personalization<I, F>(props: PersonalizationProps<JsonValue, I, 
 
     return (<Fragment>{children(result)}</Fragment>);
 }
-
-// Valid
-<Personalization expression="aa">
-    {(foo: string) => typeof foo}
-</Personalization>;
-
-// Invalid
-<Personalization expression="aa">
-    {(foo: Error) => typeof foo}
-</Personalization>;
-
-// Valid
-<Personalization expression="aa" initial={true}>
-    {(foo: string|boolean) => typeof foo}
-</Personalization>;
-
-// Invalid
-<Personalization expression="aa" initial={true}>
-    {(foo: string) => typeof foo}
-</Personalization>;
-
-// Valid
-<Personalization expression="aa" fallback={1}>
-    {(foo: string|number) => typeof foo}
-</Personalization>;
-
-// Invalid
-<Personalization expression="aa" fallback={1}>
-    {(foo: string) => typeof foo}
-</Personalization>;
-
-// Valid
-<Personalization expression="aa" initial={true} fallback={1}>
-    {(foo: string|boolean|number) => typeof foo}
-</Personalization>;
-
-// Invalid
-<Personalization expression="aa" initial={true} fallback={1}>
-    {(foo: string|boolean) => typeof foo}
-</Personalization>;
-<Personalization expression="aa" initial={true} fallback={1}>
-    {(foo: string|number) => typeof foo}
-</Personalization>;

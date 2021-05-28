@@ -3,17 +3,27 @@ import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
 import {useEvaluation} from './useEvaluation';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
+import {isSsr} from '../ssr';
 
 jest.mock('./useCroct', () => ({
     useCroct: jest.fn(),
 }));
 
-jest.mock('./useSuspense', () => ({
-    useSuspense: jest.fn(),
+jest.mock('./useLoader', () => ({
+    useLoader: jest.fn(),
+}));
+
+jest.mock('../ssr', () => ({
+    isSsr: jest.fn().mockReturnValue(false),
 }));
 
 describe('useEvaluation', () => {
+    beforeEach(() => {
+        jest.resetModules();
+    });
+
     afterEach(() => {
+        jest.resetModules();
         jest.resetAllMocks();
     });
 
@@ -72,5 +82,13 @@ describe('useEvaluation', () => {
         (useLoader as jest.Mock).mock.calls[0][0].loader();
 
         expect(evaluate).toBeCalledWith(expression, {});
+    });
+
+    it('should require an initial value for SSR', async () => {
+        (isSsr as jest.Mock).mockImplementation(() => true);
+
+        const module: {useEvaluation: typeof useEvaluation} = await import('./useEvaluation');
+
+        module.useEvaluation('location');
     });
 });

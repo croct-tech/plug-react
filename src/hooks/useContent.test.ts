@@ -7,8 +7,8 @@ jest.mock('./useCroct', () => ({
     useCroct: jest.fn(),
 }));
 
-jest.mock('./useSuspense', () => ({
-    useSuspense: jest.fn(),
+jest.mock('./useLoader', () => ({
+    useLoader: jest.fn(),
 }));
 
 describe('useContent', () => {

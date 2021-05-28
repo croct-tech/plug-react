@@ -1,6 +1,5 @@
 import {FunctionComponent, ReactElement, Suspense} from 'react';
 import {Story, Meta} from '@storybook/react/types-6-0';
-import {SlotContent} from '@croct/plug/fetch';
 import {Slot, SlotProps} from './index';
 
 export default {
@@ -21,10 +20,17 @@ export default {
     },
 } as Meta;
 
-type BannerSlotProps = SlotProps<{loading?: boolean}, 'home-banner'>;
-type BannerProps = SlotContent<'home-banner'> & {loading?: boolean};
+type HomeBannerProps = {
+    loading?: true,
+    title: string,
+    subtitle: string,
+    cta: {
+        label: string,
+        link: string,
+    },
+};
 
-const defaultProps: BannerProps = {
+const defaultHomeBannerProps: HomeBannerProps = {
     title: 'Unlock the power of the personalization',
     subtitle: 'Dive into the world of one-to-one engagement.',
     cta: {
@@ -33,7 +39,7 @@ const defaultProps: BannerProps = {
     },
 };
 
-const HomeBanner: FunctionComponent<BannerProps> = ({loading, title, subtitle, cta}): ReactElement => (
+const HomeBanner: FunctionComponent<HomeBannerProps> = ({loading, title, subtitle, cta}): ReactElement => (
     <div className={`home-banner${loading ? ' loading' : ''}`}>
         <h1>{title}</h1>
         <p>{subtitle}</p>
@@ -41,10 +47,12 @@ const HomeBanner: FunctionComponent<BannerProps> = ({loading, title, subtitle, c
     </div>
 );
 
-export const WithSuspense: Story<BannerSlotProps> = args => (
+type HomeBannerSlotProps = SlotProps<HomeBannerProps>;
+
+export const WithSuspense: Story<HomeBannerSlotProps> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Slot {...args} id="home-banner">
-            {(props: BannerProps) => (<HomeBanner {...props} />)}
+            {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
         </Slot>
     </Suspense>
 );
@@ -53,9 +61,9 @@ WithSuspense.args = {
     cacheKey: 'suspense',
 };
 
-export const WithInitialState: Story<BannerSlotProps> = args => (
+export const WithInitialState: Story<HomeBannerSlotProps> = args => (
     <Slot {...args} id="home-banner">
-        {(props: BannerProps) => (<HomeBanner {...props} />)}
+        {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
     </Slot>
 );
 
@@ -63,20 +71,20 @@ WithInitialState.args = {
     cacheKey: 'initial-state',
     initial: {
         loading: true,
-        ...defaultProps,
+        ...defaultHomeBannerProps,
     },
 };
 
-export const WithFallbackState: Story<BannerSlotProps> = args => (
+export const WithFallbackState: Story<HomeBannerSlotProps> = args => (
     <Suspense fallback="✨ Personalizing content...">
-        <Slot {...args} id="wrong-banner-id">
-            {(props: BannerProps) => (<HomeBanner {...props} />)}
+        <Slot {...args} id={'wrong-banner-id' as 'home-banner'}>
+            {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
         </Slot>
     </Suspense>
 );
 
 WithFallbackState.args = {
     cacheKey: 'fallback-state',
-    fallback: defaultProps,
+    fallback: defaultHomeBannerProps,
 };
 

@@ -1,5 +1,5 @@
 import {FunctionComponent, ReactElement} from 'react';
-import {Slot, useContent} from '@croct/plug-react';
+import {Slot} from '@croct/plug-react';
 import './style.css';
 import {SlotContent} from '@croct/plug/fetch';
 

@@ -23,12 +23,10 @@ export type UseEvaluationOptions<I, F> = EvaluationOptions & {
     expiration?: number,
 };
 
-type UseEvaluationHook = {
-    <T extends JsonValue, I = T, F = T>(
-        expression: string,
-        options?: UseEvaluationOptions<I, F>,
-    ): T | I | F,
-};
+type UseEvaluationHook = <T extends JsonValue, I = T, F = T>(
+    expression: string,
+    options?: UseEvaluationOptions<I, F>,
+) => T | I | F;
 
 function useCsrEvaluation<T = JsonValue, I = T, F = T>(
     expression: string,
@@ -51,32 +49,10 @@ function useSsrEvaluation<T = JsonValue, I = T, F = T>(
     {initial}: UseEvaluationOptions<I, F> = {},
 ): T | I | F {
     if (initial === undefined) {
-        throw new Error('Initial is required for SSR.');
+        throw new Error('The initial value is required for server-side rendering (SSR).');
     }
 
     return initial;
 }
 
 export const useEvaluation: UseEvaluationHook = isSsr() ? useSsrEvaluation : useCsrEvaluation;
-
-const test1Result = useEvaluation('x');
-const test1Assert: JsonValue = test1Result;
-
-const test2Result = useEvaluation<string>('x');
-const test2Assert: string = test2Result;
-
-const test3Result = useEvaluation('x', {initial: undefined});
-const test3Assert: JsonValue|undefined = test3Result;
-
-const test4Result = useEvaluation('x', {fallback: new Error()});
-const test4Assert: JsonValue|Error = test4Result;
-
-const test5Result = useEvaluation('x', {initial: undefined, fallback: new Error()});
-const test5Assert: JsonValue|undefined|Error = test5Result;
-
-const test6Result = useEvaluation<string, undefined, Error>('x', {initial: undefined, fallback: new Error()});
-const test6Assert: string|undefined|Error = test6Result;
-
-useEvaluation<undefined>('x');
-
-console.log(test1Assert, test2Assert, test3Assert, test4Assert, test5Assert, test6Assert);

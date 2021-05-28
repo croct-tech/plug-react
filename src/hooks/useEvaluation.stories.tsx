@@ -19,27 +19,56 @@ export default {
     },
 } as Meta;
 
-const NewsWidget: FunctionComponent<UseEvaluationOptions<string>> = (options): ReactElement => {
-    const city = useEvaluation<string>('location\'s city', options);
-
-    return (
-        <div className="news-widget">
-            <span className="badge">Case Study</span>
-            <a href="https://croct.com">
-                See how our customers from
-                <span>{city}</span>
-                to reach their business goals
-            </a>
-        </div>
-    );
+type NewsWidgetProps = {
+    city: string|null,
 };
 
-export const Default: Story<UseEvaluationOptions<string>> = args => (
+const NewsWidget: FunctionComponent<NewsWidgetProps> = ({city}): ReactElement => (
+    <div className={`news-widget ${city === null ? ' loading' : ''}`}>
+        <span className="badge">Case Study</span>
+        <a href="https://croct.com">
+            See how our customers from
+            <span>{city ?? 'your city'}</span>
+            to reach their business goals
+        </a>
+    </div>
+);
+
+type PersonalizedNewsWidgetProps = UseEvaluationOptions<string|null, string>;
+
+const PersonalizedNewsWidget: FunctionComponent<PersonalizedNewsWidgetProps> = (options): ReactElement => {
+    const city = useEvaluation<string, string|null, string|null>('location\'s city', options);
+
+    return (<NewsWidget city={city} />);
+};
+
+export const WithSuspense: Story<PersonalizedNewsWidgetProps> = args => (
     <Suspense fallback="✨ Personalizing content...">
-        <NewsWidget {...args} />
+        <PersonalizedNewsWidget {...args} />
     </Suspense>
 );
 
-Default.args = {
-    cacheKey: 'default',
+WithSuspense.args = {
+    cacheKey: 'suspense',
+};
+
+export const WithInitialState: Story<PersonalizedNewsWidgetProps> = args => (
+    <PersonalizedNewsWidget {...args} />
+);
+
+WithInitialState.args = {
+    cacheKey: 'initial-state',
+    initial: null,
+};
+
+export const WithFallbackState: Story<PersonalizedNewsWidgetProps> = args => (
+    <Suspense fallback="✨ Personalizing content...">
+        <PersonalizedNewsWidget {...args} />
+    </Suspense>
+);
+
+WithFallbackState.args = {
+    cacheKey: 'fallback-state',
+    fallback: 'your city',
+    timeout: 1,
 };

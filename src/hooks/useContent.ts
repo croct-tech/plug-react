@@ -26,7 +26,7 @@ function useCsrContent<I, F>(id: SlotId, options: UseContentOptions<I, F> = {}):
 
 function useSsrContent<I, F>(_: SlotId, {initial}: UseContentOptions<I, F> = {}): SlotContent<SlotId> | I | F {
     if (initial === undefined) {
-        throw new Error('Initial is required for SSR.');
+        throw new Error('The initial value is required for server-side rendering (SSR).');
     }
 
     return initial;
