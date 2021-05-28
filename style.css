@@ -1,0 +1,178 @@
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Remove default padding */
+ul[class],
+ol[class] {
+    padding: 0;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+ul[class],
+ol[class],
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+    margin: 0;
+}
+
+/* Set core body defaults */
+body {
+    line-height: 1.5;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+}
+
+/* Remove list styles on ul, ol elements with a class attribute */
+ul[class],
+ol[class] {
+    list-style: none;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+    text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* Natural flow and rhythm in articles by default */
+article > * + * {
+    margin-top: 1em;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+body {
+    background-color: #F3F4F6;
+    color: #111827;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+}
+
+.card {
+    background-color: #FFF;
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+}
+
+.widget {
+    background-color: #FFF;
+    border-radius: 0.5rem;
+    padding: 1rem;
+}
+
+.badge {
+    background-color: #EEF2FF;
+    border-radius: 0.25rem;
+    color: #4F46E5;
+    display: inline-flex;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1rem;
+    padding: 0.125rem 0.5rem;
+    text-transform: uppercase;
+}
+
+.cta {
+    background-color: #4F46E5;
+    border-radius: 0.375rem;
+    color: #fff;
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+}
+
+.cta:hover {
+    background-color: #4338CA;
+}
+
+.news-widget {
+    align-items: center;
+    display: flex;
+    transition: opacity ease-in 500ms;
+}
+
+.news-widget.loading {
+    opacity: 0;
+}
+
+.news-widget > a > span {
+    border-bottom: 2px solid #C7D2FE;
+    display: inline-block;
+    margin: 0 0.5ch;
+}
+
+.news-widget > a {
+    color: #4F46E5;
+    display: inline-flex;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    margin-left: 0.5rem;
+    text-decoration: none;
+}
+
+.news-widget > a:after {
+    color: #818CF8;
+    content: '→';
+    display: inline-block;
+    margin-left: 0.5ch;
+}
+
+.home-banner {
+    max-width: 376px;
+    transition: opacity ease-in 500ms;
+}
+
+.home-banner.loading {
+    opacity: 0;
+}
+
+.home-banner > h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    line-height: 2.25rem;
+}
+
+.home-banner > p {
+    color: #6B7280;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    margin-top: 1rem;
+}
+
+.home-banner > .cta {
+    margin-top: 2rem;
+}
+
+
