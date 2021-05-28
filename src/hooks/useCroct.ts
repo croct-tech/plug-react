@@ -3,11 +3,11 @@ import {useContext} from 'react';
 import {CroctContext} from '../CroctProvider';
 
 export function useCroct(): Plug {
-    const plug = useContext(CroctContext);
+    const context = useContext(CroctContext);
 
-    if (plug === null) {
+    if (context === null) {
         throw new Error('useCroct() can only be used in the context of a <CroctProvider> component.');
     }
 
-    return plug;
+    return context.plug;
 }

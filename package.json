@@ -31,14 +31,14 @@
     "build": "tsc",
     "bundle": "microbundle --jsx React.createElement --no-compress --format modern,cjs",
     "storybook": "start-storybook -s ./.storybook/static -p 6006 --no-manager-cache",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook -s ./.storybook/static"
   },
   "peerDependencies": {
     "react": "^16.8.0  || ^17.0.0",
     "react-dom": "^16.8.0  || ^17.0.0"
   },
   "dependencies": {
-    "@croct/plug": "^0.8.0"
+    "@croct/plug": "^0.8.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.13",

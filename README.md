@@ -33,6 +33,9 @@ The React Plug library provides components and hooks for personalizing applicati
 - **Blazing-fast queries**: double-digit millisecond latency for real-time evaluations.
 - **Playground integration**: one-click to connect, no configuration needed.
 
+Check out the [Storybook](croct-tech.github.io/plug-react) to learn about all the features and see some examples in action, 
+or the [example folder](examples) for full code examples.
+
 ## Getting Started
 
 The following steps will walk you through installing the library and integrating it into your application.
@@ -382,10 +385,12 @@ slot IDs and content properties as a bonus:
 
 ### Server-side rendering
 
-You can use the same components and hooks on the server-side by simply providing an `initial` state which is used to pre-render on the server - the personalization happens transparently on the client during the initial render. 
+You can use the same components and hooks on the server-side by simply providing an `initial` state which is used to 
+pre-render on the server - the personalization happens transparently on the client during the initial render. 
 That means it's SEO friendly and can be cached with no performance overhead.
 
-Notice that the methods exposed by the Plug work only on the client-side. Therefore, if you are using `useCroct`, the operations have to be executed inside the useEffect hook or client-side callbacks, such as `onClick` or `onChange`, for example.
+Notice that the methods exposed by the Plug work only on the client-side. Therefore, if you are using [`useCroct`](#usecroct), 
+the operations have to be executed inside the `useEffect` hook or client-side callbacks, such as `onClick` or `onChange`, for example.
 
 ### Accessing the Plug instance
 

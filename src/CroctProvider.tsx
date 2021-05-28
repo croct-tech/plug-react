@@ -1,11 +1,11 @@
-import {createContext, FunctionComponent, ReactElement, useContext} from 'react';
+import {createContext, FunctionComponent, ReactElement, useContext, useEffect, useMemo} from 'react';
 import {Configuration, Plug} from '@croct/plug';
-import {croct, useIsomorphicEffect} from './ssr-polyfills';
-
-export const CroctContext = createContext<Plug|null>(null);
-CroctContext.displayName = 'CroctContext';
+import {croct} from './ssr-polyfills';
 
 export type CroctProviderProps = Configuration & Required<Pick<Configuration, 'appId'>>;
+
+export const CroctContext = createContext<{plug: Plug}|null>(null);
+CroctContext.displayName = 'CroctContext';
 
 export const CroctProvider: FunctionComponent<CroctProviderProps> = ({children, ...configuration}): ReactElement => {
     const parent = useContext(CroctContext);
@@ -17,7 +17,17 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = ({children, 
         );
     }
 
-    useIsomorphicEffect(() => {
+    const context = useMemo(() => ({
+        get plug() {
+            if (!croct.initialized) {
+                croct.plug(configuration);
+            }
+
+            return croct;
+        },
+    }), [configuration]);
+
+    useEffect(() => {
         croct.plug(configuration);
 
         return () => {
@@ -26,7 +36,7 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = ({children, 
     }, []);
 
     return (
-        <CroctContext.Provider value={croct}>
+        <CroctContext.Provider value={context}>
             {children}
         </CroctContext.Provider>
     );

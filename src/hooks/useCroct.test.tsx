@@ -13,7 +13,7 @@ describe('useCroct', () => {
 
     it('should return the Plug instance', () => {
         const {result} = renderHook(() => useCroct(), {
-            wrapper: ({children}) => (<CroctContext.Provider value={croct}>{children}</CroctContext.Provider>),
+            wrapper: ({children}) => (<CroctContext.Provider value={{plug: croct}}>{children}</CroctContext.Provider>),
         });
 
         expect(result.current).toBe(croct);
