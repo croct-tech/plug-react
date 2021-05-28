@@ -1,6 +1,5 @@
 import croct from '@croct/plug';
-import {useEffect} from 'react';
-import {croct as croctPolyfill, isSsr, useIsomorphicEffect} from './ssr-polyfills';
+import {croct as croctPolyfill, isSsr} from './ssr-polyfills';
 
 jest.mock('@croct/plug', () => ({
     plug: jest.fn(),
@@ -22,10 +21,7 @@ describe('Croct polyfill (SSR)', () => {
 
     it('should not allow accessing properties other than plug or unplug', () => {
         expect(() => croctPolyfill.user)
-            .toThrow(
-                'Property croct.user is not supported on server-side (SSR). Consider refactoring the logic '
-                + 'as a side-effect (useEffect) or a client-side callback (onClick, onSubmit, etc).',
-            );
+            .toThrow('Property croct.user is not supported on server-side (SSR).');
     });
 });
 
@@ -34,10 +30,3 @@ describe('isSsr', () => {
         expect(isSsr()).toBe(true);
     });
 });
-
-describe('useIsomorphicEffect', () => {
-    it('should use the useEffect hook', () => {
-        expect(useIsomorphicEffect).toBe(useEffect);
-    });
-});
-

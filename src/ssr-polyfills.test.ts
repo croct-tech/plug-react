@@ -1,6 +1,5 @@
-import {useLayoutEffect} from 'react';
 import croct from '@croct/plug';
-import {croct as croctPolyfill, isSsr, useIsomorphicEffect} from './ssr-polyfills';
+import {croct as croctPolyfill, isSsr} from './ssr-polyfills';
 
 describe('Croct polyfill', () => {
     it('should use the global plug', () => {
@@ -13,10 +12,3 @@ describe('isSsr', () => {
         expect(isSsr()).toBe(false);
     });
 });
-
-describe('useIsomorphicEffect', () => {
-    it('should use the useLayoutEffect hook', () => {
-        expect(useIsomorphicEffect).toBe(useLayoutEffect);
-    });
-});
-
