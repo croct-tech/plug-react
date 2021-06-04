@@ -19,6 +19,14 @@ describe('Croct polyfill (SSR)', () => {
         expect(croct.unplug).not.toHaveBeenCalled();
     });
 
+    it('should not initialize', () => {
+        expect(croctPolyfill.initialized).toBe(false);
+
+        croctPolyfill.plug({appId: '00000000-0000-0000-0000-000000000000'});
+
+        expect(croctPolyfill.initialized).toBe(false);
+    });
+
     it('should not allow accessing properties other than plug or unplug', () => {
         expect(() => croctPolyfill.user)
             .toThrow('Property croct.user is not supported on server-side (SSR).');
