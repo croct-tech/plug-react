@@ -5,8 +5,11 @@ export function isSsr(): boolean {
 }
 
 export const croct: Plug = !isSsr() ? csrPlug : new Proxy(csrPlug, {
-    get(_, property) {
+    get(_, property: keyof Plug) {
         switch (property) {
+            case 'initialized':
+                return false;
+
             case 'plug':
                 return () => {
                     // no-op
