@@ -82,7 +82,7 @@ jobs:
       - name: Check coding standard violations
         run: npm run lint
 
-  test:
+  test-lib:
     runs-on: ubuntu-18.04
     needs:
       - validate
@@ -110,3 +110,24 @@ jobs:
           coverageCommand: npm test
           coverageLocations:
             ./coverage/lcov.info:lcov
+
+  test-examples:
+    runs-on: ubuntu-18.04
+    needs:
+      - validate
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+
+      - name: Run example tests
+        run: |-
+          cd examples
+          EXAMPLE_DIRECTORY=$(pwd)
+          for dir in */; do
+            cd "${EXAMPLE_DIRECTORY}/$dir"
+            npm ci
+            npm run test
+          done
+          cd "${EXAMPLE_DIRECTORY}"
