@@ -3,12 +3,12 @@ module.exports = {
         {
             displayName: 'browser',
             testEnvironment: 'jsdom',
-            testRegex: '(?<!\\.ssr)\\.test.tsx?$',
+            testRegex: `${__dirname}/src/.*(?<!\\.ssr)\\.test.tsx?$`,
         },
         {
             displayName: 'server',
             testEnvironment: 'node',
-            testRegex: '\\.ssr\\.test.tsx?$',
+            testRegex: `${__dirname}/src/.*\\.ssr\\.test.tsx?$`,
         },
     ],
 };
