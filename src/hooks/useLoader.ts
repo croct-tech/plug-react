@@ -18,13 +18,13 @@ export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
                 try {
                     setValue(cache.load(options));
                 } catch (result) {
-                    if (!(result instanceof Promise)) {
+                    if (result?.then !== 'function') {
                         setValue(undefined);
 
                         return;
                     }
 
-                    result.then(resolvedValue => {
+                    result.then((resolvedValue: R) => {
                         if (!isUnmounted) {
                             setValue(resolvedValue);
                         }
