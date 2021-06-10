@@ -20,8 +20,12 @@ const initialContent: SlotProps = {
     loading: true,
 };
 
-const HomeBanner: FunctionComponent = (): ReactElement => (
-    <Slot id="home-banner" initial={initialContent} fallback={defaultContent}>
+type HomeBannerProps = {
+    cacheKey?: string,
+};
+
+const HomeBanner: FunctionComponent<HomeBannerProps> = ({cacheKey}): ReactElement => (
+    <Slot id="home-banner" initial={initialContent} fallback={defaultContent} cacheKey={cacheKey}>
         {({loading, title, subtitle, cta}: SlotProps) => (
             <div className={`hero${loading ? ' loading' : ''}`}>
                 <h1>{title}</h1>
