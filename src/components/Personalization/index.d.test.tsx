@@ -10,7 +10,7 @@ const ts = create({
 
 const testFilename = pathJoin(__dirname, 'test.tsx');
 
-describe('<Personalization/> typing', () => {
+describe('<Personalization /> typing', () => {
     it('should a renderer that accepts JSON values or covariants', () => {
         const code = `
             import {Personalization} from './index';

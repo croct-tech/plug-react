@@ -11,7 +11,7 @@ const ts = create({
 
 const testFilename = pathJoin(__dirname, 'test.tsx');
 
-describe('<Slot /> typing', () => {
+describe('<Slot  /> typing', () => {
     const header = `
         import {Slot} from './index';
     `;

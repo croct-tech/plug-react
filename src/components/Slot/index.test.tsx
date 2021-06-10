@@ -6,7 +6,7 @@ jest.mock('../../hooks/useContent', () => ({
     useContent: jest.fn(),
 }));
 
-describe('<Slot/>', () => {
+describe('<Slot />', () => {
     it('should fetch and render a slot', () => {
         const {id, children, ...options}: SlotProps<{title: string}> = {
             id: 'home-banner',

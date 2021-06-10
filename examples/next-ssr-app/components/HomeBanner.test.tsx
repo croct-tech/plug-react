@@ -5,7 +5,7 @@ import {SlotContent} from '@croct/plug/fetch';
 import HomeBanner from './HomeBanner';
 import '@testing-library/jest-dom';
 
-describe('<HomeBanner/>', () => {
+describe('<HomeBanner />', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -30,13 +30,13 @@ describe('<HomeBanner/>', () => {
             </CroctProvider>,
         );
 
+        expect(fetch).toHaveBeenCalledWith('home-banner');
+
         expect(getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
         expect(getByText('Deliver tailored experiences that drive satisfaction and growth.')).toBeInTheDocument();
         expect(getByText('Discover how')).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(fetch).toBeCalled();
-
             expect(getByText(content.title)).toBeInTheDocument();
             expect(getByText(content.subtitle)).toBeInTheDocument();
             expect(getByText(content.cta.label)).toBeInTheDocument();
@@ -54,13 +54,13 @@ describe('<HomeBanner/>', () => {
             </CroctProvider>,
         );
 
+        expect(fetch).toHaveBeenCalledWith('home-banner');
+
         expect(getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
         expect(getByText('Deliver tailored experiences that drive satisfaction and growth.')).toBeInTheDocument();
         expect(getByText('Discover how')).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(fetch).toBeCalled();
-
             expect(getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
             expect(getByText('Deliver tailored experiences that drive satisfaction and growth.')).toBeInTheDocument();
             expect(getByText('Discover how')).toBeInTheDocument();

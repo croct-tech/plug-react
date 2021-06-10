@@ -6,7 +6,7 @@ jest.mock('../../hooks/useEvaluation', () => ({
     useEvaluation: jest.fn(),
 }));
 
-describe('<Personalization/>', () => {
+describe('<Personalization />', () => {
     it('should evaluate and render an expression', () => {
         const {expression, children, ...options}: PersonalizationProps<string> = {
             expression: '"example"',
