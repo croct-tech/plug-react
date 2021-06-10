@@ -61,7 +61,7 @@
     "import/extensions": ["error", "never"],
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["src/**/*.test.ts", "src/**/*.test.tsx"]}],
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.test.tsx"]}],
     "indent": ["error", 4, {"SwitchCase": 1}],
     "linebreak-style": ["error", "unix"],
     "max-classes-per-file": "off",

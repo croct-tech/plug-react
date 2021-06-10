@@ -4,9 +4,14 @@ import './style.css';
 
 type Persona = 'marketer' | 'developer' | 'growth-hacker' | 'default';
 
-const PersonaSelector: FunctionComponent = (): ReactElement => {
+type PersonaSelectorProps = {
+    cacheKey?: string,
+};
+
+const PersonaSelector: FunctionComponent<PersonaSelectorProps> = ({cacheKey}): ReactElement => {
     const croct = useCroct();
     const persona = useEvaluation<Persona|null>("user's persona or else 'default'", {
+        cacheKey: cacheKey,
         initial: null,
         fallback: 'default',
     });
