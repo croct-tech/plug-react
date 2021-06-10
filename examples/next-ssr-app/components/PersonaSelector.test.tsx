@@ -5,7 +5,7 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import PersonaSelector from './PersonaSelector';
 
-describe('<PersonaSelector/>', () => {
+describe('<PersonaSelector />', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
@@ -21,9 +21,9 @@ describe('<PersonaSelector/>', () => {
             </CroctProvider>,
         );
 
-        expect(queryByRole('combobox')).not.toBeInTheDocument();
+        expect(evaluate).toHaveBeenCalledWith("user's persona or else 'default'", expect.anything());
 
-        expect(evaluate).toBeCalled();
+        expect(queryByRole('combobox')).not.toBeInTheDocument();
 
         await waitFor(() => {
             expect(getByDisplayValue('🦸‍♂ Developer')).toBeInTheDocument();
@@ -40,6 +40,8 @@ describe('<PersonaSelector/>', () => {
                 <PersonaSelector cacheKey="persona-fallback" />
             </CroctProvider>,
         );
+
+        expect(evaluate).toHaveBeenCalledWith("user's persona or else 'default'", expect.anything());
 
         expect(queryByRole('combobox')).not.toBeInTheDocument();
 
@@ -58,6 +60,8 @@ describe('<PersonaSelector/>', () => {
                 <PersonaSelector cacheKey="persona-save" />
             </CroctProvider>,
         );
+
+        expect(evaluate).toHaveBeenCalledWith("user's persona or else 'default'", expect.anything());
 
         expect(queryByRole('combobox')).not.toBeInTheDocument();
 

@@ -20,7 +20,7 @@ afterEach(() => {
     console.error = consoleError;
 });
 
-describe('<CroctProvider/>', () => {
+describe('<CroctProvider />', () => {
     it('should fail if nested', () => {
         // eslint-disable-next-line no-console
         console.error = jest.fn();
