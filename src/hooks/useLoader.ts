@@ -18,7 +18,7 @@ export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
                 try {
                     setValue(cache.load(options));
                 } catch (result) {
-                    if (result?.then !== 'function') {
+                    if (typeof result?.then !== 'function') {
                         setValue(undefined);
 
                         return;
