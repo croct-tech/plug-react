@@ -253,7 +253,7 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
-To avoid the component to suspend while loading you can provide an `initial` state to be rendered instead:
+To avoid the component from suspending while loading, you can provide an `initial` state to be rendered instead:
 
 ```tsx
 import {Suspense, ReactElement} from 'react';
