@@ -64,7 +64,6 @@ We suggest putting the `<CroctProvider/ >` somewhere high in your app, above any
 ideally in the top-level `<App/>` component.
 
 ```tsx
-import React from 'react';
 import {render} from 'react-dom';
 import {CroctProvider} from '@croct/plug-react';
 
@@ -97,7 +96,7 @@ and a render function, which tells the component how to render the UI, depending
 This is what our component would look like:
 
 ```tsx
-import {ReactElement, Fragment} from 'react';
+import {ReactElement, Suspense} from 'react';
 import {Personalization} from '@croct/plug-react';
 
 function OnboardingPage(): ReactElement {
@@ -117,7 +116,7 @@ function OnboardingPage(): ReactElement {
 If you don't want your component to suspend while loading, you can provide an `initial` state to be rendered instead:
 
 ```tsx
-import {ReactElement, Fragment} from 'react';
+import {ReactElement} from 'react';
 import {Personalization} from '@croct/plug-react';
 
 function OnboardingPage(): ReactElement {
@@ -135,7 +134,7 @@ function OnboardingPage(): ReactElement {
 Now, let's create a `ViewDocsLink` component to see the `useEvaluation` hook in action:
 
 ```tsx
-import {ReactElement, Fragment} from 'react';
+import {ReactElement, Suspense} from 'react';
 import {useEvaluation} from '@croct/plug-react';
 
 function ViewDocsLink(): ReactElement {
@@ -170,7 +169,7 @@ the personalization. In this way, the UI will still be fully functional even in 
 The following example shows how you can specify a fallback behaviour for the docs link:
 
 ```tsx
-import {ReactElement} from 'react';
+import {ReactElement, Fragment, Suspense} from 'react';
 import {Personalization, useEvaluation} from '@croct/plug-react';
 
 function ViewDocsLink(): ReactElement {
@@ -233,7 +232,7 @@ To render the content of the slot, you can either use the `<Slot />` component o
 Here's how to use the `<Slot />` component:
 
 ```tsx
-import {Suspense, ReactElement} from 'react';
+import {ReactElement, Suspense} from 'react';
 import {Slot} from '@croct/plug-react';
 
 export default function OnboardingPage(): ReactElement {
@@ -256,7 +255,7 @@ export default function OnboardingPage(): ReactElement {
 To avoid the component from suspending while loading, you can provide an `initial` state to be rendered instead:
 
 ```tsx
-import {Suspense, ReactElement} from 'react';
+import {ReactElement} from 'react';
 import {Slot} from '@croct/plug-react';
 
 export default function OnboardingPage(): ReactElement {
@@ -281,7 +280,7 @@ export default function OnboardingPage(): ReactElement {
 And here's an example using the `useContent` hook:
 
 ```tsx
-import {ReactElement} from 'react';
+import {ReactElement, Suspense} from 'react';
 import {useContent} from '@croct/plug-react';
 
 function HomeBanner(): ReactElement {
@@ -310,7 +309,7 @@ export default function HomePage(): ReactElement {
 The following example shows how you can specify a fallback state for the `home-banner` slot:
 
 ```tsx
-import {Suspense, ReactElement} from 'react';
+import {ReactElement, Suspense} from 'react';
 import {Slot, useContent} from '@croct/plug-react';
 
 const fallbackBanner: HomeBanner = {
@@ -487,7 +486,7 @@ The component takes the followings properties:
 Here's a simple example showing how to evaluate the user's persona:
 
 ```tsx
-import {ReactElement, Fragment} from 'react';
+import {ReactElement} from 'react';
 import {Personalization} from '@croct/plug-react';
 
 function PersonaBadge(): ReactElement {
@@ -521,7 +520,7 @@ The component takes the followings properties:
 Here's a simple example showing how to render a banner in a slot:
 
 ```tsx
-import {ReactElement, Fragment} from 'react';
+import {ReactElement} from 'react';
 import {Slot} from '@croct/plug-react';
 
 function HeroBanner(): ReactElement {
@@ -597,7 +596,7 @@ These are the currently supported options:
 Here's a simple example showing how to evaluate the user's persona:
 
 ```tsx
-import {ReactElement, Fragment} from 'react';
+import {ReactElement} from 'react';
 import {useEvaluation} from '@croct/plug-react';
 
 function PersonaBadge(): ReactElement {
@@ -632,7 +631,7 @@ These are the currently supported options:
 Here's a simple example showing how to fetch the content for a banner:
 
 ```tsx
-import {ReactElement, Fragment} from 'react';
+import {ReactElement} from 'react';
 import {useContent} from '@croct/plug-react';
 
 function HeroBanner(): ReactElement {
