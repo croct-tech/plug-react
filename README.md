@@ -266,9 +266,9 @@ export default function OnboardingPage(): ReactElement {
                     ? '✨ Personalizing...'
                     : (
                         <div>
-                            <strong>{title}</strong>
-                            <p>{subtitle}</p>
-                            <a href={cta.link}>{cta.label}</a>
+                            <strong>{props.title}</strong>
+                            <p>{props.subtitle}</p>
+                            <a href={props.cta.link}>{props.cta.label}</a>
                         </div>    
                     )
             )}
