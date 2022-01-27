@@ -339,7 +339,16 @@ The following example shows how you can specify a fallback state for the `home-b
 import {ReactElement, Suspense} from 'react';
 import {Slot, useContent} from '@croct/plug-react';
 
-const fallbackBanner: HomeBanner = {
+type HomeBannerContent = {
+  title: string,
+  subtitle: string,
+  cta: {
+      label: string,
+      link: string,
+  },
+};
+
+const fallbackBanner: HomeBannerContent = {
     title: 'Default title',
     subtitle: 'Default subtitle',
     cta: {
@@ -349,7 +358,7 @@ const fallbackBanner: HomeBanner = {
 };
 
 function HomeBanner(): ReactElement {
-    const {title, subtitle, cta} = useContent<HomeBanner>('home-banner', {fallback: fallbackBanner});
+    const {title, subtitle, cta} = useContent<HomeBannerContent>('home-banner', {fallback: fallbackBanner});
 
     return (
         <div>
@@ -365,7 +374,7 @@ export default function HomePage(): ReactElement {
         <Suspense fallback="Personalizing content...">
             {/* Using the <Slot /> component */}
             <Slot id="home-banner" fallback={fallbackBanner}>
-                {({title, subtitle, cta}: HomeBanner) => (
+                {({title, subtitle, cta}: HomeBannerContent) => (
                     <div>
                         <strong>{title}</strong>
                         <p>{subtitle}</p>
