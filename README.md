@@ -57,10 +57,10 @@ npm install @croct/plug-react
 
 ### Plugging in
 
-You connect Croct to React with the `<CroctProvider/ >` component. The `<CroctProvider/ >` uses a regular React's 
+You connect Croct to React with the `<CroctProvider />` component. The `<CroctProvider />` uses a regular React's 
 `<Context.Provider />` to wrap your React app and make the SDK available anywhere in your component tree.
 
-We suggest putting the `<CroctProvider/ >` somewhere high in your app, above any component that might be personalized, 
+We suggest putting the `<CroctProvider />` somewhere high in your app, above any component that might be personalized, 
 ideally in the top-level `<App/>` component.
 
 ```tsx
