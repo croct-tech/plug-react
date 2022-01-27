@@ -217,7 +217,7 @@ For the next example, we assume that you have already defined a slot with id `ho
 with the following structure:
 
 ```ts
-type HomeBanner = {
+type HomeBannerContent = {
     title: string,
     subtitle: string,
     cta: {
@@ -235,11 +235,20 @@ Here's how to use the `<Slot />` component:
 import {ReactElement, Suspense} from 'react';
 import {Slot} from '@croct/plug-react';
 
+type HomeBannerContent = {
+  title: string,
+  subtitle: string,
+  cta: {
+      label: string,
+      link: string,
+  },
+};
+
 export default function OnboardingPage(): ReactElement {
     return (
         <Suspense fallback="✨ Personalizing content...">
             <Slot id="home-banner">
-                {({title, subtitle, cta}: HomeBanner) => (
+                {({title, subtitle, cta}: HomeBannerContent) => (
                     <div>
                         <strong>{title}</strong>
                         <p>{subtitle}</p>
@@ -258,10 +267,19 @@ To avoid the component from suspending while loading, you can provide an `initia
 import {ReactElement} from 'react';
 import {Slot} from '@croct/plug-react';
 
+type HomeBannerContent = {
+  title: string,
+  subtitle: string,
+  cta: {
+      label: string,
+      link: string,
+  },
+};
+
 export default function OnboardingPage(): ReactElement {
     return (
         <Slot id="home-banner" initial={null}>
-            {(props: HomeBanner|null) => (
+            {(props: HomeBannerContent|null) => (
                 props === null 
                     ? '✨ Personalizing...'
                     : (
@@ -283,8 +301,17 @@ And here's an example using the `useContent` hook:
 import {ReactElement, Suspense} from 'react';
 import {useContent} from '@croct/plug-react';
 
+type HomeBannerContent = {
+  title: string,
+  subtitle: string,
+  cta: {
+      label: string,
+      link: string,
+  },
+};
+
 function HomeBanner(): ReactElement {
-    const banner = useContent<HomeBanner>('home-banner');
+    const {title, subtitle, cta} = useContent<HomeBannerContent>('home-banner');
 
     return (
         <div>
