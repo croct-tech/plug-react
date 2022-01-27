@@ -114,7 +114,6 @@ function OnboardingPage(): ReactElement {
 ```
 
 If you don't want your component to suspend while loading, you can provide an `initial` state to be rendered instead:
-f
 ```tsx
 import {ReactElement} from 'react';
 import {Personalization} from '@croct/plug-react';
