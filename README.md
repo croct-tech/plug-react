@@ -90,7 +90,7 @@ to conditionally renders a different button depending on the user's persona.
 
 ![Evaluation Example](https://user-images.githubusercontent.com/943036/116588852-6a114200-a8f2-11eb-9d88-c346f002e2a1.png)
 
-Let's first implement the use-case using the `<Personalization/>` component. It takes an expression (e.g. `user's persona`) 
+Let's first implement the use-case using the `<Personalization />` component. It takes an expression (e.g. `user's persona`)
 and a render function, which tells the component how to render the UI, depending on the evaluation result.
 
 This is what our component would look like:
@@ -114,7 +114,7 @@ function OnboardingPage(): ReactElement {
 ```
 
 If you don't want your component to suspend while loading, you can provide an `initial` state to be rendered instead:
-
+f
 ```tsx
 import {ReactElement} from 'react';
 import {Personalization} from '@croct/plug-react';
@@ -182,7 +182,7 @@ export default function OnboardingPage(): ReactElement {
     return (
         <Suspense fallback="✨ Personalizing...">
             {/* Using the <Personalization /> component */}
-            <Personalization expression="user's persona is 'developer'" falback={false}>
+            <Personalization expression="user's persona is 'developer'" fallback={false}>
                 {(isDeveloper: boolean) => (
                     <Fragment>
                         {isDeveloper && <a href="/docs">View docs</a>}
