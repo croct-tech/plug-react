@@ -69,7 +69,7 @@ import {CroctProvider} from '@croct/plug-react';
 
 function App() {
   return (
-    <CroctProvider appId="YOUR_APP_ID">
+    <CroctProvider appId="<APP_ID>">
       <div>
         <h1>My first personalized app 🚀</h1>
       </div>
@@ -80,7 +80,7 @@ function App() {
 render(<App />, document.getElementById('root'));
 ```
 
-> Replace "YOUR_APP_ID" with your public app ID that you can find at Workspaces > Applications > API Keys.
+> Replace "<APP_ID>" with your public app ID that you can find at Workspaces > Applications > API Keys.
 
 ### Evaluating expressions
 
@@ -491,7 +491,7 @@ import {CroctProvider} from '@croct/plug-react';
 
 function App() {
     return (
-        <CroctProvider appId="YOUR_APP_ID">
+        <CroctProvider appId="<APP_ID>">
             <div>
                 <h1>My first personalized app 🚀</h1>
             </div>
@@ -500,7 +500,7 @@ function App() {
 }
 ```
 
-> Replace "YOUR_APP_ID" with your public app ID that you can find at Workspaces > Applications > API Keys.
+> Replace "<APP_ID>" with your public app ID that you can find at Workspaces > Applications > API Keys.
 
 ### &lt;Personalization /&gt;
 
