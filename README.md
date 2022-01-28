@@ -33,16 +33,16 @@ The React Plug library provides components and hooks for personalizing applicati
 - **Blazing-fast queries**: double-digit millisecond latency for real-time evaluations.
 - **Playground integration**: one-click to connect, no configuration needed.
 
-Check out the [Storybook](https://croct-tech.github.io/plug-react) to see some minimal examples in action, 
+Check out the [Storybook](https://croct-tech.github.io/plug-react) to see some minimal examples in action,
 or the [example folder](examples) for full code examples.
 
 ## Getting Started
 
 The following steps will walk you through installing the library and integrating it into your application.
 
-This guide assumes you're already familiar with some key concepts and tools around Croct, like 
-Contextual Query Language (CQL) and the playground. If you're not, 
-[this 15-minute quickstart](https://croct.link/plug-js/quick-start) that will give you a hands-on overview of 
+This guide assumes you're already familiar with some key concepts and tools around Croct, like
+Contextual Query Language (CQL) and the playground. If you're not,
+[this 15-minute quickstart](https://croct.link/plug-js/quick-start) that will give you a hands-on overview of
 all the terms and tools you need to get started.
 
 ### Installation
@@ -57,10 +57,10 @@ npm install @croct/plug-react
 
 ### Plugging in
 
-You connect Croct to React with the `<CroctProvider />` component. The `<CroctProvider />` uses a regular React's 
+You connect Croct to React with the `<CroctProvider />` component. The `<CroctProvider />` uses a regular React's
 `<Context.Provider />` to wrap your React app and make the SDK available anywhere in your component tree.
 
-We suggest putting the `<CroctProvider />` somewhere high in your app, above any component that might be personalized, 
+We suggest putting the `<CroctProvider />` somewhere high in your app, above any component that might be personalized,
 ideally in the top-level `<App/>` component.
 
 ```tsx
@@ -116,6 +116,7 @@ function OnboardingPage(): ReactElement {
 ```
 
 If you don't want your component to suspend while loading, you can provide an `initial` state to be rendered instead:
+
 ```tsx
 import {ReactElement} from 'react';
 import {Personalization} from '@croct/plug-react';
@@ -157,9 +158,9 @@ export default function OnboardingPage(): ReactElement {
 }
 ```
 
-If you run the application and there is no persona assigned to your profile, you will see the button for non-developers 
+If you run the application and there is no persona assigned to your profile, you will see the button for non-developers
 — otherwise, the button for sharing the code with developers.
-Check out [Accessing the Plug instance](#accessing-the-plug-instance) for an example of how to save information in a 
+Check out [Accessing the Plug instance](#accessing-the-plug-instance) for an example of how to save information in a
 user's profile.
 
 #### Fault tolerance
@@ -202,19 +203,19 @@ For a full list of the available options, please refer to the [API documentation
 
 ### Using slots
 
-Evaluating expression is a flexible and powerful way to customize your UI. However, for components whose content 
-changes too often, this approach can be overkill. For those cases, we encourage you to use the Slots feature instead. 
-Using slots gives your team the flexibility to change the content or personalization rules whenever needed without 
+Evaluating expression is a flexible and powerful way to customize your UI. However, for components whose content
+changes too often, this approach can be overkill. For those cases, we encourage you to use the Slots feature instead.
+Using slots gives your team the flexibility to change the content or personalization rules whenever needed without
 touching the component code.
 
 ![Slot Example](https://user-images.githubusercontent.com/943036/116586841-44833900-a8f0-11eb-8d32-acec2eacee01.png)
 
-To render a slot, all you need to do is provide the `id` you configured in your Croct workspace. Based on the 
-slot's personalization rules and the user's context, the component will decide which content show to that user. 
-Notice that there's no logic on the client-side, meaning that your marketing or product team can freely change the 
+To render a slot, all you need to do is provide the `id` you configured in your Croct workspace. Based on the
+slot's personalization rules and the user's context, the component will decide which content show to that user.
+Notice that there's no logic on the client-side, meaning that your marketing or product team can freely change the
 slot content as they need without requiring an update to your React app.
 
-For the next example, we assume that you have already defined a slot with id `home-banner` in your Croct workspace 
+For the next example, we assume that you have already defined a slot with id `home-banner` in your Croct workspace
 with the following structure:
 
 ```ts
@@ -391,15 +392,15 @@ export default function HomePage(): ReactElement {
 }
 ```
 
-Again, we strongly recommend always providing a value for the `fallback` property. For a full list of the available options, 
+Again, we strongly recommend always providing a value for the `fallback` property. For a full list of the available options,
 please refer to the [API documentation](#component-api-reference).
 
 #### 💡 ProTip
 
-In the previous examples, you may have noticed that we specified the content type in the `userFetch` call and in the 
+In the previous examples, you may have noticed that we specified the content type in the `userFetch` call and in the
 `<Slot />` component's render function to have the benefit of strong typing.
 
-For an even more robust approach, you can also declare the type of all available slots in a single declaration file 
+For an even more robust approach, you can also declare the type of all available slots in a single declaration file
 using module augmentation as follows:
 
 ```ts
@@ -421,16 +422,16 @@ slot IDs and content properties as a bonus:
 
 ### Server-side rendering
 
-You can use the same components and hooks on the server-side by simply providing an `initial` state which is used to 
-pre-render on the server - the personalization happens transparently on the client during the initial render. 
+You can use the same components and hooks on the server-side by simply providing an `initial` state which is used to
+pre-render on the server - the personalization happens transparently on the client during the initial render.
 That means it's SEO friendly and can be cached with no performance overhead.
 
-Notice that the methods exposed by the Plug work only on the client-side. Therefore, if you are using [`useCroct`](#usecroct), 
+Notice that the methods exposed by the Plug work only on the client-side. Therefore, if you are using [`useCroct`](#usecroct),
 the operations have to be executed inside the `useEffect` hook or client-side callbacks, such as `onClick` or `onChange`, for example.
 
 ### Accessing the Plug instance
 
-This library is built on top of the PlugJS. You can access the Plug instance through the `useCroct` hook to track events, 
+This library is built on top of the PlugJS. You can access the Plug instance through the `useCroct` hook to track events,
 login and logout users, and more.
 
 In the following example we use the `useCroct` to get the Plug instance and set an attribute to the user profile:
@@ -459,7 +460,7 @@ This reference documents all components available in the library.
 ### &lt;CroctProvider /&gt;
 
 The `<CroctProvider />` component  leverages [React's Context API](https://reactjs.org/docs/context.html) to 
-make a configured [Plug instance](https://github.com/croct-tech/plug-js/blob/master/docs/plug.md) available throughout 
+make a configured [Plug instance](https://github.com/croct-tech/plug-js/blob/master/docs/plug.md) available throughout
 a React component tree.
 
 #### Properties
@@ -624,7 +625,7 @@ These are the currently supported options:
 
 | Option       | Type    | Description
 |--------------|---------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| `fallback`   | Result  | The value returned when the evaluation fails. If not specified, the hook will throw an exception in case of failures. 
+| `fallback`   | Result  | The value returned when the evaluation fails. If not specified, the hook will throw an exception in case of failures.
 | `timeout`    | number  | The maximum evaluation time in milliseconds. Once reached, the evaluation will fail.
 | `attributes` | JSON    | The map of attributes to inject in the evaluation context. For example, passing the attributes `{cities: ['New York', 'San Francisco']}` you can reference them in expressions like `context's cities include location's city`.
 | `cacheKey`   | string  | An identifier that allows keeping the cached result separate from other cached items. By default, the cache key is formed from the expression and attributes.
