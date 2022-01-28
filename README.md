@@ -69,7 +69,7 @@ import {CroctProvider} from '@croct/plug-react';
 
 function App() {
   return (
-    <CroctProvider appId="00000000-0000-0000-0000-000000000000">
+    <CroctProvider appId="YOUR_APP_ID">
       <div>
         <h1>My first personalized app 🚀</h1>
       </div>
@@ -79,6 +79,8 @@ function App() {
 
 render(<App />, document.getElementById('root'));
 ```
+
+> Replace "YOUR_APP_ID" with your public app ID that you can find at Workspaces > Applications > API Keys.
 
 ### Evaluating expressions
 
@@ -395,7 +397,7 @@ please refer to the [API documentation](#component-api-reference).
 #### 💡 ProTip
 
 In the previous examples, you may have noticed that we specified the content type in the `userFetch` call and in the 
-`<Slot />` component's render function to have the benefit of strong typing. 
+`<Slot />` component's render function to have the benefit of strong typing.
 
 For an even more robust approach, you can also declare the type of all available slots in a single declaration file 
 using module augmentation as follows:
@@ -488,7 +490,7 @@ import {CroctProvider} from '@croct/plug-react';
 
 function App() {
     return (
-        <CroctProvider appId="00000000-0000-0000-0000-000000000000">
+        <CroctProvider appId="YOUR_APP_ID">
             <div>
                 <h1>My first personalized app 🚀</h1>
             </div>
@@ -496,6 +498,8 @@ function App() {
     );
 }
 ```
+
+> Replace "YOUR_APP_ID" with your public app ID that you can find at Workspaces > Applications > API Keys.
 
 ### &lt;Personalization /&gt;
 
@@ -669,8 +673,17 @@ Here's a simple example showing how to fetch the content for a banner:
 import {ReactElement} from 'react';
 import {useContent} from '@croct/plug-react';
 
-function HeroBanner(): ReactElement {
-    const {title, subtitle} = useContent<HeroBanner>('hero');
+type HomeBannerContent = {
+    title: string,
+    subtitle: string,
+    cta: {
+        label: string,
+        link: string,
+    },
+};
+
+export default function HeroBanner(): ReactElement {
+    const {title, subtitle} = useContent<HomeBannerContent>('hero');
 
     return (
         <div>
