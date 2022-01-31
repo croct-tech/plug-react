@@ -163,8 +163,9 @@ user's profile.
 
 #### Fault tolerance
 
-We strongly recommend always specifying the `fallback` property to ensure your app behaves the same way regardless of
-the personalization. In this way, the UI will still be fully functional even in maintenance windows.
+We strongly recommend specifying the `fallback` property in client-side rendered applications to ensure your app behaves 
+the same way regardless of the personalization. In this way, the UI will still be fully functional even in maintenance 
+windows. **Specifying the `fallback` is required for server-side rendering (SSR).**
 
 The following example shows how you can specify a fallback behaviour for the docs link:
 
