@@ -80,7 +80,7 @@ function App() {
 render(<App />, document.getElementById('root'));
 ```
 
-> Replace "<APP_ID>" with your public app ID that you can find at Workspaces > Applications > API Keys.
+> Replace `<APP_ID>` with your public app ID that you can find at Workspaces > Applications > Setup.
 
 ### Evaluating expressions
 
