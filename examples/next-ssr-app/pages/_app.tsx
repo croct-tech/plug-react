@@ -16,8 +16,11 @@ function App({Component, pageProps}: AppProps): ReactElement {
                     content="Example of how to integrate Croct into React applications rendered on the client-side."
                 />
                 <title>Croct | React Next.js Example</title>
-                <Script src="https://cdn.croct.io/js/v1/app/00000000-0000-0000-0000-000000000000/custom.js" />
             </Head>
+            <Script
+                strategy="beforeInteractive"
+                src="https://cdn.croct.io/js/v1/app/00000000-0000-0000-0000-000000000000/custom.js"
+            />
             <Layout>
                 <Component {...pageProps} />
             </Layout>
