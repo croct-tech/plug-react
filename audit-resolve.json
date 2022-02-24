@@ -729,6 +729,36 @@
       "decision": "ignore",
       "madeAt": 1624976635994,
       "expiresAt": 1627568504243
+    },
+    "1005291|@mdx-js/loader>@mdx-js/mdx>remark-mdx>remark-parse>trim": {
+      "decision": "ignore",
+      "madeAt": 1645737561169,
+      "expiresAt": 1648329551167
+    },
+    "1005291|@storybook/addon-essentials>@storybook/addon-docs>@mdx-js/mdx>remark-mdx>remark-parse>trim": {
+      "decision": "ignore",
+      "madeAt": 1645737561169,
+      "expiresAt": 1648329551167
+    },
+    "1005291|@storybook/react>@storybook/core>@storybook/core-server>@storybook/csf-tools>@mdx-js/mdx>remark-mdx>remark-parse>trim": {
+      "decision": "ignore",
+      "madeAt": 1645737561169,
+      "expiresAt": 1648329551167
+    },
+    "1006947|@storybook/addon-essentials>@storybook/addon-docs>@mdx-js/mdx>remark-mdx>remark-parse>trim>@storybook/core>@storybook/core-server>@storybook/csf-tools>cpy>globby>fast-glob>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645737565201,
+      "expiresAt": 1648329551167
+    },
+    "1006947|@storybook/react>@storybook/core>@storybook/core-server>@storybook/csf-tools>@mdx-js/mdx>remark-mdx>remark-parse>trim>cpy>globby>fast-glob>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645737565202,
+      "expiresAt": 1648329551167
+    },
+    "1006947|webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645737565202,
+      "expiresAt": 1648329551167
     }
   },
   "rules": {},
