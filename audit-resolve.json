@@ -737,13 +737,13 @@
     },
     "1005291|@storybook/addon-essentials>@storybook/addon-docs>@mdx-js/mdx>remark-mdx>remark-parse>trim": {
       "decision": "ignore",
-      "madeAt": 1645737561169,
-      "expiresAt": 1648329551167
+      "madeAt": 1645739141500,
+      "expiresAt": 1648331123976
     },
     "1005291|@storybook/react>@storybook/core>@storybook/core-server>@storybook/csf-tools>@mdx-js/mdx>remark-mdx>remark-parse>trim": {
       "decision": "ignore",
-      "madeAt": 1645737561169,
-      "expiresAt": 1648329551167
+      "madeAt": 1645739141500,
+      "expiresAt": 1648331123976
     },
     "1006947|@storybook/addon-essentials>@storybook/addon-docs>@mdx-js/mdx>remark-mdx>remark-parse>trim>@storybook/core>@storybook/core-server>@storybook/csf-tools>cpy>globby>fast-glob>glob-parent": {
       "decision": "ignore",
@@ -759,6 +759,61 @@
       "decision": "ignore",
       "madeAt": 1645737565202,
       "expiresAt": 1648329551167
+    },
+    "1005291|@storybook/addon-essentials>@storybook/addon-docs>@mdx-js/mdx>remark-parse>trim": {
+      "decision": "ignore",
+      "madeAt": 1645739141500,
+      "expiresAt": 1648331123976
+    },
+    "1005291|@storybook/addon-essentials>@storybook/addon-docs>@mdx-js/loader>@mdx-js/mdx>remark-mdx>remark-parse>trim": {
+      "decision": "ignore",
+      "madeAt": 1645739141500,
+      "expiresAt": 1648331123976
+    },
+    "1005291|@storybook/addon-essentials>@storybook/addon-docs>@storybook/core>@storybook/core-server>@storybook/csf-tools>@mdx-js/mdx>remark-mdx>remark-parse>trim": {
+      "decision": "ignore",
+      "madeAt": 1645739141500,
+      "expiresAt": 1648331123976
+    },
+    "1006947|@storybook/react>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645739144311,
+      "expiresAt": 1648331123976
+    },
+    "1006947|@storybook/react>@storybook/core-common>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645739144312,
+      "expiresAt": 1648331123976
+    },
+    "1006947|@storybook/addon-essentials>@storybook/addon-controls>@storybook/core-common>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645739144312,
+      "expiresAt": 1648331123976
+    },
+    "1006947|@storybook/addon-essentials>@storybook/addon-docs>@storybook/builder-webpack4>@storybook/core-common>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645739144312,
+      "expiresAt": 1648331123976
+    },
+    "1006947|@storybook/react>@storybook/core>@storybook/core-server>@storybook/builder-webpack4>@storybook/core-common>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645739144312,
+      "expiresAt": 1648331123976
+    },
+    "1006947|@storybook/addon-essentials>@storybook/addon-docs>@storybook/core>@storybook/core-server>@storybook/builder-webpack4>@storybook/core-common>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645739144312,
+      "expiresAt": 1648331123976
+    },
+    "1006947|@storybook/react>@storybook/core>@storybook/core-server>cpy>globby>fast-glob>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645739144312,
+      "expiresAt": 1648331123976
+    },
+    "1006947|@storybook/addon-essentials>@storybook/addon-docs>@storybook/core>@storybook/core-server>cpy>globby>fast-glob>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645739144312,
+      "expiresAt": 1648331123976
     }
   },
   "rules": {},
