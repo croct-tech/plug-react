@@ -1,0 +1,41 @@
+{
+  "decisions": {
+    "1005059|react-scripts>@pmmmwh/react-refresh-webpack-plugin>ansi-html": {
+      "decision": "ignore",
+      "madeAt": 1645737113801,
+      "expiresAt": 1648329103388
+    },
+    "1004967|react-scripts>@pmmmwh/react-refresh-webpack-plugin>ansi-html>@svgr/webpack>@svgr/plugin-svgo>svgo>css-select>nth-check": {
+      "decision": "ignore",
+      "madeAt": 1645737119078,
+      "expiresAt": 1648329103388
+    },
+    "1005174|react-scripts>@pmmmwh/react-refresh-webpack-plugin>ansi-html>@svgr/webpack>@svgr/plugin-svgo>svgo>css-select>nth-check>optimize-css-assets-webpack-plugin>cssnano>cssnano-preset-default>postcss-svgo>react-dev-utils>browserslist": {
+      "decision": "ignore",
+      "madeAt": 1645737121916,
+      "expiresAt": 1648329103388
+    },
+    "1005029|react-scripts>@pmmmwh/react-refresh-webpack-plugin>ansi-html>@svgr/webpack>@svgr/plugin-svgo>svgo>css-select>nth-check>optimize-css-assets-webpack-plugin>cssnano>cssnano-preset-default>postcss-svgo>react-dev-utils>browserslist>immer": {
+      "decision": "ignore",
+      "madeAt": 1645737125969,
+      "expiresAt": 1648329103388
+    },
+    "1006947|react-scripts>@pmmmwh/react-refresh-webpack-plugin>ansi-html>@svgr/webpack>@svgr/plugin-svgo>svgo>css-select>nth-check>optimize-css-assets-webpack-plugin>cssnano>cssnano-preset-default>postcss-svgo>react-dev-utils>browserslist>immer>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent": {
+      "decision": "ignore",
+      "madeAt": 1645737128083,
+      "expiresAt": 1648329103388
+    },
+    "1006898|react-scripts>@pmmmwh/react-refresh-webpack-plugin>ansi-html>@svgr/webpack>@svgr/plugin-svgo>svgo>css-select>nth-check>optimize-css-assets-webpack-plugin>cssnano>cssnano-preset-default>postcss-svgo>react-dev-utils>browserslist>immer>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent>webpack-dev-server>selfsigned>node-forge": {
+      "decision": "ignore",
+      "madeAt": 1645737129477,
+      "expiresAt": 1648329103388
+    },
+    "1004946|react-scripts>@pmmmwh/react-refresh-webpack-plugin>ansi-html>@svgr/webpack>@svgr/plugin-svgo>svgo>css-select>nth-check>optimize-css-assets-webpack-plugin>cssnano>cssnano-preset-default>postcss-svgo>react-dev-utils>browserslist>immer>webpack>watchpack>watchpack-chokidar2>chokidar>glob-parent>webpack-dev-server>selfsigned>node-forge>yargs>cliui>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1645737131027,
+      "expiresAt": 1648329103388
+    }
+  },
+  "rules": {},
+  "version": 1
+}

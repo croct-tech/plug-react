@@ -1,0 +1,16 @@
+{
+  "decisions": {
+    "1007032|next": {
+      "decision": "ignore",
+      "madeAt": 1645737200981,
+      "expiresAt": 1648329195437
+    },
+    "1006899|next>node-fetch": {
+      "decision": "ignore",
+      "madeAt": 1645737202503,
+      "expiresAt": 1648329195437
+    }
+  },
+  "rules": {},
+  "version": 1
+}
