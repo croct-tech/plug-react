@@ -81,6 +81,7 @@ render(<App />, document.getElementById('root'));
 ```
 
 > Replace `<APP_ID>` with your public app ID that you can find at Workspaces > Applications > Setup.
+> In case you don't have an account yet, you can use the sandbox application ID `00000000-0000-0000-0000-000000000000`
 
 ### Evaluating expressions
 
