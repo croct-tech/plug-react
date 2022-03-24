@@ -24,7 +24,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise = result;
         }
 
@@ -38,7 +38,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise = result;
         }
 
@@ -63,7 +63,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise1 = result;
         }
 
@@ -71,7 +71,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise2 = result;
         }
 
@@ -104,7 +104,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise = result;
         }
 
@@ -118,7 +118,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise = result;
         }
 
@@ -146,7 +146,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise = result;
         }
 
@@ -173,7 +173,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise = result;
         }
 
@@ -201,7 +201,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise = result;
         }
 
@@ -226,7 +226,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result) {
+        } catch (result: any|undefined) {
             promise = result;
         }
 
