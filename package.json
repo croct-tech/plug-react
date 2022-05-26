@@ -72,6 +72,7 @@
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-standard": "^5.0.0",
     "jest": "28.1.0",
+    "jest-environment-jsdom": "^28.1.0",
     "jest-environment-node": "^28.0.0",
     "microbundle": "^0.15.0",
     "react": "^17.0.0",
