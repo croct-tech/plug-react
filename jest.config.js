@@ -4,7 +4,7 @@ module.exports = {
     projects: [
         {
             displayName: 'browser',
-            testEnvironment: 'jsdom',
+            testEnvironment: 'jest-environment-jsdom',
             testRegex: path.join(__dirname, 'src', '.+(?<!\\.ssr)\\.test.tsx?$'),
         },
         {

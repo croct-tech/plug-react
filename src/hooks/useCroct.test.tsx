@@ -5,7 +5,11 @@ import {CroctContext} from '../CroctProvider';
 
 describe('useCroct', () => {
     it('should fail if used out of the <CroctProvider/> component', () => {
+        jest.spyOn(console, 'error').mockImplementation();
+
         const {result} = renderHook(() => useCroct());
+
+        expect(console.error).toBeCalled();
 
         expect(result.error?.message)
             .toBe('useCroct() can only be used in the context of a <CroctProvider> component.');
