@@ -1,4 +1,5 @@
 import {renderHook} from '@testing-library/react-hooks';
+import {setImmediate} from 'timers';
 import {useLoader} from './useLoader';
 
 describe('useLoader', () => {
