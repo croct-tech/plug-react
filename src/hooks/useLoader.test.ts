@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook, waitFor} from '@testing-library/react';
 import {setImmediate} from 'timers';
 import {useLoader} from './useLoader';
 
@@ -33,16 +33,14 @@ describe('useLoader', () => {
     it('should return the load the value and cache on success', async () => {
         const loader = jest.fn().mockResolvedValue('foo');
 
-        const {result, waitForNextUpdate, rerender} = renderHook(() => useLoader({
+        const {result, rerender} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             loader: loader,
         }));
 
         rerender();
 
-        await waitForNextUpdate();
-
-        expect(result.current).toBe('foo');
+        await waitFor(() => expect(result.current).toBe('foo'));
 
         expect(loader).toBeCalledTimes(1);
     });
@@ -51,16 +49,15 @@ describe('useLoader', () => {
         const error = new Error('fail');
         const loader = jest.fn().mockRejectedValue(error);
 
-        const {result, waitForNextUpdate, rerender} = renderHook(() => useLoader({
+        const {result, rerender} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
+            fallback: error,
             loader: loader,
         }));
 
         rerender();
 
-        await waitForNextUpdate();
-
-        expect(result.error).toBe(error);
+        await waitFor(() => expect(result.current).toBe(error));
 
         expect(loader).toBeCalledTimes(1);
     });
@@ -68,7 +65,7 @@ describe('useLoader', () => {
     it('should return the initial state on the initial render', async () => {
         const loader = jest.fn(() => Promise.resolve('loaded'));
 
-        const {waitForNextUpdate, result} = renderHook(() => useLoader({
+        const {result} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             initial: 'loading',
             loader: loader,
@@ -76,15 +73,13 @@ describe('useLoader', () => {
 
         expect(result.current).toBe('loading');
 
-        await waitForNextUpdate();
-
-        expect(result.current).toBe('loaded');
+        await waitFor(() => expect(result.current).toBe('loaded'));
     });
 
     it('should update the initial state with the fallback state on error', async () => {
         const loader = jest.fn().mockRejectedValue(new Error('fail'));
 
-        const {waitForNextUpdate, result} = renderHook(() => useLoader({
+        const {result} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             initial: 'loading',
             fallback: 'error',
@@ -93,23 +88,19 @@ describe('useLoader', () => {
 
         expect(result.current).toBe('loading');
 
-        await waitForNextUpdate();
-
-        expect(result.current).toBe('error');
+        await waitFor(() => expect(result.current).toBe('error'));
     });
 
     it('should return the fallback state on error', async () => {
         const loader = jest.fn().mockRejectedValue(new Error('fail'));
 
-        const {result, waitForNextUpdate} = renderHook(() => useLoader({
+        const {result} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
             fallback: 'foo',
             loader: loader,
         }));
 
-        await waitForNextUpdate();
-
-        expect(result.current).toBe('foo');
+        await waitFor(() => expect(result.current).toBe('foo'));
 
         expect(loader).toBeCalled();
     });
@@ -198,9 +189,7 @@ describe('useLoader', () => {
 
         await flushPromises();
 
-        await firstTime.waitForNextUpdate();
-
-        expect(firstTime.result.current).toBe('foo');
+        await waitFor(() => expect(firstTime.result.current).toBe('foo'));
 
         const secondTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
@@ -224,9 +213,7 @@ describe('useLoader', () => {
 
         await flushPromises();
 
-        await thirdTime.waitForNextUpdate();
-
-        expect(thirdTime.result.current).toBe('foo');
+        await waitFor(() => expect(thirdTime.result.current).toBe('foo'));
 
         expect(loader).toBeCalledTimes(2);
     });
@@ -263,9 +250,7 @@ describe('useLoader', () => {
 
         await flushPromises();
 
-        await secondTime.waitForNextUpdate();
-
-        expect(secondTime.result.current).toBe('foo');
+        await waitFor(() => expect(secondTime.result.current).toBe('foo'));
 
         expect(loader).toBeCalledTimes(2);
     });
