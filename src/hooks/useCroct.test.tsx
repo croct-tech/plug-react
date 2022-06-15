@@ -1,5 +1,6 @@
 import {renderHook} from '@testing-library/react-hooks';
 import croct from '@croct/plug';
+import {ReactElement} from 'react';
 import {useCroct} from './useCroct';
 import {CroctContext} from '../CroctProvider';
 
@@ -17,7 +18,9 @@ describe('useCroct', () => {
 
     it('should return the Plug instance', () => {
         const {result} = renderHook(() => useCroct(), {
-            wrapper: ({children}) => (<CroctContext.Provider value={{plug: croct}}>{children}</CroctContext.Provider>),
+            wrapper: ({children}: {children: ReactElement}) => (
+                <CroctContext.Provider value={{plug: croct}}>{children}</CroctContext.Provider>
+            ),
         });
 
         expect(result.current).toBe(croct);
