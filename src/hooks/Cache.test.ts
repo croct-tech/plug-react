@@ -52,7 +52,9 @@ describe('Cache', () => {
 
         const cache = new Cache(10);
 
-        const loader = jest.fn(() => new Promise<string>(resolve => setTimeout(() => resolve('done'), 10)));
+        const loader = jest.fn(() => new Promise<string>(resolve => {
+            setTimeout(() => resolve('done'), 10);
+        }));
 
         const options: EntryOptions<string> = {
             cacheKey: 'key',

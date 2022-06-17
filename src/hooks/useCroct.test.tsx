@@ -9,6 +9,7 @@ describe('useCroct', () => {
 
         const {result} = renderHook<CroctProviderProps, Plug>(() => useCroct());
 
+        // eslint-disable-next-line no-console
         expect(console.error).toBeCalled();
 
         expect(result.error?.message)
