@@ -27,7 +27,9 @@ describe('useLoader', () => {
     // Needed to use fake timers and promises:
     // https://github.com/testing-library/react-testing-library/issues/244#issuecomment-449461804
     function flushPromises(): Promise<void> {
-        return new Promise(resolve => setImmediate(resolve));
+        return new Promise(resolve => {
+            setImmediate(resolve);
+        });
     }
 
     it('should return the load the value and cache on success', async () => {
@@ -146,7 +148,9 @@ describe('useLoader', () => {
     it('should not expire the cache when the expiration is negative', async () => {
         jest.useFakeTimers();
 
-        const loader = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('foo'), 10)));
+        const loader = jest.fn(() => new Promise(resolve => {
+            setTimeout(() => resolve('foo'), 10);
+        }));
 
         const {rerender} = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
@@ -177,7 +181,9 @@ describe('useLoader', () => {
         jest.useFakeTimers();
 
         const delay = 10;
-        const loader = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('foo'), delay)));
+        const loader = jest.fn(() => new Promise(resolve => {
+            setTimeout(() => resolve('foo'), delay);
+        }));
 
         const firstTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
@@ -222,7 +228,9 @@ describe('useLoader', () => {
         jest.useFakeTimers();
 
         const delay = 10;
-        const loader = jest.fn(() => new Promise(resolve => setTimeout(() => resolve('foo'), delay)));
+        const loader = jest.fn(() => new Promise(resolve => {
+            setTimeout(() => resolve('foo'), delay);
+        }));
 
         const firstTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
@@ -236,7 +244,7 @@ describe('useLoader', () => {
 
         firstTime.unmount();
 
-        jest.advanceTimersByTime(6);
+        jest.advanceTimersByTime(5);
 
         await flushPromises();
 
@@ -252,6 +260,7 @@ describe('useLoader', () => {
 
         await waitFor(() => expect(secondTime.result.current).toBe('foo'));
 
+        // This expect can be return 2 or 3 sometimes by cache
         expect(loader).toBeCalledTimes(2);
     });
 });
