@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook} from '@testing-library/react';
 import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
 import {useEvaluation} from './useEvaluation';
 import {useCroct} from './useCroct';

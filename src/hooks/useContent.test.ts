@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks';
+import {renderHook} from '@testing-library/react';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
 import {useContent} from './useContent';
