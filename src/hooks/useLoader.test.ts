@@ -258,9 +258,8 @@ describe('useLoader', () => {
 
         await flushPromises();
 
-        await waitFor(() => expect(secondTime.result.current).toBe('foo'));
-
-        // This expect can be return 2 or 3 sometimes by cache
         expect(loader).toBeCalledTimes(2);
+
+        await waitFor(() => expect(secondTime.result.current).toBe('foo'));
     });
 });
