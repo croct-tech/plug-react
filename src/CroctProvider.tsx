@@ -1,10 +1,8 @@
-import {createContext, FunctionComponent, ReactElement, useContext, useEffect, useMemo} from 'react';
+import {createContext, FunctionComponent, PropsWithChildren, ReactElement, useContext, useEffect, useMemo} from 'react';
 import {Configuration, Plug} from '@croct/plug';
 import {croct} from './ssr-polyfills';
 
-export type CroctProviderProps = Configuration & Required<Pick<Configuration, 'appId'>> & {
-    children?: ReactElement,
-};
+export type CroctProviderProps = PropsWithChildren<Configuration & Required<Pick<Configuration, 'appId'>>>;
 
 export const CroctContext = createContext<{plug: Plug}|null>(null);
 CroctContext.displayName = 'CroctContext';

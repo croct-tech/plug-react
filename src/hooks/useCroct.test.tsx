@@ -1,14 +1,18 @@
 import {renderHook} from '@testing-library/react-hooks';
-import croct from '@croct/plug';
-import {ReactElement} from 'react';
+import croct, {Plug} from '@croct/plug';
+import {ReactNode} from 'react';
 import {useCroct} from './useCroct';
 import {CroctContext} from '../CroctProvider';
+
+type RenderHookProps = {
+    children: ReactNode,
+};
 
 describe('useCroct', () => {
     it('should fail if used out of the <CroctProvider/> component', () => {
         jest.spyOn(console, 'error').mockImplementation();
 
-        const {result} = renderHook(() => useCroct());
+        const {result} = renderHook<RenderHookProps, Plug>(() => useCroct());
 
         expect(console.error).toBeCalled();
 
@@ -17,8 +21,8 @@ describe('useCroct', () => {
     });
 
     it('should return the Plug instance', () => {
-        const {result} = renderHook(() => useCroct(), {
-            wrapper: ({children}: {children: ReactElement}) => (
+        const {result} = renderHook<RenderHookProps, Plug>(() => useCroct(), {
+            wrapper: ({children}) => (
                 <CroctContext.Provider value={{plug: croct}}>{children}</CroctContext.Provider>
             ),
         });
