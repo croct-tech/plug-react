@@ -35,8 +35,9 @@ jobs:
         run: |-
           cp package.json LICENSE README.md build/
           cd build
+          jq package.json '.devDependencies = {}' > ./package.json
           sed -i -e "s~\"version\": \"0.0.0-dev\"~\"version\": \"${GITHUB_REF##*/}\"~" package.json
-          sed -i -e "s~./build/~./~" package.json
+          sed -i -e "s~\./build~.~" package.json
           sed -i -e "s~./src~.~" package.json
 
       - name: Publish pre-release to NPM
