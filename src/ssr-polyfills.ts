@@ -1,7 +1,9 @@
 import csrPlug, {Plug} from '@croct/plug';
 
 export function isSsr(): boolean {
-    return typeof window === 'undefined';
+    return typeof window === 'undefined'
+        || typeof window.document === 'undefined'
+        || typeof window.document.createElement === 'undefined';
 }
 
 export const croct: Plug = !isSsr() ? csrPlug : new Proxy(csrPlug, {
