@@ -32,8 +32,8 @@ describe('useContent', () => {
             expiration: 50,
         }));
 
-        expect(useCroct).toBeCalled();
-        expect(useLoader).toBeCalledWith({
+        expect(useCroct).toHaveBeenCalled();
+        expect(useLoader).toHaveBeenCalledWith({
             cacheKey: 'useContent:unique:home-banner',
             fallback: {
                 title: 'error',
@@ -44,7 +44,7 @@ describe('useContent', () => {
 
         (useLoader as jest.Mock).mock.calls[0][0].loader();
 
-        expect(fetch).toBeCalledWith(slotId);
+        expect(fetch).toHaveBeenCalledWith(slotId);
 
         expect(result.current).toBe('foo');
     });

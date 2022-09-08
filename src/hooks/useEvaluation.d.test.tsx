@@ -49,7 +49,7 @@ describe('useEvaluation typing', () => {
             useEvaluation('x');
         `;
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useEvaluation<JsonValue, JsonValue, JsonValue>');
 
@@ -61,7 +61,7 @@ describe('useEvaluation typing', () => {
             useEvaluation<string>('x');
         `;
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useEvaluation<string, string, string>');
 
@@ -73,7 +73,7 @@ describe('useEvaluation typing', () => {
             useEvaluation('x', {initial: undefined});
         `;
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useEvaluation<JsonValue, undefined, JsonValue>');
 
@@ -85,7 +85,7 @@ describe('useEvaluation typing', () => {
             useEvaluation('x', {fallback: new Error()});
         `;
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useEvaluation<JsonValue, JsonValue, Error>');
 
@@ -97,7 +97,7 @@ describe('useEvaluation typing', () => {
             useEvaluation('x', {initial: undefined, fallback: new Error()});
         `;
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useEvaluation<JsonValue, undefined, Error>');
 
@@ -109,7 +109,7 @@ describe('useEvaluation typing', () => {
             useEvaluation<string, undefined, Error>('x', {initial: undefined, fallback: new Error()});
         `;
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useEvaluation<string, undefined, Error>');
 
@@ -121,6 +121,6 @@ describe('useEvaluation typing', () => {
             useEvaluation<undefined>('x');
         `;
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 });

@@ -44,7 +44,7 @@ describe('useLoader', () => {
 
         await waitFor(() => expect(result.current).toBe('foo'));
 
-        expect(loader).toBeCalledTimes(1);
+        expect(loader).toHaveBeenCalledTimes(1);
     });
 
     it('should return the load the value and cache on error', async () => {
@@ -61,7 +61,7 @@ describe('useLoader', () => {
 
         await waitFor(() => expect(result.current).toBe(error));
 
-        expect(loader).toBeCalledTimes(1);
+        expect(loader).toHaveBeenCalledTimes(1);
     });
 
     it('should return the initial state on the initial render', async () => {
@@ -104,7 +104,7 @@ describe('useLoader', () => {
 
         await waitFor(() => expect(result.current).toBe('foo'));
 
-        expect(loader).toBeCalled();
+        expect(loader).toHaveBeenCalled();
     });
 
     it('should extend the cache expiration on every render', async () => {
@@ -128,7 +128,7 @@ describe('useLoader', () => {
 
         rerender();
 
-        expect(loader).toBeCalledTimes(1);
+        expect(loader).toHaveBeenCalledTimes(1);
 
         jest.advanceTimersByTime(15);
 
@@ -142,7 +142,7 @@ describe('useLoader', () => {
 
         await flushPromises();
 
-        expect(loader).toBeCalledTimes(2);
+        expect(loader).toHaveBeenCalledTimes(2);
     });
 
     it('should not expire the cache when the expiration is negative', async () => {
@@ -168,7 +168,7 @@ describe('useLoader', () => {
         // Second rerender
         rerender();
 
-        expect(loader).toBeCalledTimes(1);
+        expect(loader).toHaveBeenCalledTimes(1);
     });
 
     test.each<[number, number|undefined]>(
@@ -205,7 +205,7 @@ describe('useLoader', () => {
 
         expect(secondTime.result.current).toBe('foo');
 
-        expect(loader).toBeCalledTimes(1);
+        expect(loader).toHaveBeenCalledTimes(1);
 
         jest.advanceTimersByTime(step);
 
@@ -221,7 +221,7 @@ describe('useLoader', () => {
 
         await waitFor(() => expect(thirdTime.result.current).toBe('foo'));
 
-        expect(loader).toBeCalledTimes(2);
+        expect(loader).toHaveBeenCalledTimes(2);
     });
 
     it('should dispose the cache on unmount', async () => {
@@ -258,7 +258,7 @@ describe('useLoader', () => {
 
         await flushPromises();
 
-        expect(loader).toBeCalledTimes(2);
+        expect(loader).toHaveBeenCalledTimes(2);
 
         await waitFor(() => expect(secondTime.result.current).toBe('foo'));
     });

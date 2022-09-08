@@ -20,7 +20,7 @@ describe('<Personalization /> typing', () => {
             </Personalization>;
         `;
 
-        expect(() => ts.compile(code, testFilename)).not.toThrowError();
+        expect(() => ts.compile(code, testFilename)).not.toThrow();
     });
 
     it('should require a renderer that accepts JSON values or covariants', () => {
@@ -31,7 +31,7 @@ describe('<Personalization /> typing', () => {
                 {(foo: Error) => typeof foo}
             </Personalization>;
         `;
-        expect(() => ts.compile(code, testFilename)).toThrowError();
+        expect(() => ts.compile(code, testFilename)).toThrow();
     });
 
     it('should allow a renderer that accepts the initial value', () => {
@@ -43,7 +43,7 @@ describe('<Personalization /> typing', () => {
             </Personalization>;
         `;
 
-        expect(() => ts.compile(code, testFilename)).not.toThrowError();
+        expect(() => ts.compile(code, testFilename)).not.toThrow();
     });
 
     it('should require a renderer that accepts the initial value', () => {
@@ -55,7 +55,7 @@ describe('<Personalization /> typing', () => {
             </Personalization>;
         `;
 
-        expect(() => ts.compile(code, testFilename)).toThrowError();
+        expect(() => ts.compile(code, testFilename)).toThrow();
     });
 
     it('should allow a renderer that accepts the fallback value', () => {
@@ -67,7 +67,7 @@ describe('<Personalization /> typing', () => {
             </Personalization>;
         `;
 
-        expect(() => ts.compile(code, testFilename)).not.toThrowError();
+        expect(() => ts.compile(code, testFilename)).not.toThrow();
     });
 
     it('should require a renderer that accepts the fallback value', () => {
@@ -79,7 +79,7 @@ describe('<Personalization /> typing', () => {
             </Personalization>;
         `;
 
-        expect(() => ts.compile(code, testFilename)).toThrowError();
+        expect(() => ts.compile(code, testFilename)).toThrow();
     });
 
     it('should allow a renderer that accepts both the initial and fallback values', () => {
@@ -91,7 +91,7 @@ describe('<Personalization /> typing', () => {
             </Personalization>;
         `;
 
-        expect(() => ts.compile(code, testFilename)).not.toThrowError();
+        expect(() => ts.compile(code, testFilename)).not.toThrow();
     });
 
     it('should require a renderer that accepts both the initial and fallback values', () => {
@@ -103,7 +103,7 @@ describe('<Personalization /> typing', () => {
             </Personalization>;
         `;
 
-        expect(() => ts.compile(code, testFilename)).toThrowError();
+        expect(() => ts.compile(code, testFilename)).toThrow();
     });
 
     it('should require a renderer that accepts both the fallback and initial values', () => {
@@ -115,6 +115,6 @@ describe('<Personalization /> typing', () => {
             </Personalization>;
         `;
 
-        expect(() => ts.compile(code, testFilename)).toThrowError();
+        expect(() => ts.compile(code, testFilename)).toThrow();
     });
 });

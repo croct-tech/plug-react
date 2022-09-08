@@ -10,7 +10,7 @@ describe('useCroct', () => {
         const {result} = renderHook<CroctProviderProps, Plug>(() => useCroct());
 
         // eslint-disable-next-line no-console
-        expect(console.error).toBeCalled();
+        expect(console.error).toHaveBeenCalled();
 
         expect(result.error?.message)
             .toBe('useCroct() can only be used in the context of a <CroctProvider> component.');

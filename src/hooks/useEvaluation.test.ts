@@ -40,8 +40,8 @@ describe('useEvaluation', () => {
             expiration: 50,
         }));
 
-        expect(useCroct).toBeCalled();
-        expect(useLoader).toBeCalledWith({
+        expect(useCroct).toHaveBeenCalled();
+        expect(useLoader).toHaveBeenCalledWith({
             cacheKey: 'useEvaluation:unique:location:{"foo":"bar"}',
             fallback: 'error',
             expiration: 50,
@@ -50,7 +50,7 @@ describe('useEvaluation', () => {
 
         (useLoader as jest.Mock).mock.calls[0][0].loader();
 
-        expect(evaluate).toBeCalledWith(expression, evaluationOptions);
+        expect(evaluate).toHaveBeenCalledWith(expression, evaluationOptions);
 
         expect(result.current).toBe('foo');
     });
@@ -72,6 +72,6 @@ describe('useEvaluation', () => {
 
         (useLoader as jest.Mock).mock.calls[0][0].loader();
 
-        expect(evaluate).toBeCalledWith(expression, {});
+        expect(evaluate).toHaveBeenCalledWith(expression, {});
     });
 });
