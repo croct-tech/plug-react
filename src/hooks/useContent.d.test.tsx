@@ -92,7 +92,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
             'useContent<NullableJsonObject, NullableJsonObject, NullableJsonObject>',
@@ -109,7 +109,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
             'useContent<NullableJsonObject, boolean, NullableJsonObject>',
@@ -126,7 +126,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
             'useContent<NullableJsonObject, NullableJsonObject, number>',
@@ -143,7 +143,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
             'useContent<NullableJsonObject, boolean, number>',
@@ -160,7 +160,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
             'useContent<{foo: string;}, {foo: string;}, {foo: string;}>',
@@ -177,7 +177,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
             'useContent<{foo: string;}, boolean, {foo: string;}>',
@@ -194,7 +194,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
             'useContent<{foo: string;}, never, number>',
@@ -211,7 +211,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
             'useContent<{foo: string;}, boolean, number>',
@@ -228,7 +228,7 @@ describe('useContent typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should infer the return type for mapped slots', () => {
@@ -239,7 +239,7 @@ describe('useContent typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useContent<"home-banner">');
 
@@ -254,7 +254,7 @@ describe('useContent typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useContent<boolean, "home-banner">');
 
@@ -269,7 +269,7 @@ describe('useContent typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useContent<number, "home-banner">');
 
@@ -284,7 +284,7 @@ describe('useContent typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe('useContent<boolean, number, "home-banner">');
 
@@ -299,6 +299,6 @@ describe('useContent typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 });

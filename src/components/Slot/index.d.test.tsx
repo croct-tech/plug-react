@@ -82,7 +82,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
     });
 
     it('should require a renderer that accepts nullable JSON objects or covariants for unmapped slots', () => {
@@ -95,7 +95,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should allow a renderer that accepts the initial value for unmapped slots', () => {
@@ -108,7 +108,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
     });
 
     it('should require a renderer that accepts the initial value for unmapped slots', () => {
@@ -121,7 +121,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should allow a renderer that accepts the fallback value for unmapped slots', () => {
@@ -134,7 +134,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
     });
 
     it('should require a renderer that accepts the fallback value for unmapped slots', () => {
@@ -147,7 +147,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should allow a renderer that accepts both the initial and fallback values for unmapped slots', () => {
@@ -160,7 +160,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
     });
 
     it('should require a renderer that accepts both the initial and fallback values for unmapped slots', () => {
@@ -173,7 +173,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should require a renderer that accepts both the fallback and initial values for unmapped slots', () => {
@@ -186,7 +186,7 @@ describe('<Slot  /> typing', () => {
             mapping: false,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should infer the renderer parameter type for mapped slots', () => {
@@ -199,7 +199,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getParameterType(code)).toBe('HomeBannerProps');
     });
@@ -214,7 +214,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
     });
 
     it('should require a compatible renderer for mapped slots', () => {
@@ -227,7 +227,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should infer the renderer parameter type also from the initial value for mapped slots', () => {
@@ -240,7 +240,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getParameterType(code)).toBe('boolean | HomeBannerProps');
     });
@@ -255,7 +255,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
     });
 
     it('should require a renderer that accepts the initial value for mapped slots', () => {
@@ -268,7 +268,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should infer the renderer parameter type also from the fallback value for mapped slots', () => {
@@ -281,7 +281,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getParameterType(code)).toBe('boolean | HomeBannerProps');
     });
@@ -296,7 +296,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
     });
 
     it('should require a renderer that accepts the fallback value for mapped slots', () => {
@@ -309,7 +309,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should infer the renderer parameter type from both the initial and fallback values for mapped slots', () => {
@@ -322,7 +322,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
 
         expect(getParameterType(code)).toBe('number | boolean | HomeBannerProps');
     });
@@ -337,7 +337,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).not.toThrowError();
+        expect(() => compileCode(code)).not.toThrow();
     });
 
     it('should require a renderer that accepts both the initial and fallback values for mapped slots', () => {
@@ -350,7 +350,7 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 
     it('should require a renderer that accepts both the fallback and initial values for mapped slots', () => {
@@ -363,6 +363,6 @@ describe('<Slot  /> typing', () => {
             mapping: true,
         };
 
-        expect(() => compileCode(code)).toThrowError();
+        expect(() => compileCode(code)).toThrow();
     });
 });
