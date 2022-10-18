@@ -1,4 +1,4 @@
-import {renderHook, waitFor} from '@testing-library/react';
+import {act, renderHook, waitFor} from '@testing-library/react';
 import {setImmediate} from 'timers';
 import {useLoader} from './useLoader';
 
@@ -118,7 +118,7 @@ describe('useLoader', () => {
             expiration: 15,
         }));
 
-        await flushPromises();
+        await act(flushPromises);
 
         jest.advanceTimersByTime(14);
 
@@ -140,7 +140,7 @@ describe('useLoader', () => {
             expiration: 15,
         }));
 
-        await flushPromises();
+        await act(flushPromises);
 
         expect(loader).toHaveBeenCalledTimes(2);
     });
@@ -160,7 +160,7 @@ describe('useLoader', () => {
 
         jest.advanceTimersByTime(10);
 
-        await flushPromises();
+        await act(flushPromises);
 
         // First rerender
         rerender();
@@ -193,7 +193,7 @@ describe('useLoader', () => {
 
         jest.advanceTimersByTime(delay);
 
-        await flushPromises();
+        await act(flushPromises);
 
         await waitFor(() => expect(firstTime.result.current).toBe('foo'));
 
@@ -217,7 +217,7 @@ describe('useLoader', () => {
 
         jest.advanceTimersByTime(delay);
 
-        await flushPromises();
+        await act(flushPromises);
 
         await waitFor(() => expect(thirdTime.result.current).toBe('foo'));
 
@@ -240,13 +240,13 @@ describe('useLoader', () => {
 
         jest.advanceTimersByTime(delay);
 
-        await flushPromises();
+        await act(flushPromises);
 
         firstTime.unmount();
 
         jest.advanceTimersByTime(5);
 
-        await flushPromises();
+        await act(flushPromises);
 
         const secondTime = renderHook(() => useLoader({
             cacheKey: cacheKey.current(),
@@ -256,7 +256,7 @@ describe('useLoader', () => {
 
         jest.advanceTimersByTime(delay);
 
-        await flushPromises();
+        await act(flushPromises);
 
         expect(loader).toHaveBeenCalledTimes(2);
 

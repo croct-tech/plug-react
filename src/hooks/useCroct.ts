@@ -6,7 +6,7 @@ export function useCroct(): Plug {
     const context = useContext(CroctContext);
 
     if (context === null) {
-        throw new Error('useCroct() can only be used in the context of a <CroctProvider> component.');
+        throw new Error('Hook useCroct() must be used within a <CroctProvider />.');
     }
 
     return context.plug;
