@@ -11,7 +11,7 @@ jest.mock('./useLoader', () => ({
     useLoader: jest.fn(),
 }));
 
-describe('useContent', () => {
+describe('useContent (CSR)', () => {
     it('should evaluate an expression', () => {
         const fetch = jest.fn().mockResolvedValue({
             payload: {

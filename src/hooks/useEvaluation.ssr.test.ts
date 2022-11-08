@@ -1,5 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks/server';
+import {renderHook} from '@testing-library/react';
 import {useEvaluation} from './useEvaluation';
+
+jest.mock('../ssr-polyfills', () => ({
+    __esModule: true,
+    isSsr: () => true,
+}));
 
 describe('useEvaluation (SSR)', () => {
     it('should render the initial value on the server-side', () => {
@@ -9,8 +14,7 @@ describe('useEvaluation (SSR)', () => {
     });
 
     it('should require an initial value for server-side rending', () => {
-        const {result} = renderHook(() => useEvaluation('location'));
-
-        expect(result.error).toEqual(new Error('The initial value is required for server-side rendering (SSR).'));
+        expect(() => useEvaluation('location'))
+            .toThrow(new Error('The initial value is required for server-side rendering (SSR).'));
     });
 });

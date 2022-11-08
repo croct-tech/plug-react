@@ -1,7 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks/server';
+import {renderHook} from '@testing-library/react';
 import {useContent} from './useContent';
 
-describe('useCsrContent (SSR)', () => {
+jest.mock('../ssr-polyfills', () => ({
+    __esModule: true,
+    isSsr: () => true,
+}));
+
+describe('useContent (SSR)', () => {
     it('should render the initial value on the server-side', () => {
         const {result} = renderHook(() => useContent('slot-id', {initial: 'foo'}));
 
@@ -9,8 +14,7 @@ describe('useCsrContent (SSR)', () => {
     });
 
     it('should require an initial value for server-side rending', () => {
-        const {result} = renderHook(() => useContent('slot-id'));
-
-        expect(result.error).toEqual(new Error('The initial value is required for server-side rendering (SSR).'));
+        expect(() => useContent('slot-id'))
+            .toThrow(new Error('The initial value is required for server-side rendering (SSR).'));
     });
 });
