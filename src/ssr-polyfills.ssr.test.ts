@@ -1,3 +1,6 @@
+/*
+ * @jest-environment node
+ */
 import croct from '@croct/plug';
 import {croct as croctPolyfill, isSsr} from './ssr-polyfills';
 
