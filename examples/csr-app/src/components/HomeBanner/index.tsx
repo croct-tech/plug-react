@@ -1,9 +1,10 @@
-import {FunctionComponent, ReactElement} from 'react';
-import {Slot} from '@croct/plug-react';
+import {ReactElement} from 'react';
+import {Slot, SlotContent} from '@croct/plug-react';
 import './style.css';
-import {SlotContent} from '@croct/plug/fetch';
 
-type SlotProps = SlotContent<'home-banner'> & {
+const SLOT_ID = 'home-banner@1';
+
+type SlotProps = SlotContent<typeof SLOT_ID> & {
     loading?: boolean,
 };
 
@@ -25,18 +26,18 @@ type HomeBannerProps = {
     cacheKey?: string,
 };
 
-const HomeBanner: FunctionComponent<HomeBannerProps> = ({cacheKey}): ReactElement => (
-    <Slot id="home-banner" initial={initialContent} fallback={defaultContent} cacheKey={cacheKey}>
-        {({loading, title, subtitle, cta}: SlotProps) => (
-            <div className={`hero${loading ? ' loading' : ''}`}>
-                <h1>{title}</h1>
-                <p className="subtitle">
-                    {subtitle}
-                </p>
-                <a href={cta.link} className="cta">{cta.label}</a>
-            </div>
-        )}
-    </Slot>
-);
-
-export default HomeBanner;
+export default function HomeBanner({cacheKey}: HomeBannerProps): ReactElement {
+    return (
+        <Slot id={SLOT_ID} initial={initialContent} fallback={defaultContent} cacheKey={cacheKey}>
+            {({loading = false, title, subtitle, cta}: SlotProps): ReactElement => (
+                <div className={`hero${loading ? ' loading' : ''}`}>
+                    <h1>{title}</h1>
+                    <p className="subtitle">
+                        {subtitle}
+                    </p>
+                    <a href={cta.link} className="cta">{cta.label}</a>
+                </div>
+            )}
+        </Slot>
+    );
+}

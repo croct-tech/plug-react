@@ -1,4 +1,4 @@
-import {ChangeEvent, FunctionComponent, ReactElement, useCallback} from 'react';
+import {ChangeEvent, ReactElement, useCallback} from 'react';
 import {useCroct, useEvaluation} from '@croct/plug-react';
 import './style.css';
 
@@ -8,7 +8,7 @@ type PersonaSelectorProps = {
     cacheKey?: string,
 };
 
-const PersonaSelector: FunctionComponent<PersonaSelectorProps> = ({cacheKey}): ReactElement => {
+export default function PersonaSelector({cacheKey}: PersonaSelectorProps): ReactElement {
     const croct = useCroct();
     const persona = useEvaluation<Persona|null>("user's persona or else 'default'", {
         cacheKey: cacheKey,
@@ -54,6 +54,4 @@ const PersonaSelector: FunctionComponent<PersonaSelectorProps> = ({cacheKey}): R
             )}
         </div>
     );
-};
-
-export default PersonaSelector;
+}

@@ -6,26 +6,28 @@ export function isSsr(): boolean {
         || typeof window.document.createElement === 'undefined';
 }
 
-export const croct: Plug = !isSsr() ? csrPlug : new Proxy(csrPlug, {
-    get(_, property: keyof Plug) {
-        switch (property) {
-            case 'initialized':
-                return false;
+export const croct: Plug = !isSsr()
+    ? csrPlug
+    : new Proxy(csrPlug, {
+        get: function getProperty(_, property: keyof Plug): any {
+            switch (property) {
+                case 'initialized':
+                    return false;
 
-            case 'plug':
-                return () => {
+                case 'plug':
+                    return () => {
                     // no-op
-                };
+                    };
 
-            case 'unplug':
-                return () => Promise.resolve();
+                case 'unplug':
+                    return () => Promise.resolve();
 
-            default:
-                throw new Error(
-                    `Property croct.${String(property)} is not supported on server-side (SSR). Consider refactoring `
-                    + 'the logic as a side-effect (useEffect) or a client-side callback (onClick, onChange, etc).',
-                );
-        }
-    },
-});
-
+                default:
+                    throw new Error(
+                        `Property croct.${String(property)} is not supported on server-side (SSR). `
+                        + 'Consider refactoring  the logic as a side-effect (useEffect) or a client-side callback '
+                        + '(onClick, onChange, etc).',
+                    );
+            }
+        },
+    });

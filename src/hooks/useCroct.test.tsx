@@ -10,7 +10,7 @@ describe('useCroct', () => {
         expect(() => renderHook(() => useCroct()))
             .toThrow(new Error('useCroct() can only be used in the context of a <CroctProvider> component.'));
 
-        // eslint-disable-next-line no-console
+        // eslint-disable-next-line no-console -- Testing console output.
         expect(console.error).toHaveBeenCalled();
     });
 

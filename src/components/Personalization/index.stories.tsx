@@ -5,7 +5,7 @@ import {Personalization, PersonalizationProps} from './index';
 export default {
     title: 'Components/Personalization',
     component: Personalization,
-    decorators: [DecoratedStory => (
+    decorators: [(DecoratedStory): ReactElement => (
         <div className="widget">
             <DecoratedStory />
         </div>
@@ -38,7 +38,7 @@ const NewsWidget: FunctionComponent<NewsWidgetProps> = ({city}): ReactElement =>
 export const WithSuspense: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Personalization {...args} expression="location's city">
-            {(city: string) => (
+            {(city: string): ReactElement => (
                 <NewsWidget city={city} />
             )}
         </Personalization>
@@ -51,7 +51,7 @@ WithSuspense.args = {
 
 export const WithInitialState: Story<Omit<PersonalizationProps<string, null>, 'expression'>> = args => (
     <Personalization {...args} expression="location's city">
-        {(city: string|null) => (
+        {(city: string|null): ReactElement => (
             <NewsWidget city={city} />
         )}
     </Personalization>
@@ -65,7 +65,7 @@ WithInitialState.args = {
 export const WithFallbackState: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Personalization {...args} expression="location's city">
-            {(city: string) => (
+            {(city: string): ReactElement => (
                 <NewsWidget city={city} />
             )}
         </Personalization>

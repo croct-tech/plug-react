@@ -1,9 +1,18 @@
-import {render, waitFor} from '@testing-library/react';
-import {CroctProvider} from '@croct/plug-react';
+import {render, screen, waitFor} from '@testing-library/react';
+import {CroctProvider, SlotContent} from '@croct/plug-react';
 import croct from '@croct/plug';
-import {SlotContent} from '@croct/plug/fetch';
 import HomeBanner from './index';
 import '@testing-library/jest-dom';
+
+jest.mock(
+    '@croct/plug',
+    () => ({
+        __esModule: true,
+        default: {
+            fetch: jest.fn(),
+        },
+    }),
+);
 
 describe('<HomeBanner />', () => {
     afterEach(() => {
@@ -20,51 +29,56 @@ describe('<HomeBanner />', () => {
             },
         };
 
-        const fetch = jest.spyOn(croct, 'fetch');
+        const fetchContent = jest.mocked(croct.fetch);
 
-        fetch.mockResolvedValue({payload: content});
+        fetchContent.mockResolvedValue({
+            content: content,
+            // @todo: Remove after deprecation
+            payload: content,
+        });
 
-        const {getByText} = render(
+        render(
             <CroctProvider appId="00000000-0000-0000-0000-000000000000">
                 <HomeBanner cacheKey="home-banner-success" />
             </CroctProvider>,
         );
 
-        expect(fetch).toHaveBeenCalledWith('home-banner');
+        expect(fetchContent).toHaveBeenCalledWith('home-banner');
 
-        expect(getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
-        expect(getByText('Deliver tailored experiences that drive satisfaction and growth.')).toBeInTheDocument();
-        expect(getByText('Discover how')).toBeInTheDocument();
+        expect(screen.getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
+
+        expect(screen.getByText('Deliver tailored experiences that drive satisfaction and growth.'))
+            .toBeInTheDocument();
+
+        expect(screen.getByText('Discover how')).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(getByText(content.title)).toBeInTheDocument();
-            expect(getByText(content.subtitle)).toBeInTheDocument();
-            expect(getByText(content.cta.label)).toBeInTheDocument();
+            expect(screen.getByText(content.title)).toBeInTheDocument();
         });
     });
 
     it('should render the fallback content on error', async () => {
-        const fetch = jest.spyOn(croct, 'fetch');
+        const fetchContent = jest.mocked(croct.fetch);
 
-        fetch.mockRejectedValue(new Error('failure'));
+        fetchContent.mockRejectedValue(new Error('failure'));
 
-        const {getByText} = render(
+        render(
             <CroctProvider appId="00000000-0000-0000-0000-000000000000">
                 <HomeBanner cacheKey="home-banner-fallback" />
             </CroctProvider>,
         );
 
-        expect(fetch).toHaveBeenCalledWith('home-banner');
+        expect(fetchContent).toHaveBeenCalledWith('home-banner');
 
-        expect(getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
-        expect(getByText('Deliver tailored experiences that drive satisfaction and growth.')).toBeInTheDocument();
-        expect(getByText('Discover how')).toBeInTheDocument();
+        expect(screen.getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
+
+        expect(screen.getByText('Deliver tailored experiences that drive satisfaction and growth.'))
+            .toBeInTheDocument();
+
+        expect(screen.getByText('Discover how')).toBeInTheDocument();
 
         await waitFor(() => {
-            expect(getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
-            expect(getByText('Deliver tailored experiences that drive satisfaction and growth.')).toBeInTheDocument();
-            expect(getByText('Discover how')).toBeInTheDocument();
+            expect(screen.getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
         });
     });
 });
-

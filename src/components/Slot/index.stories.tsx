@@ -5,7 +5,7 @@ import {Slot, SlotProps} from './index';
 export default {
     title: 'Components/Slot',
     component: Slot,
-    decorators: [DecoratedStory => (
+    decorators: [(DecoratedStory): ReactElement => (
         <div className="card">
             <DecoratedStory />
         </div>
@@ -39,20 +39,24 @@ const defaultHomeBannerProps: HomeBannerProps = {
     },
 };
 
-const HomeBanner: FunctionComponent<HomeBannerProps> = ({loading, title, subtitle, cta}): ReactElement => (
-    <div className={`home-banner${loading ? ' loading' : ''}`}>
-        <h1>{title}</h1>
-        <p>{subtitle}</p>
-        <a href={cta.link} className="cta">{cta.label}</a>
-    </div>
-);
+const HomeBanner: FunctionComponent<HomeBannerProps> = (props): ReactElement => {
+    const {loading, title, subtitle, cta} = props;
+
+    return (
+        <div className={`home-banner${loading ? ' loading' : ''}`}>
+            <h1>{title}</h1>
+            <p>{subtitle}</p>
+            <a href={cta.link} className="cta">{cta.label}</a>
+        </div>
+    );
+};
 
 type HomeBannerSlotProps = SlotProps<HomeBannerProps>;
 
 export const WithSuspense: Story<HomeBannerSlotProps> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Slot {...args} id="home-banner">
-            {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
+            {(props: HomeBannerProps): ReactElement => (<HomeBanner {...props} />)}
         </Slot>
     </Suspense>
 );
@@ -63,7 +67,7 @@ WithSuspense.args = {
 
 export const WithInitialState: Story<HomeBannerSlotProps> = args => (
     <Slot {...args} id="home-banner">
-        {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
+        {(props: HomeBannerProps): ReactElement => (<HomeBanner {...props} />)}
     </Slot>
 );
 
@@ -78,7 +82,7 @@ WithInitialState.args = {
 export const WithFallbackState: Story<HomeBannerSlotProps> = args => (
     <Suspense fallback="✨ Personalizing content...">
         <Slot {...args} id={'wrong-banner-id' as 'home-banner'}>
-            {(props: HomeBannerProps) => (<HomeBanner {...props} />)}
+            {(props: HomeBannerProps): ReactElement => (<HomeBanner {...props} />)}
         </Slot>
     </Suspense>
 );
@@ -87,4 +91,3 @@ WithFallbackState.args = {
     cacheKey: 'fallback-state',
     fallback: defaultHomeBannerProps,
 };
-

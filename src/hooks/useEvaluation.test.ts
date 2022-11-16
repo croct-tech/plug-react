@@ -1,16 +1,23 @@
 import {renderHook} from '@testing-library/react';
 import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
+import {Plug} from '@croct/plug';
 import {useEvaluation} from './useEvaluation';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
 
-jest.mock('./useCroct', () => ({
-    useCroct: jest.fn(),
-}));
+jest.mock(
+    './useCroct',
+    () => ({
+        useCroct: jest.fn(),
+    }),
+);
 
-jest.mock('./useLoader', () => ({
-    useLoader: jest.fn(),
-}));
+jest.mock(
+    './useLoader',
+    () => ({
+        useLoader: jest.fn(),
+    }),
+);
 
 describe('useEvaluation', () => {
     beforeEach(() => {
@@ -26,19 +33,21 @@ describe('useEvaluation', () => {
             },
         };
 
-        const evaluate = jest.fn();
+        const evaluate: Plug['evaluate'] = jest.fn();
 
-        (useCroct as jest.Mock).mockReturnValue({evaluate: evaluate});
-        (useLoader as jest.Mock).mockReturnValue('foo');
+        jest.mocked(useCroct).mockReturnValue({evaluate: evaluate} as Plug);
+        jest.mocked(useLoader).mockReturnValue('foo');
 
         const expression = 'location';
 
-        const {result} = renderHook(() => useEvaluation(expression, {
-            ...evaluationOptions,
-            cacheKey: 'unique',
-            fallback: 'error',
-            expiration: 50,
-        }));
+        const {result} = renderHook(
+            () => useEvaluation(expression, {
+                ...evaluationOptions,
+                cacheKey: 'unique',
+                fallback: 'error',
+                expiration: 50,
+            }),
+        );
 
         expect(useCroct).toHaveBeenCalled();
         expect(useLoader).toHaveBeenCalledWith({
@@ -48,7 +57,10 @@ describe('useEvaluation', () => {
             loader: expect.any(Function),
         });
 
-        (useLoader as jest.Mock).mock.calls[0][0].loader();
+        jest.mocked(useLoader)
+            .mock
+            .calls[0][0]
+            .loader();
 
         expect(evaluate).toHaveBeenCalledWith(expression, evaluationOptions);
 
@@ -61,16 +73,19 @@ describe('useEvaluation', () => {
             attributes: undefined,
         };
 
-        const evaluate = jest.fn();
+        const evaluate: Plug['evaluate'] = jest.fn();
 
-        (useCroct as jest.Mock).mockReturnValue({evaluate: evaluate});
-        (useLoader as jest.Mock).mockReturnValue('foo');
+        jest.mocked(useCroct).mockReturnValue({evaluate: evaluate} as Plug);
+        jest.mocked(useLoader).mockReturnValue('foo');
 
         const expression = 'location';
 
         renderHook(() => useEvaluation(expression, evaluationOptions));
 
-        (useLoader as jest.Mock).mock.calls[0][0].loader();
+        jest.mocked(useLoader)
+            .mock
+            .calls[0][0]
+            .loader();
 
         expect(evaluate).toHaveBeenCalledWith(expression, {});
     });

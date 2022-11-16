@@ -1,41 +1,36 @@
-import {FunctionComponent, ReactElement} from 'react';
-import {Slot} from '@croct/plug-react';
-import {SlotContent} from '@croct/plug/fetch';
+import {ReactElement} from 'react';
+import {SlotContent} from '@croct/plug-react';
+import {fetchContent} from '@/lib/utils/fetchContent';
 
-type SlotProps = SlotContent<'home-banner'> & {
-    loading?: boolean,
-};
+const SLOT_ID = 'home-banner@1';
 
-const defaultContent: SlotProps = {
-    title: 'Experience up to 20% more revenue faster',
-    subtitle: 'Deliver tailored experiences that drive satisfaction and growth.',
-    cta: {
-        label: 'Discover how',
-        link: 'https://croct.link/demo',
-    },
-};
+function loadHomeBanner(): Promise<SlotContent<typeof SLOT_ID>> {
+    return fetchContent(SLOT_ID, {
+        fallback: {
+            title: 'Experience up to 20% more revenue faster',
+            subtitle: 'Deliver tailored experiences that drive satisfaction and growth.',
+            cta: {
+                label: 'Discover how',
+                link: 'https://croct.link/demo',
+            },
+        },
+    });
+}
 
-const initialContent: SlotProps = {
-    ...defaultContent,
-    loading: true,
-};
+export function preloadHomeBanner(): void {
+    void loadHomeBanner();
+}
 
-type HomeBannerProps = {
-    cacheKey?: string,
-};
+export default async function HomeBanner(): Promise<ReactElement> {
+    const {title, subtitle, cta} = await loadHomeBanner();
 
-const HomeBanner: FunctionComponent<HomeBannerProps> = ({cacheKey}): ReactElement => (
-    <Slot id="home-banner" initial={initialContent} fallback={defaultContent} cacheKey={cacheKey}>
-        {({loading, title, subtitle, cta}: SlotProps) => (
-            <div className={`hero${loading ? ' loading' : ''}`}>
-                <h1>{title}</h1>
-                <p className="subtitle">
-                    {subtitle}
-                </p>
-                <a href={cta.link} className="cta">{cta.label}</a>
-            </div>
-        )}
-    </Slot>
-);
-
-export default HomeBanner;
+    return (
+        <div className="hero">
+            <h1>{title}</h1>
+            <p className="subtitle">
+                {subtitle}
+            </p>
+            <a href={cta.link} className="cta">{cta.label}</a>
+        </div>
+    );
+}

@@ -4,7 +4,7 @@ import {create} from 'ts-node';
 const ts = create({
     cwd: __dirname,
     ignore: [
-        'src/slots.d.ts',
+        'lib/slots.d.ts',
     ],
 });
 
@@ -31,6 +31,7 @@ describe('<Personalization /> typing', () => {
                 {(foo: Error) => typeof foo}
             </Personalization>;
         `;
+
         expect(() => ts.compile(code, testFilename)).toThrow();
     });
 

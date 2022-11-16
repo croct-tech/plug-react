@@ -5,7 +5,7 @@ const ts = create({
     cwd: __dirname,
     transpileOnly: false,
     ignore: [
-        'src/slots.d.ts',
+        'lib/slots.d.ts',
     ],
 });
 
@@ -17,15 +17,13 @@ describe('<Slot  /> typing', () => {
     `;
 
     const slotMapping = `
-        import {NullableJsonObject} from '@croct/plug/sdk/json';
-
         type HomeBannerProps = {
             title: string,
             subtitle: string,
         };
         
-        declare module '@croct/plug/fetch' {
-            interface SlotMap extends Record<string, NullableJsonObject> {
+        declare module '@croct/plug/slot' {
+            interface SlotMap {
                 'home-banner': HomeBannerProps;
             }
         }
@@ -54,7 +52,7 @@ describe('<Slot  /> typing', () => {
         };
     }
 
-    function compileCode(opts: CodeOptions) {
+    function compileCode(opts: CodeOptions): void {
         ts.compile(assembleCode(opts).code, testFilename);
     }
 
@@ -65,14 +63,14 @@ describe('<Slot  /> typing', () => {
 
         const match = info.name.match(/function\(\w+: (.+?)\):/s);
 
-        if (match) {
+        if (match != null) {
             return match[1].replace(/\s*\n\s*/g, '');
         }
 
         return info.name;
     }
 
-    it('should allow a renderer that accepts nullable JSON objects or covariants for unmapped slots', () => {
+    it('should allow a renderer that accepts JSON objects or covariants for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
@@ -85,7 +83,7 @@ describe('<Slot  /> typing', () => {
         expect(() => compileCode(code)).not.toThrow();
     });
 
-    it('should require a renderer that accepts nullable JSON objects or covariants for unmapped slots', () => {
+    it('should require a renderer that accepts JSON objects or covariants for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>

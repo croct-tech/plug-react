@@ -1,10 +1,14 @@
-import {render} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import {Slot, SlotProps} from './index';
 import {useContent} from '../../hooks';
+import '@testing-library/jest-dom';
 
-jest.mock('../../hooks/useContent', () => ({
-    useContent: jest.fn(),
-}));
+jest.mock(
+    '../../hooks/useContent',
+    () => ({
+        useContent: jest.fn(),
+    }),
+);
 
 describe('<Slot />', () => {
     it('should fetch and render a slot', () => {
@@ -16,9 +20,9 @@ describe('<Slot />', () => {
 
         const result = {title: 'result'};
 
-        (useContent as jest.Mock).mockReturnValue(result);
+        jest.mocked(useContent).mockReturnValue(result);
 
-        const {getByText} = render(
+        render(
             <Slot id={id} {...options}>
                 {children}
             </Slot>,
@@ -26,6 +30,6 @@ describe('<Slot />', () => {
 
         expect(useContent).toHaveBeenCalledWith(id, options);
         expect(children).toHaveBeenCalledWith(result);
-        expect(getByText(result.title)).not.toBeNull();
+        expect(screen.getByText(result.title)).toBeInTheDocument();
     });
 });

@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+[data-nextjs-scroll-focus-boundary] {
+  display: contents;
+}
+
 body {
   color: #111827;
   font-family: 'Inter', sans-serif;

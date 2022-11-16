@@ -25,7 +25,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "lint": "eslint 'src/**/*.ts' 'src/**/*.tsx' 'examples/**/*.ts' 'examples/**/*.tsx'",
+    "lint": "eslint 'src/**/*.ts' 'src/**/*.tsx'",
     "test": "jest -c jest.config.js --coverage",
     "validate": "tsc --noEmit",
     "build": "tsc",
@@ -38,19 +38,21 @@
     "react-dom": "^16.8.0  || ^17.0.0 || ^18.0.0"
   },
   "dependencies": {
-    "@croct/plug": "^0.10.2"
+    "@croct/plug": "^0.10.2",
+    "@croct/sdk": "^0.10.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.17.12",
     "@babel/preset-typescript": "^7.17.12",
+    "@croct/eslint-plugin": "^0.6.3",
     "@storybook/addon-actions": "^6.5.9",
-    "@storybook/addon-essentials": "^6.5.9",
+    "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-links": "^6.5.9",
     "@storybook/builder-webpack5": "^6.5.9",
     "@storybook/manager-webpack5": "^6.5.9",
-    "@storybook/react": "^6.5.9",
+    "@storybook/react": "^6.1.21",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.0.0",

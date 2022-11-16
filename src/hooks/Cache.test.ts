@@ -52,9 +52,11 @@ describe('Cache', () => {
 
         const cache = new Cache(10);
 
-        const loader = jest.fn(() => new Promise<string>(resolve => {
-            setTimeout(() => resolve('done'), 10);
-        }));
+        const loader = jest.fn(
+            () => new Promise<string>(resolve => {
+                setTimeout(() => resolve('done'), 10);
+            }),
+        );
 
         const options: EntryOptions<string> = {
             cacheKey: 'key',
@@ -187,6 +189,30 @@ describe('Cache', () => {
         expect(cache.load({...options, fallback: 'error'})).toEqual('error');
 
         expect(loader).toHaveBeenCalledTimes(1);
+    });
+
+    it('should throw the error if no fallback is specified', async () => {
+        const cache = new Cache(10);
+
+        const error = new Error('failed');
+
+        const loader = jest.fn().mockRejectedValue(error);
+        const options: EntryOptions<string> = {
+            cacheKey: 'key',
+            loader: loader,
+        };
+
+        let promise: Promise<any>|undefined;
+
+        try {
+            cache.load(options);
+        } catch (result: any|undefined) {
+            promise = result;
+        }
+
+        await expect(promise).resolves.toBeUndefined();
+
+        await expect(() => cache.load(options)).toThrow(error);
     });
 
     it('should cache the error', async () => {

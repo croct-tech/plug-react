@@ -4,7 +4,7 @@ import {UseEvaluationOptions, useEvaluation} from './useEvaluation';
 
 export default {
     title: 'Hooks/useEvaluation',
-    decorators: [DecoratedStory => (
+    decorators: [(DecoratedStory): ReactElement => (
         <div className="widget">
             <DecoratedStory />
         </div>
