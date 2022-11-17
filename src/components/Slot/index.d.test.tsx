@@ -63,7 +63,7 @@ describe('<Slot  /> typing', () => {
 
         const match = info.name.match(/function\(\w+: (.+?)\):/s);
 
-        if (match != null) {
+        if (match !== null) {
             return match[1].replace(/\s*\n\s*/g, '');
         }
 

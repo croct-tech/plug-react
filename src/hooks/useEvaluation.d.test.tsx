@@ -25,7 +25,7 @@ describe('useEvaluation typing', () => {
 
         const match = info.name.match(/^\(alias\) (useEvaluation<.+?>)/s);
 
-        if (match != null) {
+        if (match !== null) {
             return match[1].replace(/\s*\n\s*/g, '');
         }
 
@@ -37,7 +37,7 @@ describe('useEvaluation typing', () => {
 
         const match = info.name.match(/\): (.+?)(?: \(\+.+\))?\nimport useEvaluation$/s);
 
-        if (match != null) {
+        if (match !== null) {
             return match[1].replace(/\s*\n\s*/g, '');
         }
 

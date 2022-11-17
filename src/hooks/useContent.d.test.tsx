@@ -61,7 +61,7 @@ describe('useContent typing', () => {
 
         const match = info.name.match(/^\(alias\) (useContent<.+?>)/s);
 
-        if (match != null) {
+        if (match !== null) {
             return match[1].replace(/\s*\n\s*/g, '');
         }
 
@@ -75,7 +75,7 @@ describe('useContent typing', () => {
 
         const match = info.name.match(/\): (.+?)(?: \(\+.+\))\nimport useContent$/s);
 
-        if (match != null) {
+        if (match !== null) {
             return match[1].replace(/\s*\n\s*/g, '');
         }
 
