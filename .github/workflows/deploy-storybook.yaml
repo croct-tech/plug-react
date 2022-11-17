@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - 'lib/**'
+      - 'src/**'
 
 jobs:
   deploy-storybook:
