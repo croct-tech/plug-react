@@ -35,9 +35,9 @@ const NewsWidget: FunctionComponent<NewsWidgetProps> = ({city}): ReactElement =>
     </div>
 );
 
-export const WithSuspense: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
+export const WithSuspense: Story<Omit<PersonalizationProps<string>, 'query'>> = args => (
     <Suspense fallback="✨ Personalizing content...">
-        <Personalization {...args} expression="location's city">
+        <Personalization {...args} query="location's city">
             {(city: string): ReactElement => (
                 <NewsWidget city={city} />
             )}
@@ -49,8 +49,8 @@ WithSuspense.args = {
     cacheKey: 'suspense',
 };
 
-export const WithInitialState: Story<Omit<PersonalizationProps<string, null>, 'expression'>> = args => (
-    <Personalization {...args} expression="location's city">
+export const WithInitialState: Story<Omit<PersonalizationProps<string, null>, 'query'>> = args => (
+    <Personalization {...args} query="location's city">
         {(city: string|null): ReactElement => (
             <NewsWidget city={city} />
         )}
@@ -64,7 +64,7 @@ WithInitialState.args = {
 
 export const WithFallbackState: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
     <Suspense fallback="✨ Personalizing content...">
-        <Personalization {...args} expression="location's city">
+        <Personalization {...args} query="location's city">
             {(city: string): ReactElement => (
                 <NewsWidget city={city} />
             )}

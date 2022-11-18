@@ -25,7 +25,7 @@ describe('useEvaluation', () => {
         jest.resetAllMocks();
     });
 
-    it('should evaluate an expression', () => {
+    it('should evaluate a query', () => {
         const evaluationOptions: EvaluationOptions = {
             timeout: 100,
             attributes: {
@@ -38,10 +38,10 @@ describe('useEvaluation', () => {
         jest.mocked(useCroct).mockReturnValue({evaluate: evaluate} as Plug);
         jest.mocked(useLoader).mockReturnValue('foo');
 
-        const expression = 'location';
+        const query = 'location';
 
         const {result} = renderHook(
-            () => useEvaluation(expression, {
+            () => useEvaluation(query, {
                 ...evaluationOptions,
                 cacheKey: 'unique',
                 fallback: 'error',
@@ -62,7 +62,7 @@ describe('useEvaluation', () => {
             .calls[0][0]
             .loader();
 
-        expect(evaluate).toHaveBeenCalledWith(expression, evaluationOptions);
+        expect(evaluate).toHaveBeenCalledWith(query, evaluationOptions);
 
         expect(result.current).toBe('foo');
     });
@@ -78,15 +78,15 @@ describe('useEvaluation', () => {
         jest.mocked(useCroct).mockReturnValue({evaluate: evaluate} as Plug);
         jest.mocked(useLoader).mockReturnValue('foo');
 
-        const expression = 'location';
+        const query = 'location';
 
-        renderHook(() => useEvaluation(expression, evaluationOptions));
+        renderHook(() => useEvaluation(query, evaluationOptions));
 
         jest.mocked(useLoader)
             .mock
             .calls[0][0]
             .loader();
 
-        expect(evaluate).toHaveBeenCalledWith(expression, {});
+        expect(evaluate).toHaveBeenCalledWith(query, {});
     });
 });

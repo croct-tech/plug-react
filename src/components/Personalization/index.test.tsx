@@ -11,9 +11,9 @@ jest.mock(
 );
 
 describe('<Personalization />', () => {
-    it('should evaluate and render an expression', () => {
-        const {expression, children, ...options}: PersonalizationProps<string> = {
-            expression: '"example"',
+    it('should evaluate and render a query', () => {
+        const {query, children, ...options}: PersonalizationProps<string> = {
+            query: '"example"',
             children: jest.fn(result => result),
             fallback: 'fallback',
         };
@@ -23,12 +23,12 @@ describe('<Personalization />', () => {
         jest.mocked(useEvaluation).mockReturnValue(result);
 
         render(
-            <Personalization expression={expression} {...options}>
+            <Personalization query={query} {...options}>
                 {children}
             </Personalization>,
         );
 
-        expect(useEvaluation).toHaveBeenCalledWith(expression, options);
+        expect(useEvaluation).toHaveBeenCalledWith(query, options);
         expect(children).toHaveBeenCalledWith(result);
         expect(screen.getByText(result)).toBeInTheDocument();
     });

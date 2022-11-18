@@ -1,6 +1,6 @@
 import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
 import {JsonObject} from '@croct/plug/sdk/json';
-import {FetchOptions} from '@croct/sdk/facade/contentFetcherFacade';
+import {FetchOptions} from '@croct/plug/plug';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
