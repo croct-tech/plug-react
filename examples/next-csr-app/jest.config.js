@@ -28,7 +28,7 @@ module.exports = {
         '^@/lib/(.*)$': '<rootDir>/lib/$1',
     },
     // Add more setup options before each test is run
-    // setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+    setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
     testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.next/'],
     testEnvironment: 'jsdom',
     transform: {

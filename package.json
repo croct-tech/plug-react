@@ -28,7 +28,7 @@
     "lint": "eslint 'src/**/*.ts' 'src/**/*.tsx'",
     "test": "jest -c jest.config.js --coverage",
     "validate": "tsc --noEmit",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "bundle": "microbundle --jsx React.createElement --no-compress --format modern,cjs",
     "storybook": "start-storybook -s ./.storybook/static -p 6006 --no-manager-cache",
     "build-storybook": "build-storybook -s ./.storybook/static"
@@ -38,8 +38,8 @@
     "react-dom": "^16.8.0  || ^17.0.0 || ^18.0.0"
   },
   "dependencies": {
-    "@croct/plug": "^0.10.2",
-    "@croct/sdk": "^0.10.0"
+    "@croct/plug": "^0.11.0-alpha",
+    "@croct/sdk": "^0.11.0-alpha"
   },
   "devDependencies": {
     "@babel/core": "^7.18.5",

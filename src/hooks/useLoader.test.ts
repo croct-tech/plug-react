@@ -1,5 +1,4 @@
 import {act, renderHook, waitFor} from '@testing-library/react';
-import {setImmediate} from 'timers';
 import {useLoader} from './useLoader';
 
 describe('useLoader', () => {
@@ -27,9 +26,7 @@ describe('useLoader', () => {
     // Needed to use fake timers and promises:
     // https://github.com/testing-library/react-testing-library/issues/244#issuecomment-449461804
     function flushPromises(): Promise<void> {
-        return new Promise(resolve => {
-            setImmediate(resolve);
-        });
+        return Promise.resolve();
     }
 
     it('should return the load the value and cache on success', async () => {

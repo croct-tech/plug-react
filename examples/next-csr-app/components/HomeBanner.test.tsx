@@ -1,18 +1,12 @@
-import {render, screen, waitFor} from '@testing-library/react';
+import {act, render, screen, waitFor} from '@testing-library/react';
 import {CroctProvider} from '@croct/plug-react';
 import croct from '@croct/plug';
 import {SlotContent} from '@croct/plug/slot';
 import HomeBanner, {HomeBannerProps} from '@/components/HomeBanner';
 
-jest.mock(
-    '@croct/plug',
-    () => ({
-        __esModule: true,
-        default: {
-            fetch: jest.fn(),
-        },
-    }),
-);
+function flushPromises(): Promise<void> {
+    return Promise.resolve();
+}
 
 describe('<HomeBanner />', () => {
     const defaultContent: HomeBannerProps['defaultContent'] = {
@@ -38,7 +32,7 @@ describe('<HomeBanner />', () => {
             },
         };
 
-        const fetchContent = jest.mocked(croct.fetch);
+        const fetchContent = jest.spyOn(croct, 'fetch');
 
         fetchContent.mockResolvedValue({
             content: content,
@@ -52,7 +46,7 @@ describe('<HomeBanner />', () => {
             </CroctProvider>,
         );
 
-        expect(fetchContent).toHaveBeenCalledWith('home-banner');
+        expect(fetchContent).toHaveBeenCalledWith('home-banner@1', {});
 
         expect(screen.getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
 
@@ -61,13 +55,15 @@ describe('<HomeBanner />', () => {
 
         expect(screen.getByText('Discover how')).toBeInTheDocument();
 
+        await act(flushPromises);
+
         await waitFor(() => {
             expect(screen.getByText(content.title)).toBeInTheDocument();
         });
     });
 
-    it('should render the fallback content on error', () => {
-        const fetchContent = jest.mocked(croct.fetch);
+    it('should render the fallback content on error', async () => {
+        const fetchContent = jest.spyOn(croct, 'fetch');
 
         fetchContent.mockRejectedValue(new Error('failure'));
 
@@ -77,7 +73,9 @@ describe('<HomeBanner />', () => {
             </CroctProvider>,
         );
 
-        expect(fetchContent).toHaveBeenCalledWith('home-banner');
+        await act(flushPromises);
+
+        expect(fetchContent).toHaveBeenCalledWith('home-banner@1', {});
 
         expect(screen.getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
 

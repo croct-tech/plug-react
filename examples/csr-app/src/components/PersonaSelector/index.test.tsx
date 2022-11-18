@@ -5,23 +5,13 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import PersonaSelector from './index';
 
-jest.mock(
-    '@croct/plug',
-    () => ({
-        __esModule: true,
-        default: {
-            evaluate: jest.fn(),
-        },
-    }),
-);
-
 describe('<PersonaSelector />', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
 
     it('should select the current persona by default on success', async () => {
-        const evaluate = jest.mocked(croct.evaluate);
+        const evaluate = jest.spyOn(croct, 'evaluate');
 
         evaluate.mockResolvedValue('developer');
 
@@ -41,7 +31,7 @@ describe('<PersonaSelector />', () => {
     });
 
     it('should render the default persona on error', async () => {
-        const evaluate = jest.mocked(croct.evaluate);
+        const evaluate = jest.spyOn(croct, 'evaluate');
 
         evaluate.mockRejectedValue(new Error('failure'));
 
@@ -61,7 +51,7 @@ describe('<PersonaSelector />', () => {
     });
 
     it('should save the selected persona', async () => {
-        const evaluate = jest.mocked(croct.evaluate);
+        const evaluate = jest.spyOn(croct, 'evaluate');
 
         evaluate.mockResolvedValue('default');
 

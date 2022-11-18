@@ -345,6 +345,15 @@ export default function HomePage(): ReactElement {
 }
 ```
 
+You can specify the version of the slot by passing a versioned ID in the form `id@version`. For example,
+passing `home-banner@1` will fetch the content for the `home-banner` slot in version 1. Not specifying a
+version number is the same as passing `home-banner@latest`, which will load the latest version of the slot.
+
+> ✅ Best practice  
+> It's strongly recommended to specify a slot version for production deployments.
+> That way, you ensure the front end will always receive content with the expected
+> schema while your team can freely evolve the content's schema in parallel.
+
 #### Fault tolerance
 
 The following example shows how you can specify a fallback state for the `home-banner` slot:
@@ -683,7 +692,7 @@ The `useContent` hook fetches the content of a slot.
 The hook has the following signature:
 
 ```ts
-function useContent<Content extends NullableJsonObject>(slotId: string, options: Options = {}): Content
+function useContent(slotId: string, options: Options = {}): JsonObject
 ```
 
 These are the currently supported options:
@@ -695,8 +704,6 @@ These are the currently supported options:
 | `cacheKey`        | string  | An identifier that allows keeping the cached content separate from other cached items. By default, the cache key is formed from the slot ID.                          |
 | `expiration`      | number  | The cache expiration time in milliseconds, extended on every render. If negative, the cache never expires. By default, the cache lifespan is set to 60000 (1 minute). |
 
-The slot ID can be the plain ID of the slot, or a versioned ID in the form `id@version`. If no version is specified, the
-latest version will be fetched.
 
 #### Code Sample
 
