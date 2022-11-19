@@ -34,6 +34,7 @@ jobs:
         run: npm run build-storybook
 
       - name: Deploy GitHub Pages
+        if: ${{ !github.event.release.prerelease }}
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages

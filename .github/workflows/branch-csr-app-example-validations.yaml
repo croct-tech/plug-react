@@ -1,0 +1,118 @@
+name: CSR App Example Validations
+
+on:
+  push:
+    tags-ignore:
+      - '**'
+    branches:
+      - master
+  pull_request:
+    types:
+      - synchronize
+      - opened
+
+jobs:
+  security-checks:
+   runs-on: ubuntu-latest
+   defaults:
+     run:
+       working-directory: examples/csr-app
+   steps:
+     - uses: actions/checkout@v1
+     - uses: actions/setup-node@v1
+       with:
+         node-version: 16
+
+     - name: Cache dependencies
+       id: cache-dependencies
+       uses: actions/cache@v1
+       with:
+         path: examples/csr-app/node_modules
+         key: csr_app_example_node_modules-${{ hashFiles('**/package-lock.json') }}
+
+     - name: Install dependencies
+       if: steps.cache-dependencies.outputs.cache-hit != 'true'
+       run: npm ci
+
+     - name: Check dependency vulnerabilities
+       run: |-
+         npm audit --omit=dev
+
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/csr-app
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v3
+        with:
+          path: examples/csr-app/node_modules
+          key: csr_app_example_node_modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Check compilation errors
+        run: npm run validate
+
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/csr-app
+    needs:
+      - validate
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v3
+        with:
+          path: examples/csr-app/node_modules
+          key: csr_app_example_node_modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Check coding standard violations
+        run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/csr-app
+    needs:
+      - validate
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v3
+        with:
+          path: examples/csr-app/node_modules
+          key: csr_app_example_node_modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test

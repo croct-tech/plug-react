@@ -9,10 +9,10 @@ jest.mock(
     () => ({
         __esModule: true,
         /*
-     * eslint-disable-next-line prefer-arrow-callback --
-     * The mock can't be an arrow function because calling new on
-     * an arrow function is not allowed in JavaScript.
-     */
+         * eslint-disable-next-line prefer-arrow-callback --
+         * The mock can't be an arrow function because calling new on
+         * an arrow function is not allowed in JavaScript.
+         */
         ContentFetcher: jest.fn(function constructor(this: ContentFetcher) {
             this.fetch = mockFetch;
         }),
