@@ -5,7 +5,7 @@ import {fetchContent, FetchOptions} from './fetchContent';
 const mockFetch: ContentFetcher['fetch'] = jest.fn();
 
 jest.mock(
-    '@croct/sdk/ContentFetcher',
+    '@croct/sdk/contentFetcher',
     () => ({
         __esModule: true,
         /*
