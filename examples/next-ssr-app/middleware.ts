@@ -1,18 +1,10 @@
 import {NextResponse} from 'next/server';
 import type {NextRequest} from 'next/server';
 import {v4 as uuidv4} from 'uuid';
-import {
-    CLIENT_ID_COOKIE,
-    CLIENT_IP_HEADER,
-    PREVIEW_TOKEN_COOKIE,
-    PREVIEW_PARAMETER,
-    CLIENT_ID_HEADER,
-    PREVIEW_TOKEN_HEADER,
-    REQUEST_URL_HEADER,
-} from '@/lib/constants';
+import {Cookie, Header, QueryParameter} from '@/lib/constants';
 
 // 1 year
-const CLIENT_ID_COOKIE_EXPIRATION = 60 * 60 * 24 * 365;
+const CLIENT_ID_DURATION = 60 * 60 * 24 * 365;
 
 function isPreviewTokenValid(token: unknown): token is string {
     if (typeof token !== 'string' || token === 'exit') {
@@ -31,8 +23,8 @@ function isPreviewTokenValid(token: unknown): token is string {
 
 function getPreviewToken(request: NextRequest): string|null {
     const {searchParams} = request.nextUrl;
-    const previewToken = searchParams.get(PREVIEW_PARAMETER)
-        ?? request.cookies.get(PREVIEW_TOKEN_COOKIE)?.value;
+    const previewToken = searchParams.get(QueryParameter.PREVIEW_TOKEN)
+        ?? request.cookies.get(Cookie.PREVIEW_TOKEN)?.value;
 
     if (previewToken === undefined) {
         return null;
@@ -46,48 +38,37 @@ function getPreviewToken(request: NextRequest): string|null {
 }
 
 function getCurrentUrl(request: NextRequest): string {
-    const url = new URL(request.url);
+    const url = new URL(request.nextUrl.toString());
 
-    url.searchParams.delete(PREVIEW_PARAMETER);
+    url.searchParams.delete(QueryParameter.PREVIEW_TOKEN);
 
     return url.toString();
 }
 
-function getClientIp(request: NextRequest): string|null {
-    const {headers} = request;
-
-    return request.ip
-        ?? headers.get('x-forwarded-for')
-        ?? headers.get('x-real-ip')
-        ?? null;
-}
-
 function getClientId(request: NextRequest): string {
-    return request.cookies.get(CLIENT_ID_COOKIE)?.value
+    return request.cookies.get(Cookie.CLIENT_ID)?.value
         ?? uuidv4().replaceAll('-', '');
 }
 
 export function middleware(request: NextRequest): NextResponse {
     const headers = new Headers(request.headers);
 
-    headers.set(REQUEST_URL_HEADER, getCurrentUrl(request));
+    headers.set(Header.REQUEST_URI, getCurrentUrl(request));
 
     const clientId = getClientId(request);
 
     if (clientId !== null) {
-        headers.set(CLIENT_ID_HEADER, clientId);
+        headers.set(Header.CLIENT_ID, clientId);
     }
 
-    const clientIp = getClientIp(request);
-
-    if (clientIp !== null) {
-        headers.set(CLIENT_IP_HEADER, clientIp);
+    if (request.ip !== undefined) {
+        headers.set(Header.CLIENT_IP, request.ip);
     }
 
     const previewToken = getPreviewToken(request);
 
     if (previewToken !== null && previewToken !== 'exit') {
-        headers.set(PREVIEW_TOKEN_HEADER, previewToken);
+        headers.set(Header.PREVIEW_TOKEN, previewToken);
     }
 
     const response = NextResponse.next({
@@ -97,13 +78,18 @@ export function middleware(request: NextRequest): NextResponse {
     });
 
     if (previewToken === 'exit') {
-        response.cookies.delete(PREVIEW_TOKEN_COOKIE);
+        response.cookies.delete(Cookie.PREVIEW_TOKEN);
     } else if (previewToken !== null) {
-        response.cookies.set(PREVIEW_TOKEN_COOKIE, '', {maxAge: 0});
+        response.cookies.set(Cookie.PREVIEW_TOKEN, previewToken, {
+            maxAge: 0,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'strict',
+        });
     }
 
-    response.cookies.set(CLIENT_ID_COOKIE, clientId, {
-        maxAge: CLIENT_ID_COOKIE_EXPIRATION,
+    response.cookies.set(Cookie.CLIENT_ID, clientId, {
+        maxAge: CLIENT_ID_DURATION,
         httpOnly: true,
         secure: true,
         sameSite: 'strict',
