@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2019",
     "outDir": "build",
-    "target": "esnext",
-    "module": "esnext",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom"],
     "types": [
       "jest",
       "node"
