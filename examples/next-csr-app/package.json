@@ -16,7 +16,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@croct/plug": "^0.11.0-alpha",
+    "@croct/plug": "^0.11.0-alpha.2",
     "@croct/eslint-plugin": "^0.6.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
