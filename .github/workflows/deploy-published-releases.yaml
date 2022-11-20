@@ -28,8 +28,7 @@ jobs:
           rm -rf ~/.npmrc
 
       - name: Build package
-        run: |-
-          npm run bundle
+        run: npm run build
 
       - name: Prepare release
         run: |-
