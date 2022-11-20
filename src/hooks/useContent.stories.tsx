@@ -4,7 +4,7 @@ import {UseContentOptions, useContent} from './useContent';
 
 export default {
     title: 'Hooks/useContent',
-    decorators: [DecoratedStory => (
+    decorators: [(DecoratedStory): ReactElement => (
         <div className="card">
             <DecoratedStory />
         </div>
@@ -38,22 +38,28 @@ const defaultHomeBannerProps: HomeBannerProps = {
     },
 };
 
-const HomeBanner: FunctionComponent<HomeBannerProps> = ({loading, title, subtitle, cta}): ReactElement => (
-    <div className={`home-banner${loading ? ' loading' : ''}`}>
-        <h1>{title}</h1>
-        <p>{subtitle}</p>
-        <a href={cta.link} className="cta">{cta.label}</a>
-    </div>
-);
+const HomeBanner: FunctionComponent<HomeBannerProps> = (props): ReactElement => {
+    const {loading, title, subtitle, cta} = props;
+
+    return (
+        <div className={`home-banner${loading ? ' loading' : ''}`}>
+            <h1>{title}</h1>
+            <p>{subtitle}</p>
+            <a href={cta.link} className="cta">{cta.label}</a>
+        </div>
+    );
+};
 
 type HeroOptions = UseContentOptions<HomeBannerProps, HomeBannerProps> & {
     slotId?: 'home-banner',
 };
 
-const PersonalizedHomeBanner: FunctionComponent<HeroOptions> = ({slotId = 'home-banner', ...options}): ReactElement => {
-    const props = useContent<HomeBannerProps>(slotId, options);
+const PersonalizedHomeBanner: FunctionComponent<HeroOptions> = (props): ReactElement => {
+    const {slotId = 'home-banner', ...options} = props;
 
-    return (<HomeBanner {...props} />);
+    const content = useContent<HomeBannerProps>(slotId, options);
+
+    return (<HomeBanner {...content} />);
 };
 
 export const WithSuspense: Story<HeroOptions> = args => (

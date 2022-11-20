@@ -24,20 +24,20 @@ export type UseEvaluationOptions<I, F> = EvaluationOptions & {
 };
 
 type UseEvaluationHook = <T extends JsonValue, I = T, F = T>(
-    expression: string,
+    query: string,
     options?: UseEvaluationOptions<I, F>,
 ) => T | I | F;
 
 function useCsrEvaluation<T = JsonValue, I = T, F = T>(
-    expression: string,
+    query: string,
     options: UseEvaluationOptions<I, F> = {},
 ): T | I | F {
     const {cacheKey, fallback, initial, expiration, ...evaluationOptions} = options;
     const croct = useCroct();
 
     return useLoader<T | I | F>({
-        cacheKey: `useEvaluation:${cacheKey ?? ''}:${expression}:${JSON.stringify(options.attributes ?? '')}`,
-        loader: () => croct.evaluate<T & JsonValue>(expression, cleanEvaluationOptions(evaluationOptions)),
+        cacheKey: `useEvaluation:${cacheKey ?? ''}:${query}:${JSON.stringify(options.attributes ?? '')}`,
+        loader: () => croct.evaluate<T & JsonValue>(query, cleanEvaluationOptions(evaluationOptions)),
         initial: initial,
         fallback: fallback,
         expiration: expiration,

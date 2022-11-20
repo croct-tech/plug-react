@@ -1,10 +1,13 @@
 import {renderHook} from '@testing-library/react';
 import {useEvaluation} from './useEvaluation';
 
-jest.mock('../ssr-polyfills', () => ({
-    __esModule: true,
-    isSsr: () => true,
-}));
+jest.mock(
+    '../ssr-polyfills',
+    () => ({
+        __esModule: true,
+        isSsr: (): boolean => true,
+    }),
+);
 
 describe('useEvaluation (SSR)', () => {
     it('should render the initial value on the server-side', () => {

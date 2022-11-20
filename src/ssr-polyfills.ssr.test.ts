@@ -4,10 +4,13 @@
 import croct from '@croct/plug';
 import {croct as croctPolyfill, isSsr} from './ssr-polyfills';
 
-jest.mock('@croct/plug', () => ({
-    plug: jest.fn(),
-    unplug: jest.fn(),
-}));
+jest.mock(
+    '@croct/plug',
+    () => ({
+        plug: jest.fn(),
+        unplug: jest.fn(),
+    }),
+);
 
 describe('Croct polyfill (SSR)', () => {
     it('should not plug', () => {

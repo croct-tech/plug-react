@@ -5,7 +5,7 @@ const tsService = create({
     cwd: __dirname,
     transpileOnly: false,
     ignore: [
-        'src/slots.d.ts',
+        'lib/slots.d.ts',
     ],
 });
 
@@ -17,15 +17,13 @@ describe('useContent typing', () => {
     `;
 
     const slotMapping = `
-        import {NullableJsonObject} from '@croct/plug/sdk/json';
-
         type HomeBannerProps = {
             title: string,
             subtitle: string,
         };
         
-        declare module '@croct/plug/fetch' {
-            interface SlotMap extends Record<string, NullableJsonObject> {
+        declare module '@croct/plug/slot' {
+            interface SlotMap {
                 'home-banner': HomeBannerProps;
             }
         }
@@ -52,7 +50,7 @@ describe('useContent typing', () => {
         };
     }
 
-    function compileCode(opts: CodeOptions) {
+    function compileCode(opts: CodeOptions): void {
         tsService.compile(assembleCode(opts).code, testFilename);
     }
 
@@ -63,7 +61,7 @@ describe('useContent typing', () => {
 
         const match = info.name.match(/^\(alias\) (useContent<.+?>)/s);
 
-        if (match) {
+        if (match !== null) {
             return match[1].replace(/\s*\n\s*/g, '');
         }
 
@@ -77,14 +75,14 @@ describe('useContent typing', () => {
 
         const match = info.name.match(/\): (.+?)(?: \(\+.+\))\nimport useContent$/s);
 
-        if (match) {
+        if (match !== null) {
             return match[1].replace(/\s*\n\s*/g, '');
         }
 
         return info.name;
     }
 
-    it('should define the return type as a nullable JSON object by default for unmapped slots', () => {
+    it('should define the return type as a JSON object by default for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 useContent('home-banner');
@@ -95,10 +93,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<NullableJsonObject, NullableJsonObject, NullableJsonObject>',
+            'useContent<JsonObject, JsonObject, JsonObject>',
         );
 
-        expect(getReturnType(code)).toBe('NullableJsonObject');
+        expect(getReturnType(code)).toBe('JsonObject');
     });
 
     it('should include the type of the initial value on the return type for unmapped slots', () => {
@@ -112,10 +110,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<NullableJsonObject, boolean, NullableJsonObject>',
+            'useContent<JsonObject, boolean, JsonObject>',
         );
 
-        expect(getReturnType(code)).toBe('boolean | NullableJsonObject');
+        expect(getReturnType(code)).toBe('boolean | JsonObject');
     });
 
     it('should include the type of the fallback value on the return type for unmapped slots', () => {
@@ -129,10 +127,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<NullableJsonObject, NullableJsonObject, number>',
+            'useContent<JsonObject, JsonObject, number>',
         );
 
-        expect(getReturnType(code)).toBe('number | NullableJsonObject');
+        expect(getReturnType(code)).toBe('number | JsonObject');
     });
 
     it('should include the types of both the initial and fallback values on the return type for unmapped slots', () => {
@@ -146,10 +144,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<NullableJsonObject, boolean, number>',
+            'useContent<JsonObject, boolean, number>',
         );
 
-        expect(getReturnType(code)).toBe('number | boolean | NullableJsonObject');
+        expect(getReturnType(code)).toBe('number | boolean | JsonObject');
     });
 
     it('should allow narrowing the return type for unmapped slots', () => {
@@ -220,7 +218,7 @@ describe('useContent typing', () => {
         expect(getReturnType(code)).toBe('number | boolean | {foo: string;}');
     });
 
-    it('should require specifying nullable JSON object as return type for mapped slots', () => {
+    it('should require specifying JSON object as return type for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 useContent<true>('home-banner');

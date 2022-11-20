@@ -24,7 +24,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: node_modules
-          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+          key: node_modules-${{ hashFiles('package-lock.json') }}
 
       - name: Install dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
@@ -34,6 +34,7 @@ jobs:
         run: npm run build-storybook
 
       - name: Deploy GitHub Pages
+        if: ${{ !github.event.release.prerelease }}
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           branch: gh-pages

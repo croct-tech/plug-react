@@ -1,31 +1,35 @@
-import {render} from '@testing-library/react';
+import {render, screen} from '@testing-library/react';
 import {Personalization, PersonalizationProps} from './index';
 import {useEvaluation} from '../../hooks';
+import '@testing-library/jest-dom';
 
-jest.mock('../../hooks/useEvaluation', () => ({
-    useEvaluation: jest.fn(),
-}));
+jest.mock(
+    '../../hooks/useEvaluation',
+    () => ({
+        useEvaluation: jest.fn(),
+    }),
+);
 
 describe('<Personalization />', () => {
-    it('should evaluate and render an expression', () => {
-        const {expression, children, ...options}: PersonalizationProps<string> = {
-            expression: '"example"',
+    it('should evaluate and render a query', () => {
+        const {query, children, ...options}: PersonalizationProps<string> = {
+            query: '"example"',
             children: jest.fn(result => result),
             fallback: 'fallback',
         };
 
         const result = 'result';
 
-        (useEvaluation as jest.Mock).mockReturnValue(result);
+        jest.mocked(useEvaluation).mockReturnValue(result);
 
-        const {getByText} = render(
-            <Personalization expression={expression} {...options}>
+        render(
+            <Personalization query={query} {...options}>
                 {children}
             </Personalization>,
         );
 
-        expect(useEvaluation).toHaveBeenCalledWith(expression, options);
+        expect(useEvaluation).toHaveBeenCalledWith(query, options);
         expect(children).toHaveBeenCalledWith(result);
-        expect(getByText(result)).not.toBeNull();
+        expect(screen.getByText(result)).toBeInTheDocument();
     });
 });

@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Cache, EntryOptions} from './Cache';
 
 const cache = new Cache(60 * 1000);
@@ -10,17 +10,18 @@ export type CacheOptions<R> = EntryOptions<R> & {
 export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
     const loadedValue: R|undefined = cache.get<R>(options.cacheKey)?.result;
     const [value, setValue] = useState(loadedValue !== undefined ? loadedValue : initial);
-    const [isUnmounted, setUnmounted] = useState(false);
+    const mountedRef = useRef(true);
+    const optionsRef = useRef(initial !== undefined ? options : undefined);
 
     useEffect(
         () => {
-            if (initial !== undefined) {
+            if (optionsRef.current !== undefined) {
                 try {
-                    setValue(cache.load(options));
+                    setValue(cache.load(optionsRef.current));
                 } catch (result: unknown) {
                     if (result instanceof Promise) {
                         result.then((resolvedValue: R) => {
-                            if (!isUnmounted) {
+                            if (mountedRef.current) {
                                 setValue(resolvedValue);
                             }
                         });
@@ -35,7 +36,7 @@ export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
             }
 
             return () => {
-                setUnmounted(true);
+                mountedRef.current = false;
             };
         },
         [],

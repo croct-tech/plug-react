@@ -2,11 +2,14 @@ import {renderHook} from '@testing-library/react';
 import {useCroct} from './useCroct';
 import {CroctProvider} from '../CroctProvider';
 
-jest.mock('../ssr-polyfills', () => ({
-    __esModule: true,
-    ...jest.requireActual('../ssr-polyfills'),
-    isSsr: () => true,
-}));
+jest.mock(
+    '../ssr-polyfills',
+    () => ({
+        __esModule: true,
+        ...jest.requireActual('../ssr-polyfills'),
+        isSsr: (): boolean => true,
+    }),
+);
 
 describe('useCroct', () => {
     it('should not fail on server-side rendering', () => {

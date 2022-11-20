@@ -4,7 +4,7 @@ import {create} from 'ts-node';
 const ts = create({
     cwd: __dirname,
     ignore: [
-        'src/slots.d.ts',
+        'lib/slots.d.ts',
     ],
 });
 
@@ -15,7 +15,7 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true" >
+            <Personalization query="true" >
                 {(foo: string) => typeof foo}
             </Personalization>;
         `;
@@ -27,10 +27,11 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true">
+            <Personalization query="true">
                 {(foo: Error) => typeof foo}
             </Personalization>;
         `;
+
         expect(() => ts.compile(code, testFilename)).toThrow();
     });
 
@@ -38,7 +39,7 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true" initial={true}>
+            <Personalization query="true" initial={true}>
                 {(foo: string|boolean) => typeof foo}
             </Personalization>;
         `;
@@ -50,7 +51,7 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true" initial={true}>
+            <Personalization query="true" initial={true}>
                 {(foo: string) => typeof foo}
             </Personalization>;
         `;
@@ -62,7 +63,7 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true" fallback={1}>
+            <Personalization query="true" fallback={1}>
                 {(foo: string|number) => typeof foo}
             </Personalization>;
         `;
@@ -74,7 +75,7 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true" fallback={1}>
+            <Personalization query="true" fallback={1}>
                 {(foo: string) => typeof foo}
             </Personalization>;
         `;
@@ -86,7 +87,7 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true" initial={true} fallback={1}>
+            <Personalization query="true" initial={true} fallback={1}>
                 {(foo: string|boolean|number) => typeof foo}
             </Personalization>;
         `;
@@ -98,7 +99,7 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true" initial={true} fallback={1}>
+            <Personalization query="true" initial={true} fallback={1}>
                 {(foo: string|boolean) => typeof foo}
             </Personalization>;
         `;
@@ -110,7 +111,7 @@ describe('<Personalization /> typing', () => {
         const code = `
             import {Personalization} from './index';
 
-            <Personalization expression="true" initial={true} fallback={1}>
+            <Personalization query="true" initial={true} fallback={1}>
                 {(foo: string|number) => typeof foo}
             </Personalization>;
         `;

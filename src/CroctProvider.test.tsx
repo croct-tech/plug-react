@@ -4,33 +4,37 @@ import {Plug} from '@croct/plug';
 import {croct} from './ssr-polyfills';
 import {CroctContext, CroctProvider, CroctProviderProps} from './CroctProvider';
 
-jest.mock('./ssr-polyfills', () => ({
-    ...jest.requireActual('./ssr-polyfills'),
-    croct: {
-        plug: jest.fn(),
-        unplug: jest.fn(),
-    },
-}));
+jest.mock(
+    './ssr-polyfills',
+    () => ({
+        ...jest.requireActual('./ssr-polyfills'),
+        croct: {
+            plug: jest.fn(),
+            unplug: jest.fn(),
+        },
+    }),
+);
 
-// eslint-disable-next-line no-console
+// eslint-disable-next-line no-console -- Needed to test console output.
 const consoleError = console.error;
 
-afterEach(() => {
-    // eslint-disable-next-line no-console
-    console.error = consoleError;
-});
-
 describe('<CroctProvider />', () => {
-    it('should fail if nested', () => {
-        // eslint-disable-next-line no-console
-        console.error = jest.fn();
+    afterEach(() => {
+        // eslint-disable-next-line no-console -- Needed to restore the original console.error.
+        console.error = consoleError;
+    });
 
-        expect(() => render(
-            <CroctProvider appId="00000000-0000-0000-0000-000000000000">
-                <CroctProvider appId="00000000-0000-0000-0000-000000000000" />
-            </CroctProvider>,
-        ))
-            .toThrow('You cannot render <CroctProvider> inside another <CroctProvider>');
+    it('should fail if nested', () => {
+        // eslint-disable-next-line no-console -- Testing error output
+        jest.spyOn(console, 'error').mockImplementation();
+
+        expect(
+            () => render(
+                <CroctProvider appId="00000000-0000-0000-0000-000000000000">
+                    <CroctProvider appId="00000000-0000-0000-0000-000000000000" />
+                </CroctProvider>,
+            ),
+        ).toThrow('You cannot render <CroctProvider> inside another <CroctProvider>');
     });
 
     it('should initialize the Plug when accessed', () => {
@@ -46,12 +50,12 @@ describe('<CroctProvider />', () => {
             get: jest.fn().mockImplementation(() => initialized),
         });
 
-        (croct.plug as jest.Mock).mockImplementation(() => {
+        jest.mocked(croct.plug).mockImplementation(() => {
             initialized = true;
         });
 
         const callback = jest.fn((context: {plug: Plug}|null) => {
-            // eslint-disable-next-line no-unused-expressions
+            // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- Trigger initialization.
             context?.plug;
 
             return 'foo';

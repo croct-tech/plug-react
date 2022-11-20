@@ -1,7 +1,5 @@
-import {NullableJsonObject} from '@croct/plug/sdk/json';
-
-declare module '@croct/plug/fetch' {
-    type SlotProps = {
+declare module '@croct/plug/slot' {
+    type HomeBannerV1 = {
         title: string,
         subtitle: string,
         cta: {
@@ -10,7 +8,12 @@ declare module '@croct/plug/fetch' {
         },
     };
 
-    interface SlotMap extends Record<string, NullableJsonObject> {
-        'home-banner': SlotProps;
+    interface VersionedSlotMap {
+        'home-banner': {
+            'latest': HomeBannerV1,
+            '1': HomeBannerV1,
+        };
     }
 }
+
+export {};

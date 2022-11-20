@@ -1,30 +1,37 @@
-import {SlotContent, SlotId, SlotMap} from '@croct/plug/fetch';
-import {NullableJsonObject} from '@croct/plug/sdk/json';
+import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
+import {JsonObject} from '@croct/plug/sdk/json';
+import {FetchOptions} from '@croct/plug/plug';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
 
-export type UseContentOptions<I, F> = {
+export type UseContentOptions<I, F> = FetchOptions & {
     fallback?: F,
     initial?: I,
     cacheKey?: string,
     expiration?: number,
 };
 
-function useCsrContent<I, F>(id: SlotId, options: UseContentOptions<I, F> = {}): SlotContent<SlotId> | I | F {
-    const {fallback, initial, cacheKey, expiration} = options;
+function useCsrContent<I, F>(
+    id: VersionedSlotId,
+    options: UseContentOptions<I, F> = {},
+): SlotContent<VersionedSlotId> | I | F {
+    const {fallback, initial, cacheKey, expiration, ...fetchOptions} = options;
     const croct = useCroct();
 
     return useLoader({
         cacheKey: `useContent:${cacheKey ?? ''}:${id}`,
-        loader: () => croct.fetch<SlotContent<SlotId>>(id).then(({payload}) => payload),
+        loader: () => croct.fetch(id, fetchOptions).then(({content}) => content),
         initial: initial,
         fallback: fallback,
         expiration: expiration,
     });
 }
 
-function useSsrContent<I, F>(_: SlotId, {initial}: UseContentOptions<I, F> = {}): SlotContent<SlotId> | I | F {
+function useSsrContent<I, F>(
+    _: VersionedSlotId,
+    {initial}: UseContentOptions<I, F> = {},
+): SlotContent<VersionedSlotId> | I | F {
     if (initial === undefined) {
         throw new Error('The initial value is required for server-side rendering (SSR).');
     }
@@ -33,27 +40,27 @@ function useSsrContent<I, F>(_: SlotId, {initial}: UseContentOptions<I, F> = {})
 }
 
 type UseContentHook = {
-    <P extends NullableJsonObject, I = P, F = P>(
-        id: keyof SlotMap extends never ? string : never,
+    <P extends JsonObject, I = P, F = P>(
+        id: keyof VersionedSlotMap extends never ? string : never,
         options?: UseContentOptions<I, F>
     ): P | I | F,
 
-    <S extends keyof SlotMap>(
+    <S extends VersionedSlotId>(
         id: S,
         options?: UseContentOptions<never, never>
     ): SlotContent<S>,
 
-    <I, S extends keyof SlotMap>(
+    <I, S extends VersionedSlotId>(
         id: S,
         options?: UseContentOptions<I, never>
     ): SlotContent<S> | I,
 
-    <F, S extends keyof SlotMap>(
+    <F, S extends VersionedSlotId>(
         id: S,
         options?: UseContentOptions<never, F>
     ): SlotContent<S> | F,
 
-    <I, F, S extends keyof SlotMap>(
+    <I, F, S extends VersionedSlotId>(
         id: S,
         options?: UseContentOptions<I, F>
     ): SlotContent<S> | I | F,

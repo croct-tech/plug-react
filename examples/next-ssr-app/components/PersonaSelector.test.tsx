@@ -1,82 +1,53 @@
-import {render, waitFor} from '@testing-library/react';
-import {CroctProvider} from '@croct/plug-react';
+import {render, screen} from '@testing-library/react';
 import croct from '@croct/plug';
-import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
-import PersonaSelector from './PersonaSelector';
+import {CroctProvider} from '@croct/plug-react';
+import PersonaSelector from '@/components/PersonaSelector';
 
-describe('<PersonaSelector />', () => {
+jest.mock(
+    'server-only',
+    () => ({__esModule: true}),
+);
+
+jest.mock(
+    '../lib/utils/evaluate',
+    () => ({
+        __esModule: true,
+        evaluate: jest.fn(),
+    }),
+);
+
+describe('<PersonaSeelctor />', () => {
     afterEach(() => {
         jest.clearAllMocks();
     });
 
-    it('should select the current persona by default on success', async () => {
-        const evaluate = jest.spyOn(croct, 'evaluate');
-
-        evaluate.mockResolvedValue('developer');
-
-        const {queryByRole, getByDisplayValue} = render(
+    it('should select the current persona by default on success', () => {
+        render(
             <CroctProvider appId="00000000-0000-0000-0000-000000000000">
-                <PersonaSelector cacheKey="persona-success" />
+                <PersonaSelector persona="developer" />
             </CroctProvider>,
         );
 
-        expect(evaluate).toHaveBeenCalledWith("user's persona or else 'default'", expect.anything());
-
-        expect(queryByRole('combobox')).not.toBeInTheDocument();
-
-        await waitFor(() => {
-            expect(getByDisplayValue('🦸‍♂ Developer')).toBeInTheDocument();
-        });
-    });
-
-    it('should render the default persona on error', async () => {
-        const evaluate = jest.spyOn(croct, 'evaluate');
-
-        evaluate.mockRejectedValue(new Error('failure'));
-
-        const {queryByRole, getByDisplayValue} = render(
-            <CroctProvider appId="00000000-0000-0000-0000-000000000000">
-                <PersonaSelector cacheKey="persona-fallback" />
-            </CroctProvider>,
-        );
-
-        expect(evaluate).toHaveBeenCalledWith("user's persona or else 'default'", expect.anything());
-
-        expect(queryByRole('combobox')).not.toBeInTheDocument();
-
-        await waitFor(() => {
-            expect(getByDisplayValue('👤 Default')).toBeInTheDocument();
-        });
+        expect(screen.getByDisplayValue('🦸‍♂ Developer')).toBeInTheDocument();
     });
 
     it('should save the selected persona', async () => {
-        const evaluate = jest.spyOn(croct, 'evaluate');
-
-        evaluate.mockResolvedValue('default');
-
-        const {getByDisplayValue, queryByRole, getByRole} = render(
+        render(
             <CroctProvider appId="00000000-0000-0000-0000-000000000000">
-                <PersonaSelector cacheKey="persona-save" />
+                <PersonaSelector persona="default" />
             </CroctProvider>,
         );
 
-        expect(evaluate).toHaveBeenCalledWith("user's persona or else 'default'", expect.anything());
-
-        expect(queryByRole('combobox')).not.toBeInTheDocument();
-
-        await waitFor(() => {
-            expect(getByDisplayValue('👤 Default')).toBeInTheDocument();
-        });
+        expect(screen.getByDisplayValue('👤 Default')).toBeInTheDocument();
 
         const listener = jest.fn();
+
         croct.tracker.addListener(listener);
 
-        userEvent.selectOptions(getByRole('combobox'), 'developer');
+        await userEvent.selectOptions(screen.getByRole('combobox'), 'developer');
 
-        await waitFor(() => {
-            expect(getByDisplayValue('🦸‍♂ Developer')).toBeInTheDocument();
-        });
+        expect(screen.getByDisplayValue('🦸‍♂ Developer')).toBeInTheDocument();
 
         expect(listener).toHaveBeenCalledWith(
             expect.objectContaining({

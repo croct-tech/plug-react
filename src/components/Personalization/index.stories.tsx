@@ -5,7 +5,7 @@ import {Personalization, PersonalizationProps} from './index';
 export default {
     title: 'Components/Personalization',
     component: Personalization,
-    decorators: [DecoratedStory => (
+    decorators: [(DecoratedStory): ReactElement => (
         <div className="widget">
             <DecoratedStory />
         </div>
@@ -35,10 +35,10 @@ const NewsWidget: FunctionComponent<NewsWidgetProps> = ({city}): ReactElement =>
     </div>
 );
 
-export const WithSuspense: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
+export const WithSuspense: Story<Omit<PersonalizationProps<string>, 'query'>> = args => (
     <Suspense fallback="✨ Personalizing content...">
-        <Personalization {...args} expression="location's city">
-            {(city: string) => (
+        <Personalization {...args} query="location's city">
+            {(city: string): ReactElement => (
                 <NewsWidget city={city} />
             )}
         </Personalization>
@@ -49,9 +49,9 @@ WithSuspense.args = {
     cacheKey: 'suspense',
 };
 
-export const WithInitialState: Story<Omit<PersonalizationProps<string, null>, 'expression'>> = args => (
-    <Personalization {...args} expression="location's city">
-        {(city: string|null) => (
+export const WithInitialState: Story<Omit<PersonalizationProps<string, null>, 'query'>> = args => (
+    <Personalization {...args} query="location's city">
+        {(city: string|null): ReactElement => (
             <NewsWidget city={city} />
         )}
     </Personalization>
@@ -64,8 +64,8 @@ WithInitialState.args = {
 
 export const WithFallbackState: Story<Omit<PersonalizationProps<string>, 'expression'>> = args => (
     <Suspense fallback="✨ Personalizing content...">
-        <Personalization {...args} expression="location's city">
-            {(city: string) => (
+        <Personalization {...args} query="location's city">
+            {(city: string): ReactElement => (
                 <NewsWidget city={city} />
             )}
         </Personalization>
