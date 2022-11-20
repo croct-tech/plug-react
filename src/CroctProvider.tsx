@@ -48,7 +48,9 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): Rea
             croct.plug(initialConfiguration.current);
 
             return () => {
-                croct.unplug();
+                croct.unplug().catch(() => {
+                    // Ignore errors.
+                });
             };
         },
         [],

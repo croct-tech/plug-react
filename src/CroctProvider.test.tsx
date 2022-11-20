@@ -10,7 +10,7 @@ jest.mock(
         ...jest.requireActual('./ssr-polyfills'),
         croct: {
             plug: jest.fn(),
-            unplug: jest.fn(),
+            unplug: jest.fn(() => Promise.resolve()),
         },
     }),
 );
@@ -81,5 +81,13 @@ describe('<CroctProvider />', () => {
         unmount();
 
         expect(croct.unplug).toHaveBeenCalled();
+    });
+
+    it('should ignore errors on unmount', () => {
+        jest.mocked(croct.unplug).mockRejectedValue(new Error('foo'));
+
+        const {unmount} = render(<CroctProvider appId="00000000-0000-0000-0000-000000000000" />);
+
+        unmount();
     });
 });
