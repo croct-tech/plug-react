@@ -1,4 +1,4 @@
 module.exports = {
     testEnvironment: 'jsdom',
-    testMatch: ['<rootDir>/lib/**/*.test.{ts,tsx}'],
+    testMatch: ['<rootDir>/src/**/*.test.{ts,tsx}'],
 };

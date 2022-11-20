@@ -8,7 +8,7 @@ jest.mock(
     '@croct/plug-react/CroctProvider',
     () => ({
         __esModule: true,
-        default: jest.fn(({children}) => children),
+        CroctProvider: jest.fn(({children}) => children),
     }),
 );
 
