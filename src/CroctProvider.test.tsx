@@ -10,7 +10,7 @@ jest.mock(
         ...jest.requireActual('./ssr-polyfills'),
         croct: {
             plug: jest.fn(),
-            unplug: jest.fn(() => Promise.resolve()),
+            unplug: jest.fn().mockResolvedValue(undefined),
         },
     }),
 );

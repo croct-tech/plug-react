@@ -49,7 +49,7 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): Rea
 
             return () => {
                 croct.unplug().catch(() => {
-                    // Ignore errors.
+                    // Suppress errors.
                 });
             };
         },
