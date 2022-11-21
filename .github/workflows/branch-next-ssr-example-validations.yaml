@@ -18,14 +18,14 @@ jobs:
      run:
        working-directory: examples/next-ssr-app
    steps:
-     - uses: actions/checkout@v1
-     - uses: actions/setup-node@v1
+     - uses: actions/checkout@v3
+     - uses: actions/setup-node@v3
        with:
          node-version: 16
 
      - name: Cache dependencies
        id: cache-dependencies
-       uses: actions/cache@v1
+       uses: actions/cache@v3
        with:
          path: examples/next-ssr-app/node_modules
          key: next_ssr_app_example_node_modules-${{ hashFiles('examples/next-ssr-app/package-lock.json') }}
