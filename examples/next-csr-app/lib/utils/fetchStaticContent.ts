@@ -1,7 +1,7 @@
 import type {JsonObject, SlotContent, VersionedSlotId} from '@croct/plug-react';
 import {fetchContent} from '@croct/plug-react/api';
 
-export function getDefaultContent<
+export function fetchStaticContent<
     I extends VersionedSlotId,
     C extends JsonObject
 >(slotId: I): Promise<SlotContent<I, C>> {
