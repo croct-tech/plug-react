@@ -1,6 +1,6 @@
 import {ReactElement} from 'react';
 import {Slot, SlotContent} from '@croct/plug-react';
-import {getDefaultContent} from '@/lib/utils/getDefaultContent';
+import {fetchStaticContent} from '@/lib/utils/fetchStaticContent';
 
 const SLOT_ID = 'home-banner@1';
 
@@ -14,7 +14,7 @@ export type HomeBannerProps = {
 };
 
 export function getDefaultHomeBannerContent(): Promise<HomeBannerSlotProps> {
-    return getDefaultContent(SLOT_ID);
+    return fetchStaticContent(SLOT_ID);
 }
 
 export default function HomeBanner({cacheKey, defaultContent}: HomeBannerProps): ReactElement {
