@@ -25,8 +25,15 @@ export function fetchContent<I extends VersionedSlotId, C extends JsonObject>(
     options?: FetchOptions<SlotContent<I, C>>,
 ): Promise<Omit<FetchResponse<I, C>, 'payload'>> {
     const {apiKey, fallback, ...fetchOptions} = options ?? {};
+    const [id, version = 'latest'] = slotId.split('@') as [I, `${number}` | 'latest' | undefined];
+
     const promise = (new ContentFetcher({apiKey: apiKey}))
-        .fetch<SlotContent<I, C>>(slotId, fetchOptions);
+        .fetch<SlotContent<I, C>>(
+            id,
+            version === 'latest'
+                ? fetchOptions
+                : {...fetchOptions, version: version},
+        );
 
     if (fallback !== undefined) {
         return promise.catch(
