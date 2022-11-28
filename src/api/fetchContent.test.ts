@@ -53,6 +53,65 @@ describe('fetchContent', () => {
         });
     });
 
+    it('should extract the slot ID and version', async () => {
+        const slotId = 'slot-id';
+        const version = '1';
+        const versionedSlotId = `${slotId}@${version}`;
+
+        const options: FetchOptions = {
+            apiKey: apiKey,
+            timeout: 100,
+        };
+
+        const result: FetchResponse<typeof slotId> = {
+            content: {
+                id: 'test',
+            },
+        };
+
+        jest.mocked(mockFetch).mockResolvedValue(result);
+
+        await expect(fetchContent(versionedSlotId, options)).resolves.toEqual(result);
+
+        expect(ContentFetcher).toHaveBeenCalledWith({
+            apiKey: options.apiKey,
+        });
+
+        expect(mockFetch).toHaveBeenCalledWith(slotId, {
+            timeout: options.timeout,
+            version: version,
+        });
+    });
+
+    it('should fetch content omitting the latest alias', async () => {
+        const slotId = 'slot-id';
+        const version = 'latest';
+        const versionedSlotId = `${slotId}@${version}`;
+
+        const options: FetchOptions = {
+            apiKey: apiKey,
+            timeout: 100,
+        };
+
+        const result: FetchResponse<typeof slotId> = {
+            content: {
+                id: 'test',
+            },
+        };
+
+        jest.mocked(mockFetch).mockResolvedValue(result);
+
+        await expect(fetchContent(versionedSlotId, options)).resolves.toEqual(result);
+
+        expect(ContentFetcher).toHaveBeenCalledWith({
+            apiKey: options.apiKey,
+        });
+
+        expect(mockFetch).toHaveBeenCalledWith(slotId, {
+            timeout: options.timeout,
+        });
+    });
+
     it('should return the fallback value on error', async () => {
         const slotId = 'slot-id';
 
