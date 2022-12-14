@@ -11,7 +11,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@croct/plug-react": "^0.5.0-next.1",
+    "@croct/plug-react": "latest",
     "next": "^13.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@croct/eslint-plugin": "^0.6.3",
-    "@croct/plug": "^0.11.0-alpha.2",
+    "@croct/plug": "latest",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
