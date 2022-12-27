@@ -31,6 +31,7 @@ describe('fetchContent', () => {
 
         const options: FetchOptions = {
             apiKey: apiKey,
+            baseEndpointUrl: 'https://croct.example.com',
             timeout: 100,
         };
 
@@ -46,6 +47,7 @@ describe('fetchContent', () => {
 
         expect(ContentFetcher).toHaveBeenCalledWith({
             apiKey: options.apiKey,
+            baseEndpointUrl: options.baseEndpointUrl,
         });
 
         expect(mockFetch).toHaveBeenCalledWith(slotId, {

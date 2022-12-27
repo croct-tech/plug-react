@@ -29,6 +29,7 @@ describe('evaluate', () => {
         const options: EvaluationOptions = {
             apiKey: apiKey,
             timeout: 100,
+            baseEndpointUrl: 'https://croct.example.com',
         };
 
         const query = 'true';
@@ -39,6 +40,7 @@ describe('evaluate', () => {
 
         expect(Evaluator).toHaveBeenCalledWith({
             apiKey: options.apiKey,
+            baseEndpointUrl: options.baseEndpointUrl,
         });
 
         expect(mockEvaluate).toHaveBeenCalledWith(query, {

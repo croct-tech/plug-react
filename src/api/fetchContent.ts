@@ -9,6 +9,7 @@ import {SlotContent, VersionedSlotId} from '@croct/plug/slot';
 
 type ServerSideOptions<T extends JsonObject> = {
     apiKey: string,
+    baseEndpointUrl?: string,
     fallback?: T,
 };
 
@@ -24,10 +25,10 @@ export function fetchContent<I extends VersionedSlotId, C extends JsonObject>(
     slotId: I,
     options?: FetchOptions<SlotContent<I, C>>,
 ): Promise<Omit<FetchResponse<I, C>, 'payload'>> {
-    const {apiKey, fallback, ...fetchOptions} = options ?? {};
+    const {apiKey, fallback, baseEndpointUrl, ...fetchOptions} = options ?? {};
     const [id, version = 'latest'] = slotId.split('@') as [I, `${number}` | 'latest' | undefined];
 
-    const promise = (new ContentFetcher({apiKey: apiKey}))
+    const promise = (new ContentFetcher({apiKey: apiKey, baseEndpointUrl: baseEndpointUrl}))
         .fetch<SlotContent<I, C>>(
             id,
             version === 'latest'
