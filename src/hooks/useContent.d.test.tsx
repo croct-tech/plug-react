@@ -241,7 +241,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<"home-banner">');
 
-        expect(getReturnType(code)).toBe('HomeBannerProps');
+        expect(getReturnType(code)).toBe('DiscriminatedContent<HomeBannerProps, string>');
     });
 
     it('should include the type of the initial value on the return type for mapped slots', () => {
@@ -256,7 +256,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<boolean, "home-banner">');
 
-        expect(getReturnType(code)).toBe('boolean | HomeBannerProps');
+        expect(getReturnType(code)).toBe('boolean | DiscriminatedContent<HomeBannerProps, string>');
     });
 
     it('should include the type of the fallback value on the return type for mapped slots', () => {
@@ -271,7 +271,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<number, "home-banner">');
 
-        expect(getReturnType(code)).toBe('number | HomeBannerProps');
+        expect(getReturnType(code)).toBe('number | DiscriminatedContent<HomeBannerProps, string>');
     });
 
     it('should include the types of both the initial and fallback values on the return type for mapped slots', () => {
@@ -286,7 +286,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<boolean, number, "home-banner">');
 
-        expect(getReturnType(code)).toBe('number | boolean | HomeBannerProps');
+        expect(getReturnType(code)).toBe('number | boolean | DiscriminatedContent<HomeBannerProps, string>');
     });
 
     it('should not allow overriding the return type for mapped slots', () => {
