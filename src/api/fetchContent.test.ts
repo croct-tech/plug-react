@@ -1,6 +1,6 @@
 import {ContentFetcher} from '@croct/sdk/contentFetcher';
 import {FetchResponse} from '@croct/plug/plug';
-import {DynamicSlotId, SlotContent} from '@croct/plug/slot';
+import {SlotContent} from '@croct/plug/slot';
 import {fetchContent, FetchOptions} from './fetchContent';
 
 const mockFetch: ContentFetcher['fetch'] = jest.fn();
@@ -28,13 +28,15 @@ describe('fetchContent', () => {
     });
 
     it('should forward the call to the content fetcher', async () => {
-        const slotId: DynamicSlotId = 'slot-id';
+        const slotId = 'slot-id';
 
-        const options: FetchOptions<SlotContent> = {
+        const options: FetchOptions = {
             apiKey: apiKey,
             baseEndpointUrl: 'https://croct.example.com',
             timeout: 100,
-            fallback: {},
+            fallback: {
+                _component: 'component-id',
+            },
         };
 
         const result: FetchResponse<typeof slotId> = {
@@ -120,9 +122,10 @@ describe('fetchContent', () => {
     });
 
     it('should return the fallback value on error', async () => {
-        const slotId: DynamicSlotId = 'slot-id';
+        const slotId = 'slot-id';
 
-        const fallback = {
+        const fallback: SlotContent = {
+            _component: 'component-id',
             id: 'fallback',
         };
 

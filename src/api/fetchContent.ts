@@ -19,7 +19,7 @@ export type DynamicContentOptions<T extends JsonObject = JsonObject> =
 export type StaticContentOptions<T extends JsonObject = JsonObject> =
     Omit<BaseStaticOptions, 'version'> & ServerSideOptions<T>;
 
-export type FetchOptions<T extends JsonObject = JsonObject> = DynamicContentOptions<T> | StaticContentOptions<T>;
+export type FetchOptions<T extends JsonObject = SlotContent> = DynamicContentOptions<T> | StaticContentOptions<T>;
 
 export function fetchContent<I extends VersionedSlotId, C extends JsonObject>(
     slotId: I,

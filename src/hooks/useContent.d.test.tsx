@@ -4,9 +4,6 @@ import {create} from 'ts-node';
 const tsService = create({
     cwd: __dirname,
     transpileOnly: false,
-    ignore: [
-        'lib/slots.d.ts',
-    ],
 });
 
 const testFilename = pathJoin(__dirname, 'test.tsx');
@@ -17,14 +14,40 @@ describe('useContent typing', () => {
     `;
 
     const slotMapping = `
-        type HomeBannerProps = {
+        type HomeBanner = {
+            title: string,
+            subtitle: string,
+        };
+        
+        type Banner = {
+            title: string,
+            subtitle: string,
+        };
+        
+        type Carousel = {
             title: string,
             subtitle: string,
         };
         
         declare module '@croct/plug/slot' {
-            interface SlotMap {
-                'home-banner': HomeBannerProps;
+            interface VersionedSlotMap {
+                'home-banner': {
+                    'latest': HomeBanner,
+                    '1': HomeBanner,
+                };
+            }
+        }
+        
+        declare module '@croct/plug/component' {
+            interface VersionedComponentMap {
+                'banner': {
+                    'latest': Banner,
+                    '1': Banner,
+                };
+                'carousel': {
+                    'latest': Carousel,
+                    '1': Carousel,
+                };
             }
         }
     `;
@@ -97,6 +120,25 @@ describe('useContent typing', () => {
         );
 
         expect(getReturnType(code)).toBe('JsonObject');
+    });
+
+    it('should define the return type as an union of component for unknown slots', () => {
+        const code: CodeOptions = {
+            code: `
+                useContent('dynamic-id' as any);
+            `,
+            mapping: true,
+        };
+
+        expect(() => compileCode(code)).not.toThrow();
+
+        expect(getTypeName(code)).toBe(
+            'useContent<any>',
+        );
+
+        expect(getReturnType(code)).toBe(
+            '(Banner & {_component: "banner@1";}) | (Carousel & {_component: "carousel@1";})',
+        );
     });
 
     it('should include the type of the initial value on the return type for unmapped slots', () => {
@@ -241,7 +283,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<"home-banner">');
 
-        expect(getReturnType(code)).toBe('DiscriminatedContent<HomeBannerProps, string>');
+        expect(getReturnType(code)).toBe('HomeBanner & {_component: string | null;}');
     });
 
     it('should include the type of the initial value on the return type for mapped slots', () => {
@@ -256,7 +298,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<boolean, "home-banner">');
 
-        expect(getReturnType(code)).toBe('boolean | DiscriminatedContent<HomeBannerProps, string>');
+        expect(getReturnType(code)).toBe('boolean | (HomeBanner & {_component: string | null;})');
     });
 
     it('should include the type of the fallback value on the return type for mapped slots', () => {
@@ -271,7 +313,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<number, "home-banner">');
 
-        expect(getReturnType(code)).toBe('number | DiscriminatedContent<HomeBannerProps, string>');
+        expect(getReturnType(code)).toBe('number | (HomeBanner & {_component: string | null;})');
     });
 
     it('should include the types of both the initial and fallback values on the return type for mapped slots', () => {
@@ -286,7 +328,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<boolean, number, "home-banner">');
 
-        expect(getReturnType(code)).toBe('number | boolean | DiscriminatedContent<HomeBannerProps, string>');
+        expect(getReturnType(code)).toBe('number | boolean | (HomeBanner & {...;})');
     });
 
     it('should not allow overriding the return type for mapped slots', () => {

@@ -15,7 +15,7 @@ export type UseContentOptions<I, F> = FetchOptions & {
 function useCsrContent<I, F>(
     id: VersionedSlotId,
     options: UseContentOptions<I, F> = {},
-): SlotContent<VersionedSlotId> | I | F {
+): SlotContent | I | F {
     const {fallback, initial, cacheKey, expiration, ...fetchOptions} = options;
     const croct = useCroct();
 
@@ -31,7 +31,7 @@ function useCsrContent<I, F>(
 function useSsrContent<I, F>(
     _: VersionedSlotId,
     {initial}: UseContentOptions<I, F> = {},
-): SlotContent<VersionedSlotId> | I | F {
+): SlotContent | I | F {
     if (initial === undefined) {
         throw new Error('The initial value is required for server-side rendering (SSR).');
     }

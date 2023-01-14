@@ -4,9 +4,6 @@ import {create} from 'ts-node';
 const tsService = create({
     cwd: __dirname,
     transpileOnly: false,
-    ignore: [
-        'lib/slots.d.ts',
-    ],
 });
 
 const testFilename = pathJoin(__dirname, 'test.tsx');
