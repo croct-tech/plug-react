@@ -1,5 +1,5 @@
 import {Fragment, ReactElement, ReactNode} from 'react';
-import {SlotContent, SlotId, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
+import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
 import {JsonObject} from '@croct/plug/sdk/json';
 import {useContent, UseContentOptions} from '../../hooks';
 
@@ -31,7 +31,7 @@ type SlotComponent = {
 
 export const Slot: SlotComponent = <I, F>(props: SlotProps<JsonObject, I, F>): ReactElement => {
     const {id, children, ...options} = props;
-    const data: SlotContent<SlotId> | I | F = useContent(id, options);
+    const data = useContent(id, options);
 
     return <Fragment>{children(data)}</Fragment>;
 };

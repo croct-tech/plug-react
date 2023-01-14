@@ -199,7 +199,7 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('HomeBannerProps');
+        expect(getParameterType(code)).toBe('HomeBannerProps & {_component: string | null;}');
     });
 
     it('should allow a covariant renderer parameter type for mapped slots', () => {
@@ -240,7 +240,7 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('boolean | HomeBannerProps');
+        expect(getParameterType(code)).toBe('boolean | (HomeBannerProps & {_component: string | null;})');
     });
 
     it('should allow a renderer that accepts the initial value for mapped slots', () => {
@@ -281,7 +281,7 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('boolean | HomeBannerProps');
+        expect(getParameterType(code)).toBe('boolean | (HomeBannerProps & {_component: string | null;})');
     });
 
     it('should allow a renderer that accepts the fallback value for mapped slots', () => {
@@ -322,7 +322,7 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('number | boolean | HomeBannerProps');
+        expect(getParameterType(code)).toBe('number | boolean | (HomeBannerProps & {_component: string | null;})');
     });
 
     it('should allow a renderer that accepts both the initial and fallback values for mapped slots', () => {

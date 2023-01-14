@@ -1,5 +1,6 @@
 import {ContentFetcher} from '@croct/sdk/contentFetcher';
 import {FetchResponse} from '@croct/plug/plug';
+import {SlotContent} from '@croct/plug/slot';
 import {fetchContent, FetchOptions} from './fetchContent';
 
 const mockFetch: ContentFetcher['fetch'] = jest.fn();
@@ -33,10 +34,14 @@ describe('fetchContent', () => {
             apiKey: apiKey,
             baseEndpointUrl: 'https://croct.example.com',
             timeout: 100,
+            fallback: {
+                _component: 'component-id',
+            },
         };
 
         const result: FetchResponse<typeof slotId> = {
             content: {
+                _component: 'component',
                 id: 'test',
             },
         };
@@ -67,6 +72,7 @@ describe('fetchContent', () => {
 
         const result: FetchResponse<typeof slotId> = {
             content: {
+                _component: 'component',
                 id: 'test',
             },
         };
@@ -97,6 +103,7 @@ describe('fetchContent', () => {
 
         const result: FetchResponse<typeof slotId> = {
             content: {
+                _component: 'component',
                 id: 'test',
             },
         };
@@ -117,7 +124,8 @@ describe('fetchContent', () => {
     it('should return the fallback value on error', async () => {
         const slotId = 'slot-id';
 
-        const fallback = {
+        const fallback: SlotContent = {
+            _component: 'component-id',
             id: 'fallback',
         };
 
