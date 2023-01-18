@@ -1,12 +1,5 @@
-<p align="center">
-    <a href="https://croct.com">
-        <img src="https://cdn.croct.io/brand/logo/repo-icon-green.svg" alt="Croct" height="80"/>
-    </a>
-    <br />
-    <strong>Plug React</strong>
-    <br />
-    React components and hooks to plug your React applications into Croct.
-</p>
+![Plug React](https://user-images.githubusercontent.com/943036/213261762-40178866-cf9e-4d86-82ba-dea4ced67bda.png)
+
 <p align="center">
     <a href="https://www.npmjs.com/package/@croct/plug-react"><img alt="Version" src="https://img.shields.io/npm/v/@croct/plug-react"/></a>
     <a href="https://github.com/croct-tech/plug-react/actions?query=workflow%3AValidations"><img alt="Build" src="https://github.com/croct-tech/plug-react/workflows/Validations/badge.svg"/></a>
