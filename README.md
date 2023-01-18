@@ -1,4 +1,4 @@
-![Plug React](https://user-images.githubusercontent.com/943036/213261762-40178866-cf9e-4d86-82ba-dea4ced67bda.png)
+![Plug React](https://user-images.githubusercontent.com/943036/213265380-8ad0a5f7-063a-495f-ab2e-0d5a238d8424.png)
 
 <p align="center">
     <a href="https://www.npmjs.com/package/@croct/plug-react"><img alt="Version" src="https://img.shields.io/npm/v/@croct/plug-react"/></a>
