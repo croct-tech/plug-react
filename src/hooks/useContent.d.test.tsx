@@ -30,10 +30,12 @@ describe('useContent typing', () => {
         };
         
         declare module '@croct/plug/slot' {
+            type HomeBannerV1 = HomeBanner & {_component: 'banner@v1' | null};
+        
             interface VersionedSlotMap {
                 'home-banner': {
-                    'latest': HomeBanner,
-                    '1': HomeBanner,
+                    'latest': HomeBannerV1,
+                    '1': HomeBannerV1,
                 };
             }
         }
@@ -137,7 +139,7 @@ describe('useContent typing', () => {
         );
 
         expect(getReturnType(code)).toBe(
-            '(Banner & {_component: "banner@1";}) | (Carousel & {_component: "carousel@1";})',
+            '(Banner & {_component: "banner@1" | null;}) | (Carousel & {...;})',
         );
     });
 
@@ -283,7 +285,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<"home-banner">');
 
-        expect(getReturnType(code)).toBe('HomeBanner & {_component: string | null;}');
+        expect(getReturnType(code)).toBe('HomeBannerV1');
     });
 
     it('should include the type of the initial value on the return type for mapped slots', () => {
@@ -298,7 +300,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<boolean, "home-banner">');
 
-        expect(getReturnType(code)).toBe('boolean | (HomeBanner & {_component: string | null;})');
+        expect(getReturnType(code)).toBe('boolean | HomeBannerV1');
     });
 
     it('should include the type of the fallback value on the return type for mapped slots', () => {
@@ -313,7 +315,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<number, "home-banner">');
 
-        expect(getReturnType(code)).toBe('number | (HomeBanner & {_component: string | null;})');
+        expect(getReturnType(code)).toBe('number | HomeBannerV1');
     });
 
     it('should include the types of both the initial and fallback values on the return type for mapped slots', () => {
@@ -328,7 +330,7 @@ describe('useContent typing', () => {
 
         expect(getTypeName(code)).toBe('useContent<boolean, number, "home-banner">');
 
-        expect(getReturnType(code)).toBe('number | boolean | (HomeBanner & {...;})');
+        expect(getReturnType(code)).toBe('number | boolean | HomeBannerV1');
     });
 
     it('should not allow overriding the return type for mapped slots', () => {

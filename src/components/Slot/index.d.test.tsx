@@ -17,14 +17,16 @@ describe('<Slot  /> typing', () => {
     `;
 
     const slotMapping = `
-        type HomeBannerProps = {
+        type HomeBanner = {
             title: string,
             subtitle: string,
         };
         
         declare module '@croct/plug/slot' {
+            type HomeBannerV1 = HomeBanner & {_component: 'banner@v1' | null};
+        
             interface SlotMap {
-                'home-banner': HomeBannerProps;
+                'home-banner': HomeBannerV1;
             }
         }
     `;
@@ -199,7 +201,7 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('HomeBannerProps & {_component: string | null;}');
+        expect(getParameterType(code)).toBe('HomeBannerV1');
     });
 
     it('should allow a covariant renderer parameter type for mapped slots', () => {
@@ -240,7 +242,7 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('boolean | (HomeBannerProps & {_component: string | null;})');
+        expect(getParameterType(code)).toBe('boolean | HomeBannerV1');
     });
 
     it('should allow a renderer that accepts the initial value for mapped slots', () => {
@@ -281,7 +283,7 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('boolean | (HomeBannerProps & {_component: string | null;})');
+        expect(getParameterType(code)).toBe('boolean | HomeBannerV1');
     });
 
     it('should allow a renderer that accepts the fallback value for mapped slots', () => {
@@ -322,7 +324,7 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('number | boolean | (HomeBannerProps & {_component: string | null;})');
+        expect(getParameterType(code)).toBe('number | boolean | HomeBannerV1');
     });
 
     it('should allow a renderer that accepts both the initial and fallback values for mapped slots', () => {
