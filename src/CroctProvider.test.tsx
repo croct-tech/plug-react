@@ -22,6 +22,8 @@ describe('<CroctProvider />', () => {
     afterEach(() => {
         // eslint-disable-next-line no-console -- Needed to restore the original console.error.
         console.error = consoleError;
+
+        jest.clearAllMocks();
     });
 
     it('should fail if nested', () => {
@@ -68,7 +70,6 @@ describe('<CroctProvider />', () => {
         );
 
         expect(callback).toHaveBeenCalledTimes(1);
-        expect(callback).toHaveBeenCalledWith({plug: croct});
 
         expect(croct.plug).toHaveBeenCalledTimes(2);
         expect(croct.plug).toHaveBeenNthCalledWith(1, options);
@@ -81,6 +82,39 @@ describe('<CroctProvider />', () => {
         unmount();
 
         expect(croct.unplug).toHaveBeenCalled();
+    });
+
+    it('should allow to plug after unmount', () => {
+        const options: CroctProviderProps = {
+            appId: '00000000-0000-0000-0000-000000000000',
+            debug: true,
+            track: true,
+        };
+
+        let plug: Plug|undefined;
+
+        const callback = jest.fn((context: {plug: Plug}|null) => {
+            plug = context?.plug;
+
+            return 'foo';
+        });
+
+        render(
+            <CroctProvider {...options}>
+                <CroctContext.Consumer>{callback}</CroctContext.Consumer>
+            </CroctProvider>,
+        );
+
+        const appId = '11111111-1111-1111-1111-111111111111';
+
+        plug?.plug({appId: appId});
+
+        expect(croct.plug).toHaveBeenCalledTimes(2);
+
+        expect(croct.plug).toHaveBeenLastCalledWith({
+            ...options,
+            appId: appId,
+        });
     });
 
     it('should ignore errors on unmount', () => {

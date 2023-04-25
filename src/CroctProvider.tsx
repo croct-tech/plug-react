@@ -3,6 +3,7 @@
 import {
     createContext,
     FunctionComponent,
+    MutableRefObject,
     PropsWithChildren,
     ReactElement,
     useContext,
@@ -18,10 +19,18 @@ export type CroctProviderProps = PropsWithChildren<Configuration & Required<Pick
 export const CroctContext = createContext<{plug: Plug}|null>(null);
 CroctContext.displayName = 'CroctContext';
 
+function useLiveRef<T>(value: T): MutableRefObject<T> {
+    const ref = useRef(value);
+
+    ref.current = value;
+
+    return ref;
+}
+
 export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): ReactElement => {
     const {children, ...configuration} = props;
     const parent = useContext(CroctContext);
-    const initialConfiguration = useRef(configuration);
+    const baseConfiguration = useLiveRef(configuration);
 
     if (parent !== null) {
         throw new Error(
@@ -34,18 +43,28 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): Rea
         () => ({
             get plug(): Plug {
                 if (!croct.initialized) {
-                    croct.plug(initialConfiguration.current);
+                    croct.plug(baseConfiguration.current);
                 }
 
-                return croct;
+                return new Proxy(croct, {
+                    get: function getProperty(target, property: keyof Plug): any {
+                        if (property === 'plug') {
+                            return (options: Configuration): void => {
+                                croct.plug({...baseConfiguration.current, ...options});
+                            };
+                        }
+
+                        return target.plug[property];
+                    },
+                });
             },
         }),
-        [],
+        [baseConfiguration],
     );
 
     useEffect(
         () => {
-            croct.plug(initialConfiguration.current);
+            croct.plug(baseConfiguration.current);
 
             return () => {
                 croct.unplug().catch(() => {
@@ -53,7 +72,7 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): Rea
                 });
             };
         },
-        [],
+        [baseConfiguration],
     );
 
     return (
