@@ -54,7 +54,7 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): Rea
                             };
                         }
 
-                        return target.plug[property];
+                        return target[property];
                     },
                 });
             },
