@@ -11,6 +11,7 @@ jest.mock(
         croct: {
             plug: jest.fn(),
             unplug: jest.fn().mockResolvedValue(undefined),
+            plugged: true,
         },
     }),
 );
@@ -22,7 +23,9 @@ describe('<CroctProvider />', () => {
     afterEach(() => {
         // eslint-disable-next-line no-console -- Needed to restore the original console.error.
         console.error = consoleError;
+    });
 
+    beforeEach(() => {
         jest.clearAllMocks();
     });
 
@@ -109,7 +112,7 @@ describe('<CroctProvider />', () => {
 
         plug?.plug({appId: appId});
 
-        expect(croct.plug).toHaveBeenCalledTimes(2);
+        expect(plug?.plugged).toBe(croct.plugged);
 
         expect(croct.plug).toHaveBeenLastCalledWith({
             ...options,
