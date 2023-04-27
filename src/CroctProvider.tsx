@@ -50,7 +50,7 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): Rea
                     get: function getProperty(target, property: keyof Plug): any {
                         if (property === 'plug') {
                             return (options: Configuration): void => {
-                                croct.plug({...baseConfiguration.current, ...options});
+                                target.plug({...baseConfiguration.current, ...options});
                             };
                         }
 
