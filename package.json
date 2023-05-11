@@ -37,7 +37,7 @@
     "react-dom": "^16.8.0  || ^17.0.0 || ^18.0.0"
   },
   "dependencies": {
-    "@croct/plug": "^0.13.0",
+    "@croct/plug": "^0.13.1",
     "@croct/sdk": "^0.12.4"
   },
   "devDependencies": {
