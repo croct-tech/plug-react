@@ -339,7 +339,7 @@ export default function HomePage(): ReactElement {
 ```
 
 You can specify the version of the slot by passing a versioned ID in the form `id@version`. For example,
-passing `home-banner@1` will fetch the content for the `home-banner` slot in version 1. Not specifying a
+passing `home-banner` will fetch the content for the `home-banner` slot in version 1. Not specifying a
 version number is the same as passing `home-banner@latest`, which will load the latest version of the slot.
 
 > ✅ Best practice  

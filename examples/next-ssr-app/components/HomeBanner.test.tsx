@@ -16,7 +16,7 @@ describe('<HomeBanner />', () => {
         jest.clearAllMocks();
     });
 
-    const content: SlotContent<'home-banner@1'> = {
+    const content: SlotContent<'home-banner'> = {
         title: 'Title',
         subtitle: 'Subtitle',
         cta: {
@@ -31,7 +31,7 @@ describe('<HomeBanner />', () => {
         // Jest does not support async component rendering yet
         render(await HomeBanner());
 
-        expect(fetchContent).toHaveBeenCalledWith('home-banner@1', {
+        expect(fetchContent).toHaveBeenCalledWith('home-banner', {
             fallback: {
                 title: 'Experience up to 20% more revenue faster',
                 subtitle: 'Deliver tailored experiences that drive satisfaction and growth.',
@@ -55,7 +55,7 @@ describe('preloadHomeBanner', () => {
     it('should preload the personalized content', () => {
         preloadHomeBanner();
 
-        expect(fetchContent).toHaveBeenCalledWith('home-banner@1', {
+        expect(fetchContent).toHaveBeenCalledWith('home-banner', {
             fallback: {
                 title: 'Experience up to 20% more revenue faster',
                 subtitle: 'Deliver tailored experiences that drive satisfaction and growth.',

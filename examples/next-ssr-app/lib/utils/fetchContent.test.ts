@@ -25,7 +25,7 @@ jest.mock(
 
 describe('fetchContent', () => {
     const {env} = process;
-    const slotId: VersionedSlotId = 'home-banner@1';
+    const slotId: VersionedSlotId = 'home-banner';
     const API_KEY = '00000000-0000-0000-0000-000000000000';
     const options: FetchOptions<SlotContent<typeof slotId>> = {
         timeout: 100,

@@ -29,7 +29,7 @@ describe('useContent (CSR)', () => {
         jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
         jest.mocked(useLoader).mockReturnValue('foo');
 
-        const slotId = 'home-banner@1';
+        const slotId = 'home-banner';
 
         const {result} = renderHook(
             () => useContent<{title: string}>(slotId, {

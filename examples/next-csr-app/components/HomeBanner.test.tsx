@@ -46,7 +46,7 @@ describe('<HomeBanner />', () => {
             </CroctProvider>,
         );
 
-        expect(fetchContent).toHaveBeenCalledWith('home-banner@1', {});
+        expect(fetchContent).toHaveBeenCalledWith('home-banner', {});
 
         expect(screen.getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
 
@@ -75,7 +75,7 @@ describe('<HomeBanner />', () => {
 
         await act(flushPromises);
 
-        expect(fetchContent).toHaveBeenCalledWith('home-banner@1', {});
+        expect(fetchContent).toHaveBeenCalledWith('home-banner', {});
 
         expect(screen.getByText('Experience up to 20% more revenue faster')).toBeInTheDocument();
 

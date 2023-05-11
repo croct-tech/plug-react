@@ -2,7 +2,7 @@ import {ReactElement} from 'react';
 import {Slot, SlotContent} from '@croct/plug-react';
 import './style.css';
 
-const SLOT_ID = 'home-banner@1';
+const SLOT_ID = 'home-banner';
 
 type SlotProps = SlotContent<typeof SLOT_ID> & {
     loading?: boolean,

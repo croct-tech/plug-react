@@ -2,7 +2,7 @@ import {ReactElement} from 'react';
 import {SlotContent} from '@croct/plug-react';
 import {fetchContent} from '@/lib/utils/fetchContent';
 
-const SLOT_ID = 'home-banner@1';
+const SLOT_ID = 'home-banner';
 
 function loadHomeBanner(): Promise<SlotContent<typeof SLOT_ID>> {
     return fetchContent(SLOT_ID, {
