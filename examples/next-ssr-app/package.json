@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@croct/plug-react": "latest",
-    "next": "^13.0.2",
+    "next": "^13.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "server-only": "^0.0.1",
@@ -31,7 +31,7 @@
     "@types/uuid": "^8.3.4",
     "babel-jest": "^29.3.1",
     "eslint": "^8.27.0",
-    "eslint-config-next": "^13.0.2",
+    "eslint-config-next": "^13.4.2",
     "jest": "^29.3.1",
     "jest-environment-jsdom": "^29.3.1",
     "typescript": "^4.8.4"
