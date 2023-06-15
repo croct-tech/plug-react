@@ -12,14 +12,14 @@ export function evaluate<T extends JsonValue>(query: string, options: Evaluation
     const referrer = headers.get(Header.REFERRER);
     const clientId = headers.get(Header.CLIENT_ID);
     const clientIp = headers.get(Header.CLIENT_IP);
-    const userAgent = headers.get(Header.USER_AGENT);
+    const clientAgent = headers.get(Header.USER_AGENT);
 
     return executeQuery<T>(query, {
         apiKey: process.env.CROCT_API_KEY!,
         timeout: 100,
         ...(clientId !== null && {clientId: clientId}),
         ...(clientIp !== null && {clientIp: clientIp}),
-        ...(userAgent !== null && {userAgent: userAgent}),
+        ...(clientAgent !== null && {clientAgent: clientAgent}),
         ...(uri !== null
             ? {
                 context: {
