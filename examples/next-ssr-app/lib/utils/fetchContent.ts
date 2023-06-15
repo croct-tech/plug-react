@@ -16,7 +16,7 @@ export function fetchContent<I extends VersionedSlotId, C extends JsonObject>(
     const referrer = headers.get(Header.REFERRER);
     const clientId = headers.get(Header.CLIENT_ID);
     const clientIp = headers.get(Header.CLIENT_IP);
-    const userAgent = headers.get(Header.USER_AGENT);
+    const clientAgent = headers.get(Header.USER_AGENT);
 
     const promise = loadContent<I, C>(slotId, {
         apiKey: process.env.CROCT_API_KEY!,
@@ -24,7 +24,7 @@ export function fetchContent<I extends VersionedSlotId, C extends JsonObject>(
         ...(previewToken !== null && {previewToken: previewToken}),
         ...(clientId !== null && {clientId: clientId}),
         ...(clientIp !== null && {clientIp: clientIp}),
-        ...(userAgent !== null && {userAgent: userAgent}),
+        ...(clientAgent !== null && {clientAgent: clientAgent}),
         ...(uri !== null
             ? {
                 context: {

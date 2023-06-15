@@ -87,7 +87,7 @@ describe('fetchContent', () => {
             apiKey: API_KEY,
             clientId: headers.get(Header.CLIENT_ID),
             clientIp: headers.get(Header.CLIENT_IP),
-            userAgent: headers.get(Header.USER_AGENT),
+            clientAgent: headers.get(Header.USER_AGENT),
             context: {
                 page: {
                     url: headers.get(Header.REQUEST_URI),
