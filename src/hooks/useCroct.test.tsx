@@ -14,13 +14,19 @@ describe('useCroct', () => {
         expect(console.error).toHaveBeenCalled();
     });
 
-    it('should return the Plug instance', () => {
+    it('should return the croct state', () => {
+        const preferredLocale = 'en-us';
+
         const {result} = renderHook(() => useCroct(), {
             wrapper: ({children}) => (
-                <CroctContext.Provider value={{plug: croct}}>{children}</CroctContext.Provider>
+                <CroctContext.Provider value={{plug: croct, preferredLocale: preferredLocale}}>
+                    {children}
+                </CroctContext.Provider>
             ),
         });
 
-        expect(result.current).toBe(croct);
+        expect(result.current.plug).toBe(croct);
+
+        expect(result.current.preferredLocale).toBe(preferredLocale);
     });
 });

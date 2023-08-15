@@ -17,11 +17,19 @@ function useCsrContent<I, F>(
     options: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
     const {fallback, initial, cacheKey, expiration, ...fetchOptions} = options;
-    const croct = useCroct();
+    const {preferredLocale, plug} = useCroct();
 
     return useLoader({
         cacheKey: `useContent:${cacheKey ?? ''}:${id}`,
-        loader: () => croct.fetch(id, fetchOptions).then(({content}) => content),
+        loader: () => (
+            plug.fetch(
+                id,
+                {
+                    ...fetchOptions,
+                    preferredLocale: fetchOptions.preferredLocale ?? preferredLocale,
+                },
+            ).then(({content}) => content)
+        ),
         initial: initial,
         fallback: fallback,
         expiration: expiration,
