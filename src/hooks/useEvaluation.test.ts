@@ -35,7 +35,9 @@ describe('useEvaluation', () => {
 
         const evaluate: Plug['evaluate'] = jest.fn();
 
-        jest.mocked(useCroct).mockReturnValue({evaluate: evaluate} as Plug);
+        jest.mocked(useCroct).mockReturnValue({
+            plug: {evaluate: evaluate} as Plug,
+        });
         jest.mocked(useLoader).mockReturnValue('foo');
 
         const query = 'location';
@@ -75,7 +77,9 @@ describe('useEvaluation', () => {
 
         const evaluate: Plug['evaluate'] = jest.fn();
 
-        jest.mocked(useCroct).mockReturnValue({evaluate: evaluate} as Plug);
+        jest.mocked(useCroct).mockReturnValue({
+            plug: {evaluate: evaluate} as Plug,
+        });
         jest.mocked(useLoader).mockReturnValue('foo');
 
         const query = 'location';

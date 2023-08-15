@@ -37,7 +37,7 @@ function useCsrEvaluation<T = JsonValue, I = T, F = T>(
 
     return useLoader<T | I | F>({
         cacheKey: `useEvaluation:${cacheKey ?? ''}:${query}:${JSON.stringify(options.attributes ?? '')}`,
-        loader: () => croct.evaluate<T & JsonValue>(query, cleanEvaluationOptions(evaluationOptions)),
+        loader: () => croct.plug.evaluate<T & JsonValue>(query, cleanEvaluationOptions(evaluationOptions)),
         initial: initial,
         fallback: fallback,
         expiration: expiration,
