@@ -52,7 +52,7 @@ describe('<Providers />', () => {
             {
                 appId: APP_ID,
                 clientId: clientId,
-                children: 'foo',
+                children: expect.arrayContaining(['foo']),
             },
             expect.anything(),
         );
