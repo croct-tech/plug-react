@@ -30,7 +30,6 @@ describe('<CroctProvider />', () => {
     });
 
     it('should fail if nested', () => {
-        // eslint-disable-next-line no-console -- Testing error output
         jest.spyOn(console, 'error').mockImplementation();
 
         expect(
@@ -125,6 +124,6 @@ describe('<CroctProvider />', () => {
 
         const {unmount} = render(<CroctProvider appId="00000000-0000-0000-0000-000000000000" />);
 
-        unmount();
+        expect(() => unmount()).not.toThrow();
     });
 });
