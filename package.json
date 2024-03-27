@@ -45,7 +45,7 @@
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@croct/eslint-plugin": "^0.6.3",
+    "@croct/eslint-plugin": "^0.7.0",
     "@storybook/addon-actions": "^6.5.13",
     "@storybook/addon-essentials": "^6.4.22",
     "@storybook/addon-links": "^6.5.13",
