@@ -34,6 +34,10 @@ or the [example folder](examples) for full code examples.
 
 The following steps will walk you through installing the library and integrating it into your application.
 
+> [!TIP]
+> If you are using Next.js, head over to the [Plug Next.js](https://github.com/croct-tech/plug-next) library for a more
+> integrated experience.
+
 This guide assumes you're already familiar with some key concepts and tools around Croct, like
 Contextual Query Language (CQL) and the playground. If you're not,
 [this 15-minute quickstart](https://croct.link/plug-js/quick-start) that will give you a hands-on overview of
