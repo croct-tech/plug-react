@@ -1,4 +1,3 @@
-import '@testing-library/jest-dom/extend-expect';
 import {render} from '@testing-library/react';
 import {Plug} from '@croct/plug';
 import {croct} from './ssr-polyfills';

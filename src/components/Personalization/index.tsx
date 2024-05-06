@@ -1,3 +1,5 @@
+'use client';
+
 import {ReactElement, Fragment} from 'react';
 import {JsonValue} from '@croct/plug/sdk/json';
 import {UseEvaluationOptions, useEvaluation} from '../../hooks';

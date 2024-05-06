@@ -1,5 +1,5 @@
 import {FunctionComponent, ReactElement, Suspense} from 'react';
-import {Story, Meta} from '@storybook/react/types-6-0';
+import {StoryFn as Story, Meta} from '@storybook/react';
 import {UseContentOptions, useContent} from './useContent';
 
 export default {

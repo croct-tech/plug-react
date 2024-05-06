@@ -7,7 +7,7 @@ import {isSsr} from '../ssr-polyfills';
 function cleanEvaluationOptions(options: EvaluationOptions): EvaluationOptions {
     const result: EvaluationOptions = {};
 
-    for (const [key, value] of Object.entries(options)) {
+    for (const [key, value] of Object.entries(options) as Array<[keyof EvaluationOptions, any]>) {
         if (value !== undefined) {
             result[key] = value;
         }

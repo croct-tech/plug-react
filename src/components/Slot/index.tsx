@@ -1,3 +1,5 @@
+'use client';
+
 import {Fragment, ReactElement, ReactNode} from 'react';
 import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
 import {JsonObject} from '@croct/plug/sdk/json';
