@@ -45,6 +45,7 @@ describe('<CroctProvider />', () => {
             appId: '00000000-0000-0000-0000-000000000000',
             debug: true,
             track: true,
+            preferredLocale: 'en-us',
         };
 
         let initialized = false;
@@ -72,9 +73,24 @@ describe('<CroctProvider />', () => {
 
         expect(callback).toHaveBeenCalledTimes(1);
 
+        expect(callback).toHaveBeenCalledWith({
+            plug: expect.any(Object),
+            preferredLocale: options.preferredLocale,
+        });
+
         expect(croct.plug).toHaveBeenCalledTimes(2);
-        expect(croct.plug).toHaveBeenNthCalledWith(1, options);
-        expect(croct.plug).toHaveBeenNthCalledWith(2, options);
+
+        expect(croct.plug).toHaveBeenNthCalledWith(1, {
+            appId: options.appId,
+            debug: options.debug,
+            track: options.track,
+        });
+
+        expect(croct.plug).toHaveBeenNthCalledWith(2, {
+            appId: options.appId,
+            debug: options.debug,
+            track: options.track,
+        });
     });
 
     it('should unplug on unmount', () => {

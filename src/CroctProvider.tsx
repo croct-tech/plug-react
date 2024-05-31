@@ -14,9 +14,16 @@ import {
 import {Configuration, Plug} from '@croct/plug';
 import {croct} from './ssr-polyfills';
 
-export type CroctProviderProps = PropsWithChildren<Configuration & Required<Pick<Configuration, 'appId'>>>;
+export type CroctProviderProps = PropsWithChildren<Configuration
+    & Required<Pick<Configuration, 'appId'>>>
+    & Pick<CroctState, 'preferredLocale'>;
 
-export const CroctContext = createContext<{plug: Plug}|null>(null);
+export type CroctState = {
+    plug: Plug,
+    preferredLocale?: string,
+};
+
+export const CroctContext = createContext<CroctState | null>(null);
 CroctContext.displayName = 'CroctContext';
 
 function useLiveRef<T>(value: T): MutableRefObject<T> {
@@ -28,7 +35,7 @@ function useLiveRef<T>(value: T): MutableRefObject<T> {
 }
 
 export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): ReactElement => {
-    const {children, ...configuration} = props;
+    const {children, preferredLocale, ...configuration} = props;
     const parent = useContext(CroctContext);
     const baseConfiguration = useLiveRef(configuration);
 
@@ -41,6 +48,7 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): Rea
 
     const context = useMemo(
         () => ({
+            preferredLocale: preferredLocale,
             get plug(): Plug {
                 if (!croct.initialized) {
                     croct.plug(baseConfiguration.current);
@@ -59,7 +67,7 @@ export const CroctProvider: FunctionComponent<CroctProviderProps> = (props): Rea
                 });
             },
         }),
-        [baseConfiguration],
+        [baseConfiguration, preferredLocale],
     );
 
     useEffect(

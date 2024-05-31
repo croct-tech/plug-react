@@ -19,21 +19,48 @@ jest.mock(
 );
 
 describe('useContent (CSR)', () => {
-    it('should evaluate fetch the content', () => {
+    type EvaluateScenario = {
+        contextLocale?: string,
+        contentLocale?: string,
+        expectedLocale: string,
+    };
+
+    let testIndex = 0;
+
+    it.each<[string, EvaluateScenario]>(Object.entries({
+        'the context locale': {
+            contextLocale: 'en',
+            expectedLocale: 'en',
+        },
+        'the content locale': {
+            contentLocale: 'pt-br',
+            expectedLocale: 'pt-br',
+        },
+        'both the context and content locale': {
+            contextLocale: 'en',
+            contentLocale: 'pt-br',
+            expectedLocale: 'pt-br',
+        },
+    }))('should evaluate the content providing %s', (_, options) => {
+        const {contextLocale, contentLocale, expectedLocale} = options;
+
         const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({
             payload: {
                 title: 'loaded',
             },
         });
 
-        jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
+        jest.mocked(useCroct).mockReturnValue({
+            plug: {fetch: fetch} as Plug,
+            preferredLocale: contextLocale,
+        });
         jest.mocked(useLoader).mockReturnValue('foo');
 
         const slotId = 'home-banner@1';
 
         const {result} = renderHook(
             () => useContent<{title: string}>(slotId, {
-                preferredLocale: 'en',
+                preferredLocale: contentLocale,
                 cacheKey: 'unique',
                 fallback: {
                     title: 'error',
@@ -54,11 +81,11 @@ describe('useContent (CSR)', () => {
 
         jest.mocked(useLoader)
             .mock
-            .calls[0][0]
+            .calls[testIndex++][0]
             .loader();
 
         expect(fetch).toHaveBeenCalledWith(slotId, {
-            preferredLocale: 'en',
+            preferredLocale: expectedLocale,
         });
 
         expect(result.current).toBe('foo');
