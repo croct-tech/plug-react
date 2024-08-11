@@ -8,7 +8,7 @@ describe('useCroct', () => {
         jest.spyOn(console, 'error').mockImplementation();
 
         expect(() => renderHook(() => useCroct()))
-            .toThrow(new Error('useCroct() can only be used in the context of a <CroctProvider> component.'));
+            .toThrow('useCroct() can only be used in the context of a <CroctProvider> component.');
 
         // eslint-disable-next-line no-console -- Testing console output.
         expect(console.error).toHaveBeenCalled();
