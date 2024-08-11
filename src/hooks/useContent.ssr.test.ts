@@ -18,6 +18,6 @@ describe('useContent (SSR)', () => {
 
     it('should require an initial value for server-side rending', () => {
         expect(() => useContent('slot-id'))
-            .toThrow(new Error('The initial value is required for server-side rendering (SSR).'));
+            .toThrow('The initial content is required for server-side rendering (SSR).');
     });
 });

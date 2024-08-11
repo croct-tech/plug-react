@@ -33,7 +33,10 @@ function useSsrContent<I, F>(
     {initial}: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
     if (initial === undefined) {
-        throw new Error('The initial value is required for server-side rendering (SSR).');
+        throw new Error(
+            'The initial content is required for server-side rendering (SSR). '
+            + 'For help, see https://croct.help/sdk/react/missing-initial-slot-content',
+        );
     }
 
     return initial;

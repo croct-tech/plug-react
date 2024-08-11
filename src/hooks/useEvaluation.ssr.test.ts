@@ -18,6 +18,6 @@ describe('useEvaluation (SSR)', () => {
 
     it('should require an initial value for server-side rending', () => {
         expect(() => useEvaluation('location'))
-            .toThrow(new Error('The initial value is required for server-side rendering (SSR).'));
+            .toThrow('The initial value is required for server-side rendering (SSR).');
     });
 });

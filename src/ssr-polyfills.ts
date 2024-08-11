@@ -62,7 +62,8 @@ export const croct: Plug = !isSsr()
                     throw new Error(
                         `Property croct.${String(property)} is not supported on server-side (SSR). `
                         + 'Consider refactoring  the logic as a side-effect (useEffect) or a client-side callback '
-                        + '(onClick, onChange, etc).',
+                        + '(onClick, onChange, etc). '
+                        + 'For help, see https://croct.help/sdk/react/client-side-methods',
                     );
             }
         },
