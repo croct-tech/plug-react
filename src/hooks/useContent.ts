@@ -4,6 +4,7 @@ import {FetchOptions} from '@croct/plug/plug';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
+import {hash} from '../hash';
 
 export type UseContentOptions<I, F> = FetchOptions & {
     fallback?: F,
@@ -17,10 +18,16 @@ function useCsrContent<I, F>(
     options: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
     const {fallback, initial, cacheKey, expiration, ...fetchOptions} = options;
+    const {preferredLocale} = fetchOptions;
     const croct = useCroct();
 
     return useLoader({
-        cacheKey: `useContent:${cacheKey ?? ''}:${id}`,
+        cacheKey: hash(
+            `useContent:${cacheKey ?? ''}`
+            + `:${id}`
+            + `:${preferredLocale ?? ''}`
+            + `:${JSON.stringify(fetchOptions.attributes ?? '')}`,
+        ),
         loader: () => croct.fetch(id, fetchOptions).then(({content}) => content),
         initial: initial,
         fallback: fallback,

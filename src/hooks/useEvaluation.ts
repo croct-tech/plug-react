@@ -3,6 +3,7 @@ import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
+import {hash} from '../hash';
 
 function cleanEvaluationOptions(options: EvaluationOptions): EvaluationOptions {
     const result: EvaluationOptions = {};
@@ -36,7 +37,11 @@ function useCsrEvaluation<T = JsonValue, I = T, F = T>(
     const croct = useCroct();
 
     return useLoader<T | I | F>({
-        cacheKey: `useEvaluation:${cacheKey ?? ''}:${query}:${JSON.stringify(options.attributes ?? '')}`,
+        cacheKey: hash(
+            `useEvaluation:${cacheKey ?? ''}`
+            + `:${query}`
+            + `:${JSON.stringify(options.attributes ?? '')}`,
+        ),
         loader: () => croct.evaluate<T & JsonValue>(query, cleanEvaluationOptions(evaluationOptions)),
         initial: initial,
         fallback: fallback,
