@@ -3,6 +3,7 @@ import {Plug} from '@croct/plug';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
 import {useContent} from './useContent';
+import {hash} from '../hash';
 
 jest.mock(
     './useCroct',
@@ -30,11 +31,15 @@ describe('useContent (CSR)', () => {
         jest.mocked(useLoader).mockReturnValue('foo');
 
         const slotId = 'home-banner@1';
+        const preferredLocale = 'en';
+        const attributes = {example: 'value'};
+        const cacheKey = 'unique';
 
         const {result} = renderHook(
             () => useContent<{title: string}>(slotId, {
-                preferredLocale: 'en',
-                cacheKey: 'unique',
+                preferredLocale: preferredLocale,
+                attributes: attributes,
+                cacheKey: cacheKey,
                 fallback: {
                     title: 'error',
                 },
@@ -44,7 +49,7 @@ describe('useContent (CSR)', () => {
 
         expect(useCroct).toHaveBeenCalled();
         expect(useLoader).toHaveBeenCalledWith({
-            cacheKey: `useContent:unique:${slotId}`,
+            cacheKey: hash(`useContent:${cacheKey}:${slotId}:${preferredLocale}:${JSON.stringify(attributes)}`),
             fallback: {
                 title: 'error',
             },
@@ -59,6 +64,7 @@ describe('useContent (CSR)', () => {
 
         expect(fetch).toHaveBeenCalledWith(slotId, {
             preferredLocale: 'en',
+            attributes: attributes,
         });
 
         expect(result.current).toBe('foo');

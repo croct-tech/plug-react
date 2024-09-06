@@ -4,6 +4,7 @@ import {Plug} from '@croct/plug';
 import {useEvaluation} from './useEvaluation';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
+import {hash} from '../hash';
 
 jest.mock(
     './useCroct',
@@ -39,11 +40,12 @@ describe('useEvaluation', () => {
         jest.mocked(useLoader).mockReturnValue('foo');
 
         const query = 'location';
+        const cacheKey = 'unique';
 
         const {result} = renderHook(
             () => useEvaluation(query, {
                 ...evaluationOptions,
-                cacheKey: 'unique',
+                cacheKey: cacheKey,
                 fallback: 'error',
                 expiration: 50,
             }),
@@ -51,7 +53,7 @@ describe('useEvaluation', () => {
 
         expect(useCroct).toHaveBeenCalled();
         expect(useLoader).toHaveBeenCalledWith({
-            cacheKey: 'useEvaluation:unique:location:{"foo":"bar"}',
+            cacheKey: hash(`useEvaluation:${cacheKey}:${query}:${JSON.stringify(evaluationOptions.attributes)}`),
             fallback: 'error',
             expiration: 50,
             loader: expect.any(Function),
