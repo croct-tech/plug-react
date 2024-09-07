@@ -56,7 +56,7 @@ function useSsrEvaluation<T = JsonValue, I = T, F = T>(
     if (initial === undefined) {
         throw new Error(
             'The initial value is required for server-side rendering (SSR). '
-            + 'For help, see https://croct.help/sdk/react/missing-initial-evaluation-value',
+            + 'For help, see https://croct.help/sdk/react/missing-evaluation-result',
         );
     }
 

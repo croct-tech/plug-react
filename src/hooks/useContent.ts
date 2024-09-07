@@ -42,7 +42,7 @@ function useSsrContent<I, F>(
     if (initial === undefined) {
         throw new Error(
             'The initial content is required for server-side rendering (SSR). '
-            + 'For help, see https://croct.help/sdk/react/missing-initial-slot-content',
+            + 'For help, see https://croct.help/sdk/react/missing-slot-content',
         );
     }
 
