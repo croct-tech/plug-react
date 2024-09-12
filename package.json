@@ -28,9 +28,7 @@
     "lint": "eslint 'src/**/*.ts' 'src/**/*.tsx'",
     "test": "jest -c jest.config.js --coverage",
     "validate": "tsc --noEmit",
-    "build": "tsc -p tsconfig.build.json",
-    "storybook": "start-storybook -s ./.storybook/static -p 6006 --no-manager-cache",
-    "build-storybook": "build-storybook -s ./.storybook/static"
+    "build": "tsc -p tsconfig.build.json"
   },
   "peerDependencies": {
     "react": "^16.8.0  || ^17.0.0 || ^18.0.0",
@@ -46,12 +44,6 @@
     "@babel/preset-react": "^7.24.7",
     "@babel/preset-typescript": "^7.24.7",
     "@croct/eslint-plugin": "^0.7.1",
-    "@storybook/addon-actions": "^8.2.9",
-    "@storybook/addon-essentials": "^8.2.9",
-    "@storybook/addon-links": "^8.2.9",
-    "@storybook/builder-webpack5": "^8.2.9",
-    "@storybook/manager-webpack5": "^6.5.16",
-    "@storybook/react": "^8.2.9",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
     "@types/jest": "^29.5.12",
