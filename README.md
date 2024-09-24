@@ -5,7 +5,7 @@
         <source media="(min-width: 769px) and (prefers-color-scheme: dark)" srcset="https://github.com/croct-tech/plug-js/blob/master/.github/assets/header-dark.svg">
         <source media="(max-width: 768px) and (prefers-color-scheme: dark)" srcset="https://github.com/croct-tech/plug-js/blob/master/.github/assets/header-dark-mobile.svg">
         <source media="(max-width: 768px) and (prefers-color-scheme: light)" srcset="https://github.com/croct-tech/plug-js/blob/master/.github/assets/header-light-mobile.svg">
-        <img src="https://raw.githubusercontent.com/croct-tech/plug-react/refs/heads/update-readme/.github/assets/header-light-mobile.svg" alt="Croct React SDK" title="Croct React SDK" width="100%">
+        <img src="https://raw.githubusercontent.com/croct-tech/plug-js/refs/heads/update-readme/.github/assets/header-light-mobile.svg" alt="Croct React SDK" title="Croct React SDK" width="100%">
     </picture>
   </a>
   <br/>
