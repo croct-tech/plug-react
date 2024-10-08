@@ -1,27 +1,17 @@
 import {JsonValue} from '@croct/plug/sdk/json';
 import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
+import {useEffect, useState} from 'react';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
 import {hash} from '../hash';
-
-function cleanEvaluationOptions(options: EvaluationOptions): EvaluationOptions {
-    const result: EvaluationOptions = {};
-
-    for (const [key, value] of Object.entries(options) as Array<[keyof EvaluationOptions, any]>) {
-        if (value !== undefined) {
-            result[key] = value;
-        }
-    }
-
-    return result;
-}
 
 export type UseEvaluationOptions<I, F> = EvaluationOptions & {
     initial?: I,
     fallback?: F,
     cacheKey?: string,
     expiration?: number,
+    staleWhileLoading?: boolean,
 };
 
 type UseEvaluationHook = <T extends JsonValue, I = T, F = T>(
@@ -33,20 +23,58 @@ function useCsrEvaluation<T = JsonValue, I = T, F = T>(
     query: string,
     options: UseEvaluationOptions<I, F> = {},
 ): T | I | F {
-    const {cacheKey, fallback, initial, expiration, ...evaluationOptions} = options;
+    const {
+        cacheKey,
+        fallback,
+        expiration,
+        staleWhileLoading = false,
+        initial: initialValue,
+        ...evaluationOptions
+    } = options;
+
+    const [initial, setInitial] = useState<T | I | F | undefined>(initialValue);
     const croct = useCroct();
 
-    return useLoader<T | I | F>({
+    const result = useLoader<T | I | F>({
         cacheKey: hash(
             `useEvaluation:${cacheKey ?? ''}`
             + `:${query}`
-            + `:${JSON.stringify(options.attributes ?? '')}`,
+            + `:${JSON.stringify(options.attributes ?? {})}`,
         ),
         loader: () => croct.evaluate<T & JsonValue>(query, cleanEvaluationOptions(evaluationOptions)),
         initial: initial,
         fallback: fallback,
         expiration: expiration,
     });
+
+    useEffect(
+        () => {
+            if (staleWhileLoading) {
+                setInitial(current => {
+                    if (current !== result) {
+                        return result;
+                    }
+
+                    return current;
+                });
+            }
+        },
+        [result, staleWhileLoading],
+    );
+
+    return result;
+}
+
+function cleanEvaluationOptions(options: EvaluationOptions): EvaluationOptions {
+    const result: EvaluationOptions = {};
+
+    for (const [key, value] of Object.entries(options) as Array<[keyof EvaluationOptions, any]>) {
+        if (value !== undefined) {
+            result[key] = value;
+        }
+    }
+
+    return result;
 }
 
 function useSsrEvaluation<T = JsonValue, I = T, F = T>(

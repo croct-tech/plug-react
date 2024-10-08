@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react';
+import {renderHook, waitFor} from '@testing-library/react';
 import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
 import {Plug} from '@croct/plug';
 import {useEvaluation} from './useEvaluation';
@@ -22,7 +22,6 @@ jest.mock(
 
 describe('useEvaluation', () => {
     beforeEach(() => {
-        jest.resetModules();
         jest.resetAllMocks();
     });
 
@@ -90,5 +89,92 @@ describe('useEvaluation', () => {
             .loader();
 
         expect(evaluate).toHaveBeenCalledWith(query, {});
+    });
+
+    it('should use the initial value when the cache key changes if the stale-while-loading flag is false', async () => {
+        const key = {
+            current: 'initial',
+        };
+
+        const evaluate: Plug['evaluate'] = jest.fn();
+
+        jest.mocked(useCroct).mockReturnValue({evaluate: evaluate} as Plug);
+
+        jest.mocked(useLoader).mockImplementation(
+            () => (key.current === 'initial' ? 'first' : 'second'),
+        );
+
+        const query = 'location';
+
+        const {result, rerender} = renderHook(
+            () => useEvaluation(query, {
+                cacheKey: key.current,
+                initial: 'initial',
+            }),
+        );
+
+        expect(useCroct).toHaveBeenCalled();
+
+        expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
+            cacheKey: hash(`useEvaluation:${key.current}:${query}:${JSON.stringify({})}`),
+            initial: 'initial',
+        }));
+
+        await waitFor(() => expect(result.current).toEqual('first'));
+
+        key.current = 'next';
+
+        rerender();
+
+        expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
+            cacheKey: hash(`useEvaluation:${key.current}:${query}:${JSON.stringify({})}`),
+            initial: 'initial',
+        }));
+
+        await waitFor(() => expect(result.current).toEqual('second'));
+    });
+
+    it('should use the last evaluation result if the stale-while-loading flag is true', async () => {
+        const key = {
+            current: 'initial',
+        };
+
+        const evaluate: Plug['evaluate'] = jest.fn();
+
+        jest.mocked(useCroct).mockReturnValue({evaluate: evaluate} as Plug);
+
+        jest.mocked(useLoader).mockImplementation(
+            () => (key.current === 'initial' ? 'first' : 'second'),
+        );
+
+        const query = 'location';
+
+        const {result, rerender} = renderHook(
+            () => useEvaluation(query, {
+                cacheKey: key.current,
+                initial: 'initial',
+                staleWhileLoading: true,
+            }),
+        );
+
+        expect(useCroct).toHaveBeenCalled();
+
+        expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
+            cacheKey: hash(`useEvaluation:${key.current}:${query}:${JSON.stringify({})}`),
+            initial: 'initial',
+        }));
+
+        await waitFor(() => expect(result.current).toEqual('first'));
+
+        key.current = 'next';
+
+        rerender();
+
+        expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
+            cacheKey: hash(`useEvaluation:${key.current}:${query}:${JSON.stringify({})}`),
+            initial: 'first',
+        }));
+
+        await waitFor(() => expect(result.current).toEqual('second'));
     });
 });

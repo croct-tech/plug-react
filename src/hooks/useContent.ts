@@ -1,6 +1,7 @@
 import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
 import {JsonObject} from '@croct/plug/sdk/json';
 import {FetchOptions} from '@croct/plug/plug';
+import {useEffect, useState} from 'react';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
@@ -11,28 +12,55 @@ export type UseContentOptions<I, F> = FetchOptions & {
     initial?: I,
     cacheKey?: string,
     expiration?: number,
+    staleWhileLoading?: boolean,
 };
 
 function useCsrContent<I, F>(
     id: VersionedSlotId,
     options: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
-    const {fallback, initial, cacheKey, expiration, ...fetchOptions} = options;
+    const {
+        fallback,
+        cacheKey,
+        expiration,
+        initial: initialContent,
+        staleWhileLoading = false,
+        ...fetchOptions
+    } = options;
+
+    const [initial, setInitial] = useState<SlotContent | I | F | undefined>(initialContent);
     const {preferredLocale} = fetchOptions;
     const croct = useCroct();
 
-    return useLoader({
+    const result: SlotContent | I | F = useLoader({
         cacheKey: hash(
             `useContent:${cacheKey ?? ''}`
             + `:${id}`
             + `:${preferredLocale ?? ''}`
-            + `:${JSON.stringify(fetchOptions.attributes ?? '')}`,
+            + `:${JSON.stringify(fetchOptions.attributes ?? {})}`,
         ),
         loader: () => croct.fetch(id, fetchOptions).then(({content}) => content),
         initial: initial,
         fallback: fallback,
         expiration: expiration,
     });
+
+    useEffect(
+        () => {
+            if (staleWhileLoading) {
+                setInitial(current => {
+                    if (current !== result) {
+                        return result;
+                    }
+
+                    return current;
+                });
+            }
+        },
+        [result, staleWhileLoading],
+    );
+
+    return result;
 }
 
 function useSsrContent<I, F>(
