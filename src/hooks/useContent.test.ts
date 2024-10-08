@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react';
+import {renderHook, waitFor} from '@testing-library/react';
 import {Plug} from '@croct/plug';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
@@ -20,15 +20,19 @@ jest.mock(
 );
 
 describe('useContent (CSR)', () => {
-    it('should evaluate fetch the content', () => {
+    beforeEach(() => {
+        jest.resetAllMocks();
+    });
+
+    it('should fetch the content', () => {
         const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({
-            payload: {
-                title: 'loaded',
-            },
+            content: {},
         });
 
         jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
-        jest.mocked(useLoader).mockReturnValue('foo');
+        jest.mocked(useLoader).mockReturnValue({
+            title: 'foo',
+        });
 
         const slotId = 'home-banner@1';
         const preferredLocale = 'en';
@@ -67,6 +71,113 @@ describe('useContent (CSR)', () => {
             attributes: attributes,
         });
 
-        expect(result.current).toBe('foo');
+        expect(result.current).toEqual({title: 'foo'});
+    });
+
+    it('should use the initial value when the cache key changes if the stale-while-loading flag is false', async () => {
+        const key = {
+            current: 'initial',
+        };
+
+        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({content: {}});
+
+        jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
+
+        jest.mocked(useLoader).mockImplementation(
+            () => ({title: key.current === 'initial' ? 'first' : 'second'}),
+        );
+
+        const slotId = 'home-banner@1';
+
+        const {result, rerender} = renderHook(
+            () => useContent<{title: string}>(slotId, {
+                cacheKey: key.current,
+                initial: {
+                    title: 'initial',
+                },
+            }),
+        );
+
+        expect(useCroct).toHaveBeenCalled();
+
+        expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
+            cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
+            initial: {
+                title: 'initial',
+            },
+        }));
+
+        await waitFor(() => expect(result.current).toEqual({title: 'first'}));
+
+        key.current = 'next';
+
+        rerender();
+
+        expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
+            cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
+            initial: {
+                title: 'initial',
+            },
+        }));
+
+        await waitFor(() => expect(result.current).toEqual({title: 'second'}));
+    });
+
+    it('should use the last fetched content as initial value if the stale-while-loading flag is true', async () => {
+        const key = {
+            current: 'initial',
+        };
+
+        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({content: {}});
+
+        jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
+
+        const firstResult = {
+            title: 'first',
+        };
+
+        const secondResult = {
+            title: 'second',
+        };
+
+        jest.mocked(useLoader).mockImplementation(
+            () => (key.current === 'initial' ? firstResult : secondResult),
+        );
+
+        const slotId = 'home-banner@1';
+
+        const {result, rerender} = renderHook(
+            () => useContent<{title: string}>(slotId, {
+                cacheKey: key.current,
+                initial: {
+                    title: 'initial',
+                },
+                staleWhileLoading: true,
+            }),
+        );
+
+        expect(useCroct).toHaveBeenCalled();
+
+        expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
+            cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
+            initial: {
+                title: 'initial',
+            },
+        }));
+
+        await waitFor(() => expect(result.current).toEqual({title: 'first'}));
+
+        key.current = 'next';
+
+        rerender();
+
+        expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
+            cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
+            initial: {
+                title: 'first',
+            },
+        }));
+
+        await waitFor(() => expect(result.current).toEqual({title: 'second'}));
     });
 });

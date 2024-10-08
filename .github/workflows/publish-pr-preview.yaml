@@ -1,12 +1,13 @@
-name: Release
+name: Publish PR preview
 
 on:
-  release:
+  pull_request:
     types:
-      - published
+      - synchronize
+      - opened
 
 jobs:
-  deploy:
+  preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,20 +41,8 @@ jobs:
           sed -i -e "s~./src~.~" package.json
           cp -r ../src src
 
-      - name: Publish pre-release to NPM
-        if: ${{ github.event.release.prerelease }}
+      - name: Publish preview
         run: |-
-          cd build
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
-          npm publish --access public --tag next
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish release to NPM
-        if: ${{ !github.event.release.prerelease }}
-        run: |-
-          cd build
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" >> ~/.npmrc
-          npm publish --access public
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npx pkg-pr-new publish \
+            --compact --comment=update \
+            ./build

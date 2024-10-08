@@ -16,11 +16,8 @@ describe('useLoader', () => {
 
     beforeEach(() => {
         cacheKey.next();
-    });
-
-    afterEach(() => {
-        jest.clearAllTimers();
         jest.resetAllMocks();
+        jest.clearAllTimers();
     });
 
     // Needed to use fake timers and promises:
@@ -210,6 +207,96 @@ describe('useLoader', () => {
         rerender();
 
         expect(loader).toHaveBeenCalledTimes(1);
+    });
+
+    it('should reload the value when the cache key changes without initial value', async () => {
+        jest.useFakeTimers();
+
+        const loader = jest.fn()
+            .mockResolvedValueOnce('foo')
+            .mockImplementationOnce(
+                () => new Promise(resolve => {
+                    setTimeout(() => resolve('bar'), 10);
+                }),
+            );
+
+        const {result, rerender} = renderHook<any, {initial: string}>(
+            props => useLoader({
+                cacheKey: cacheKey.current(),
+                loader: loader,
+                initial: props?.initial,
+            }),
+        );
+
+        await act(flushPromises);
+
+        rerender();
+
+        await waitFor(() => expect(result.current).toBe('foo'));
+
+        expect(loader).toHaveBeenCalledTimes(1);
+
+        cacheKey.next();
+
+        rerender({initial: 'loading'});
+
+        await waitFor(() => expect(result.current).toBe('loading'));
+
+        jest.advanceTimersByTime(10);
+
+        await waitFor(() => expect(result.current).toBe('bar'));
+
+        expect(loader).toHaveBeenCalledTimes(2);
+    });
+
+    it('should reload the value when the cache key changes with initial value', async () => {
+        jest.useFakeTimers();
+
+        const loader = jest.fn()
+            .mockImplementationOnce(
+                () => new Promise(resolve => {
+                    setTimeout(() => resolve('foo'), 10);
+                }),
+            )
+            .mockImplementationOnce(
+                () => new Promise(resolve => {
+                    setTimeout(() => resolve('bar'), 10);
+                }),
+            );
+
+        const {result, rerender} = renderHook<any, {initial: string}>(
+            props => useLoader({
+                cacheKey: cacheKey.current(),
+                initial: props?.initial ?? 'first content',
+                loader: loader,
+            }),
+        );
+
+        await act(flushPromises);
+
+        expect(result.current).toBe('first content');
+
+        jest.advanceTimersByTime(10);
+
+        await act(flushPromises);
+
+        await waitFor(() => expect(result.current).toBe('foo'));
+
+        expect(loader).toHaveBeenCalledTimes(1);
+
+        cacheKey.next();
+
+        rerender({initial: 'second content'});
+
+        await waitFor(() => expect(result.current).toBe('second content'));
+
+        jest.advanceTimersByTime(10);
+
+        await act(flushPromises);
+
+        await waitFor(() => expect(result.current).toBe('bar'));
+
+        expect(loader).toHaveBeenCalledTimes(2);
     });
 
     it.each<[number, number|undefined]>(
