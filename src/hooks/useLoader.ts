@@ -74,7 +74,7 @@ export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
 type Callback = () => void;
 
 function useStableCallback(callback: Callback): Callback {
-    const ref = useRef<Callback>();
+    const ref = useRef<Callback>(undefined);
 
     useEffect(() => {
         ref.current = callback;
