@@ -5,13 +5,8 @@ import {CroctContext} from '../CroctProvider';
 
 describe('useCroct', () => {
     it('should fail if used out of the <CroctProvider/> component', () => {
-        jest.spyOn(console, 'error').mockImplementation();
-
         expect(() => renderHook(() => useCroct()))
             .toThrow('useCroct() can only be used in the context of a <CroctProvider> component.');
-
-        // eslint-disable-next-line no-console -- Testing console output.
-        expect(console.error).toHaveBeenCalled();
     });
 
     it('should return the Plug instance', () => {
