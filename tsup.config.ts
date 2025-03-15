@@ -3,7 +3,7 @@ import {fixImportsPlugin} from 'esbuild-fix-imports-plugin';
 
 export default defineConfig({
     esbuildPlugins: [fixImportsPlugin()],
-    entry: ['src/**/*.ts'],
+    entry: ['src/**/*.ts', 'src/**/*.tsx', '!src/**/*.test.ts', '!src/**/*.test.tsx'],
     dts: true,
     clean: true,
     sourcemap: true,
