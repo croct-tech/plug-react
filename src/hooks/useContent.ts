@@ -8,7 +8,7 @@ import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
 import {hash} from '../hash';
 
-export type UseContentOptions<I, F> = FetchOptions & {
+export type UseContentOptions<I, F> = FetchOptions<F> & {
     fallback?: F,
     initial?: I,
     cacheKey?: string,
@@ -21,9 +21,9 @@ function useCsrContent<I, F>(
     options: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
     const {
-        fallback,
         cacheKey,
         expiration,
+        fallback: fallbackContent,
         initial: initialContent,
         staleWhileLoading = false,
         ...fetchOptions
@@ -31,10 +31,10 @@ function useCsrContent<I, F>(
 
     const {preferredLocale} = fetchOptions;
     const defaultContent = useMemo(
-        () => getSlotContent(id, preferredLocale) as F|null ?? undefined,
+        () => getSlotContent(id, preferredLocale) as SlotContent|null ?? undefined,
         [id, preferredLocale],
     );
-
+    const fallback = fallbackContent === undefined ? defaultContent : fallbackContent;
     const [initial, setInitial] = useState<SlotContent | I | F | undefined>(
         () => (initialContent === undefined ? defaultContent : initialContent),
     );
@@ -48,9 +48,8 @@ function useCsrContent<I, F>(
             + `:${preferredLocale ?? ''}`
             + `:${JSON.stringify(fetchOptions.attributes ?? {})}`,
         ),
-        loader: () => croct.fetch(id, fetchOptions).then(({content}) => content),
+        loader: () => croct.fetch(id, {...fetchOptions, fallback: fallback}).then(({content}) => content),
         initial: initial,
-        fallback: fallback === undefined ? defaultContent : fallback,
         expiration: expiration,
     });
 

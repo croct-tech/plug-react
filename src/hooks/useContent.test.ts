@@ -63,9 +63,6 @@ describe('useContent (CSR)', () => {
         expect(useCroct).toHaveBeenCalled();
         expect(useLoader).toHaveBeenCalledWith({
             cacheKey: hash(`useContent:${cacheKey}:${slotId}:${preferredLocale}:${JSON.stringify(attributes)}`),
-            fallback: {
-                title: 'error',
-            },
             expiration: 50,
             loader: expect.any(Function),
         });
@@ -76,6 +73,7 @@ describe('useContent (CSR)', () => {
             .loader();
 
         expect(fetch).toHaveBeenCalledWith(slotId, {
+            fallback: {title: 'error'},
             preferredLocale: 'en',
             attributes: attributes,
         });
@@ -234,6 +232,12 @@ describe('useContent (CSR)', () => {
         const slotId = 'slot-id';
         const preferredLocale = 'en';
 
+        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({
+            content: {},
+        });
+
+        jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
+
         jest.mocked(getSlotContent).mockReturnValue(content);
 
         renderHook(
@@ -245,17 +249,27 @@ describe('useContent (CSR)', () => {
 
         expect(getSlotContent).toHaveBeenCalledWith(slotId, preferredLocale);
 
-        expect(useLoader).toHaveBeenCalledWith(
-            expect.objectContaining({
-                fallback: content,
-            }),
-        );
+        jest.mocked(useLoader)
+            .mock
+            .calls[0][0]
+            .loader();
+
+        expect(fetch).toHaveBeenCalledWith(slotId, {
+            fallback: content,
+            preferredLocale: preferredLocale,
+        });
     });
 
     it('should use the provided fallback value', () => {
         const fallback = null;
         const slotId = 'slot-id';
         const preferredLocale = 'en';
+
+        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({
+            content: {},
+        });
+
+        jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
 
         jest.mocked(getSlotContent).mockReturnValue(null);
 
@@ -266,10 +280,14 @@ describe('useContent (CSR)', () => {
             }),
         );
 
-        expect(useLoader).toHaveBeenCalledWith(
-            expect.objectContaining({
-                fallback: fallback,
-            }),
-        );
+        jest.mocked(useLoader)
+            .mock
+            .calls[0][0]
+            .loader();
+
+        expect(fetch).toHaveBeenCalledWith(slotId, {
+            fallback: fallback,
+            preferredLocale: preferredLocale,
+        });
     });
 });
