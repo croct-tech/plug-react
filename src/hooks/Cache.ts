@@ -16,7 +16,7 @@ type Entry<R = any> = {
 };
 
 /**
- * @private
+ * @internal
  */
 export class Cache {
     private readonly cache: Record<string, Entry> = {};

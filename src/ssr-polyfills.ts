@@ -1,17 +1,15 @@
 import csrPlug, {Plug} from '@croct/plug';
 
 /**
- * @private
+ * @internal
  */
 export function isSsr(): boolean {
-    // eslint-disable-next-line @typescript-eslint/prefer-optional-chain -- The window can be undefined.
     return typeof window === 'undefined'
-        || typeof window.document === 'undefined'
-        || typeof window.document.createElement === 'undefined';
+        || typeof window.document?.createElement === 'undefined';
 }
 
 /**
- * @private
+ * @internal
  */
 export const croct: Plug = !isSsr()
     ? (function factory(): Plug {
