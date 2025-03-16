@@ -1,4 +1,5 @@
 import {renderHook, waitFor} from '@testing-library/react';
+import {getSlotContent} from '@croct/content';
 import {Plug} from '@croct/plug';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
@@ -16,6 +17,14 @@ jest.mock(
     './useLoader',
     () => ({
         useLoader: jest.fn(),
+    }),
+);
+
+jest.mock(
+    '@croct/content',
+    () => ({
+        __esModule: true,
+        getSlotContent: jest.fn().mockReturnValue(null),
     }),
 );
 
@@ -179,5 +188,46 @@ describe('useContent (CSR)', () => {
         }));
 
         await waitFor(() => expect(result.current).toEqual({title: 'second'}));
+    });
+
+    it('should use the default content as initial value', () => {
+        const content = {foo: 'bar'};
+        const slotId = 'slot-id';
+        const preferredLocale = 'en';
+
+        jest.mocked(getSlotContent).mockReturnValue(content);
+
+        renderHook(() => useContent(slotId, {preferredLocale: preferredLocale}));
+
+        expect(getSlotContent).toHaveBeenCalledWith(slotId, preferredLocale);
+
+        expect(useLoader).toHaveBeenCalledWith(
+            expect.objectContaining({
+                initial: content,
+            }),
+        );
+    });
+
+    it('should use the default content as fallback value', () => {
+        const content = {foo: 'bar'};
+        const slotId = 'slot-id';
+        const preferredLocale = 'en';
+
+        jest.mocked(getSlotContent).mockReturnValue(content);
+
+        renderHook(
+            () => useContent(slotId, {
+                preferredLocale: preferredLocale,
+                fallback: content,
+            }),
+        );
+
+        expect(getSlotContent).toHaveBeenCalledWith(slotId, preferredLocale);
+
+        expect(useLoader).toHaveBeenCalledWith(
+            expect.objectContaining({
+                fallback: content,
+            }),
+        );
     });
 });

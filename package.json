@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "@croct/plug": "https://pkg.pr.new/@croct/plug@321",
-    "@croct/sdk": "https://pkg.pr.new/@croct/sdk@448"
+    "@croct/content": "https://pkg.pr.new/@croct/content@3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
