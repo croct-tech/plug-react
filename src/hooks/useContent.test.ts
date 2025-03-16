@@ -190,7 +190,7 @@ describe('useContent (CSR)', () => {
         await waitFor(() => expect(result.current).toEqual({title: 'second'}));
     });
 
-    it('should use the default content as initial value', () => {
+    it('should use the default content as initial value if not provided', () => {
         const content = {foo: 'bar'};
         const slotId = 'slot-id';
         const preferredLocale = 'en';
@@ -208,7 +208,28 @@ describe('useContent (CSR)', () => {
         );
     });
 
-    it('should use the default content as fallback value', () => {
+    it('should use the provided initial value', () => {
+        const initial = null;
+        const slotId = 'slot-id';
+        const preferredLocale = 'en';
+
+        jest.mocked(getSlotContent).mockReturnValue(null);
+
+        renderHook(
+            () => useContent(slotId, {
+                preferredLocale: preferredLocale,
+                initial: initial,
+            }),
+        );
+
+        expect(useLoader).toHaveBeenCalledWith(
+            expect.objectContaining({
+                initial: initial,
+            }),
+        );
+    });
+
+    it('should use the default content as fallback value if not provided', () => {
         const content = {foo: 'bar'};
         const slotId = 'slot-id';
         const preferredLocale = 'en';
@@ -227,6 +248,27 @@ describe('useContent (CSR)', () => {
         expect(useLoader).toHaveBeenCalledWith(
             expect.objectContaining({
                 fallback: content,
+            }),
+        );
+    });
+
+    it('should use the provided fallback value', () => {
+        const fallback = null;
+        const slotId = 'slot-id';
+        const preferredLocale = 'en';
+
+        jest.mocked(getSlotContent).mockReturnValue(null);
+
+        renderHook(
+            () => useContent(slotId, {
+                preferredLocale: preferredLocale,
+                fallback: fallback,
+            }),
+        );
+
+        expect(useLoader).toHaveBeenCalledWith(
+            expect.objectContaining({
+                fallback: fallback,
             }),
         );
     });

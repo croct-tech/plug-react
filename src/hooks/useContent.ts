@@ -35,7 +35,9 @@ function useCsrContent<I, F>(
         [id, preferredLocale],
     );
 
-    const [initial, setInitial] = useState<SlotContent | I | F | undefined>(() => (initialContent ?? defaultContent));
+    const [initial, setInitial] = useState<SlotContent | I | F | undefined>(
+        () => (initialContent === undefined ? defaultContent : initialContent),
+    );
 
     const croct = useCroct();
 
@@ -48,7 +50,7 @@ function useCsrContent<I, F>(
         ),
         loader: () => croct.fetch(id, fetchOptions).then(({content}) => content),
         initial: initial,
-        fallback: fallback ?? defaultContent,
+        fallback: fallback === undefined ? defaultContent : fallback,
         expiration: expiration,
     });
 
@@ -74,7 +76,9 @@ function useSsrContent<I, F>(
     slotId: VersionedSlotId,
     {initial, preferredLocale}: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
-    const resolvedInitialContent = initial ?? (getSlotContent(slotId, preferredLocale) as I|null ?? undefined);
+    const resolvedInitialContent = initial === undefined
+        ? getSlotContent(slotId, preferredLocale) as I|null ?? undefined
+        : initial;
 
     if (resolvedInitialContent === undefined) {
         throw new Error(

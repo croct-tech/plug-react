@@ -34,7 +34,7 @@ describe('useContent (SSR)', () => {
             .toThrow('The initial content is required for server-side rendering (SSR).');
     });
 
-    it('should use the default content as initial value on the server-side', () => {
+    it('should use the default content as initial value on the server-side if not provided', () => {
         const content = {foo: 'bar'};
         const slotId = 'slot-id';
         const preferredLocale = 'en';
@@ -46,5 +46,22 @@ describe('useContent (SSR)', () => {
         expect(getSlotContent).toHaveBeenCalledWith(slotId, preferredLocale);
 
         expect(result.current).toBe(content);
+    });
+
+    it('should use the provided initial value on the server-side', () => {
+        const initial = null;
+        const slotId = 'slot-id';
+        const preferredLocale = 'en';
+
+        jest.mocked(getSlotContent).mockReturnValue(null);
+
+        const {result} = renderHook(
+            () => useContent(slotId, {
+                preferredLocale: preferredLocale,
+                initial: initial,
+            }),
+        );
+
+        expect(result.current).toBe(initial);
     });
 });
