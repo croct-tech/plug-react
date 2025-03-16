@@ -1,7 +1,8 @@
 import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
 import {JsonObject} from '@croct/plug/sdk/json';
 import {FetchOptions} from '@croct/plug/plug';
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
+import {getSlotContent} from '@croct/content';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
@@ -28,8 +29,14 @@ function useCsrContent<I, F>(
         ...fetchOptions
     } = options;
 
-    const [initial, setInitial] = useState<SlotContent | I | F | undefined>(initialContent);
     const {preferredLocale} = fetchOptions;
+    const defaultContent = useMemo(
+        () => getSlotContent(id, preferredLocale) as F|null ?? undefined,
+        [id, preferredLocale],
+    );
+
+    const [initial, setInitial] = useState<SlotContent | I | F | undefined>(() => (initialContent ?? defaultContent));
+
     const croct = useCroct();
 
     const result: SlotContent | I | F = useLoader({
@@ -41,7 +48,7 @@ function useCsrContent<I, F>(
         ),
         loader: () => croct.fetch(id, fetchOptions).then(({content}) => content),
         initial: initial,
-        fallback: fallback,
+        fallback: fallback ?? defaultContent,
         expiration: expiration,
     });
 
@@ -64,17 +71,19 @@ function useCsrContent<I, F>(
 }
 
 function useSsrContent<I, F>(
-    _: VersionedSlotId,
-    {initial}: UseContentOptions<I, F> = {},
+    slotId: VersionedSlotId,
+    {initial, preferredLocale}: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
-    if (initial === undefined) {
+    const resolvedInitialContent = initial ?? (getSlotContent(slotId, preferredLocale) as I|null ?? undefined);
+
+    if (resolvedInitialContent === undefined) {
         throw new Error(
             'The initial content is required for server-side rendering (SSR). '
             + 'For help, see https://croct.help/sdk/react/missing-slot-content',
         );
     }
 
-    return initial;
+    return resolvedInitialContent;
 }
 
 type UseContentHook = {
