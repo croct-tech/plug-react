@@ -7,78 +7,63 @@ export type CacheOptions<R> = EntryOptions<R> & {
     initial?: R,
 };
 
-export function useLoader<R>({initial, ...options}: CacheOptions<R>): R {
-    const {cacheKey} = options;
-    const loadedValue: R|undefined = cache.get<R>(cacheKey)?.result;
-    const [value, setValue] = useState(loadedValue !== undefined ? loadedValue : initial);
+export function useLoader<R>({initial, ...currentOptions}: CacheOptions<R>): R {
+    const optionsRef = useRef(currentOptions);
+    const [value, setValue] = useState(() => cache.get<R>(currentOptions.cacheKey)?.result ?? initial);
     const mountedRef = useRef(true);
-    const initialRef = useRef(initial);
-    const previousCacheKey = useRef(cacheKey);
 
-    const load = useStableCallback(() => {
-        try {
-            setValue(cache.load(options));
-        } catch (result: unknown) {
-            if (result instanceof Promise) {
-                result.then((resolvedValue: R) => {
-                    if (mountedRef.current) {
-                        setValue(resolvedValue);
-                    }
-                });
+    const load = useCallback(
+        (options: EntryOptions<R>) => {
+            try {
+                setValue(cache.load(options));
+            } catch (result: unknown) {
+                if (result instanceof Promise) {
+                    result.then((resolvedValue: R) => {
+                        if (mountedRef.current) {
+                            setValue(resolvedValue);
+                        }
+                    });
 
-                return;
-            }
+                    return;
+                }
 
-            setValue(undefined);
-        }
-    });
-
-    const reset = useStableCallback(() => {
-        const newLoadedValue: R|undefined = cache.get<R>(cacheKey)?.result;
-
-        setValue(newLoadedValue !== undefined ? newLoadedValue : initial);
-
-        load();
-    });
-
-    useEffect(
-        () => {
-            if (previousCacheKey.current !== cacheKey) {
-                reset();
-                previousCacheKey.current = cacheKey;
+                setValue(undefined);
             }
         },
-        [reset, cacheKey],
+        [],
     );
 
     useEffect(
         () => {
-            if (initialRef.current !== undefined) {
-                load();
+            if (initial !== undefined) {
+                load(currentOptions);
             }
 
             return () => {
                 mountedRef.current = false;
             };
         },
-        [load],
+        // eslint-disable-next-line react-hooks/exhaustive-deps -- Should run only once
+        [],
+    );
+
+    useEffect(
+        () => {
+            if (optionsRef.current.cacheKey !== currentOptions.cacheKey) {
+                setValue(initial);
+                optionsRef.current = currentOptions;
+
+                if (initial !== undefined) {
+                    load(currentOptions);
+                }
+            }
+        },
+        [currentOptions, initial, load],
     );
 
     if (value === undefined) {
-        return cache.load(options);
+        return cache.load(currentOptions);
     }
 
     return value;
-}
-
-type Callback = () => void;
-
-function useStableCallback(callback: Callback): Callback {
-    const ref = useRef<Callback>(undefined);
-
-    useEffect(() => {
-        ref.current = callback;
-    });
-
-    return useCallback(() => { ref.current?.(); }, []);
 }
