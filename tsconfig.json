@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ES2019",
+    "module": "ES2020",
+    "target": "ES2020",
     "outDir": "build",
     "lib": ["dom"],
     "types": [
@@ -26,6 +26,7 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "stripInternal": true,
   },
   "include": [
     "src/**/*.ts",
