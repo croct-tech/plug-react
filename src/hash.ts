@@ -1,3 +1,6 @@
+/**
+ * @private
+ */
 export function hash(value: string): string {
     let code = 0;
 

@@ -7,6 +7,9 @@ export type CacheOptions<R> = EntryOptions<R> & {
     initial?: R,
 };
 
+/**
+ * @private
+ */
 export function useLoader<R>({initial, ...currentOptions}: CacheOptions<R>): R {
     const optionsRef = useRef(currentOptions);
     const [value, setValue] = useState(() => cache.get<R>(currentOptions.cacheKey)?.result ?? initial);

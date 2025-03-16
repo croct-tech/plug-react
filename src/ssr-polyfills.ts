@@ -1,5 +1,8 @@
 import csrPlug, {Plug} from '@croct/plug';
 
+/**
+ * @private
+ */
 export function isSsr(): boolean {
     // eslint-disable-next-line @typescript-eslint/prefer-optional-chain -- The window can be undefined.
     return typeof window === 'undefined'
@@ -7,6 +10,9 @@ export function isSsr(): boolean {
         || typeof window.document.createElement === 'undefined';
 }
 
+/**
+ * @private
+ */
 export const croct: Plug = !isSsr()
     ? (function factory(): Plug {
         let timeoutId: ReturnType<typeof setTimeout>|null = null;
