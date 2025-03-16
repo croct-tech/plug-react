@@ -4,8 +4,7 @@ import csrPlug, {Plug} from '@croct/plug';
  * @internal
  */
 export function isSsr(): boolean {
-    return typeof window === 'undefined'
-        || typeof window.document?.createElement === 'undefined';
+    return globalThis.window?.document?.createElement === undefined;
 }
 
 /**
