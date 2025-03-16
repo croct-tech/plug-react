@@ -1,4 +1,5 @@
 import {act, renderHook, waitFor} from '@testing-library/react';
+import {StrictMode} from 'react';
 import {useLoader} from './useLoader';
 
 describe('useLoader', () => {
@@ -403,5 +404,35 @@ describe('useLoader', () => {
         expect(loader).toHaveBeenCalledTimes(2);
 
         await waitFor(() => expect(secondTime.current).toBe('foo'));
+    });
+
+    it('should update the content in StrictMode', async () => {
+        jest.useFakeTimers();
+
+        const delay = 10;
+        const loader = jest.fn(
+            () => new Promise(resolve => {
+                setTimeout(() => resolve('foo'), delay);
+            }),
+        );
+
+        const {result} = renderHook(
+            () => useLoader({
+                cacheKey: cacheKey.current(),
+                loader: loader,
+                initial: 'bar',
+            }),
+            {
+                wrapper: StrictMode,
+            },
+        );
+
+        // Let the loader resolve
+        await act(async () => {
+            jest.advanceTimersByTime(delay);
+            await flushPromises();
+        });
+
+        await waitFor(() => expect(result.current).toBe('foo'));
     });
 });
