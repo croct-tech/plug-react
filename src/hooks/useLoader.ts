@@ -35,6 +35,8 @@ export function useLoader<R>({initial, ...currentOptions}: CacheOptions<R>): R {
 
     useEffect(
         () => {
+            mountedRef.current = true;
+
             if (initial !== undefined) {
                 load(currentOptions);
             }
