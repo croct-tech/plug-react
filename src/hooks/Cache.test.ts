@@ -181,11 +181,10 @@ describe('Cache', () => {
             promise = result;
         }
 
-        await expect(promise).resolves.toBeUndefined();
+        await expect(promise).resolves.toBe('fallback');
 
         expect(cache.load(options)).toEqual('fallback');
 
-        // Should cache the result but not the fallback value
         expect(cache.load({...options, fallback: 'error'})).toEqual('error');
 
         expect(loader).toHaveBeenCalledTimes(1);

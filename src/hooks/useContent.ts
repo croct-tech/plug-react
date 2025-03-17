@@ -1,13 +1,15 @@
 import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
 import {JsonObject} from '@croct/plug/sdk/json';
 import {FetchOptions} from '@croct/plug/plug';
-import {useEffect, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
+import {getSlotContent} from '@croct/content';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
 import {hash} from '../hash';
 
 export type UseContentOptions<I, F> = FetchOptions<F> & {
+    fallback?: F,
     initial?: I,
     cacheKey?: string,
     expiration?: number,
@@ -19,16 +21,24 @@ function useCsrContent<I, F>(
     options: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
     const {
-        fallback,
         cacheKey,
         expiration,
+        fallback: fallbackContent,
         initial: initialContent,
         staleWhileLoading = false,
         ...fetchOptions
     } = options;
 
-    const [initial, setInitial] = useState<SlotContent | I | F | undefined>(initialContent);
     const {preferredLocale} = fetchOptions;
+    const defaultContent = useMemo(
+        () => getSlotContent(id, preferredLocale) as SlotContent|null ?? undefined,
+        [id, preferredLocale],
+    );
+    const fallback = fallbackContent === undefined ? defaultContent : fallbackContent;
+    const [initial, setInitial] = useState<SlotContent | I | F | undefined>(
+        () => (initialContent === undefined ? defaultContent : initialContent),
+    );
+
     const croct = useCroct();
 
     const result: SlotContent | I | F = useLoader({
@@ -38,9 +48,8 @@ function useCsrContent<I, F>(
             + `:${preferredLocale ?? ''}`
             + `:${JSON.stringify(fetchOptions.attributes ?? {})}`,
         ),
-        loader: () => croct.fetch(id, fetchOptions).then(({content}) => content),
+        loader: () => croct.fetch(id, {...fetchOptions, fallback: fallback}).then(({content}) => content),
         initial: initial,
-        fallback: fallback,
         expiration: expiration,
     });
 
@@ -63,17 +72,21 @@ function useCsrContent<I, F>(
 }
 
 function useSsrContent<I, F>(
-    _: VersionedSlotId,
-    {initial}: UseContentOptions<I, F> = {},
+    slotId: VersionedSlotId,
+    {initial, preferredLocale}: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
-    if (initial === undefined) {
+    const resolvedInitialContent = initial === undefined
+        ? getSlotContent(slotId, preferredLocale) as I|null ?? undefined
+        : initial;
+
+    if (resolvedInitialContent === undefined) {
         throw new Error(
             'The initial content is required for server-side rendering (SSR). '
             + 'For help, see https://croct.help/sdk/react/missing-slot-content',
         );
     }
 
-    return initial;
+    return resolvedInitialContent;
 }
 
 type UseContentHook = {

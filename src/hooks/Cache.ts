@@ -38,7 +38,9 @@ export class Cache {
                     return fallback;
                 }
 
-                throw cachedEntry.error;
+                if (cachedEntry.result === undefined) {
+                    throw cachedEntry.error;
+                }
             }
 
             if (cachedEntry.result !== undefined) {
@@ -68,7 +70,10 @@ export class Cache {
                     return result;
                 })
                 .catch(error => {
+                    entry.result = fallback;
                     entry.error = error;
+
+                    return fallback;
                 })
                 .finally(() => {
                     entry.dispose();
