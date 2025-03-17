@@ -7,8 +7,7 @@ import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
 import {hash} from '../hash';
 
-export type UseContentOptions<I, F> = FetchOptions & {
-    fallback?: F,
+export type UseContentOptions<I, F> = FetchOptions<F> & {
     initial?: I,
     cacheKey?: string,
     expiration?: number,
