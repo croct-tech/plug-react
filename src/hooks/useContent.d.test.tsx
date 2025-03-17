@@ -242,7 +242,7 @@ describe('useContent typing', () => {
             'useContent<{foo: string;}, never, number>',
         );
 
-        expect(getReturnType(code)).toBe('number | {...;}');
+        expect(getReturnType(code)).toBe('number | {foo: string;}');
     });
 
     it('show allow specifying the initial and fallback value types for mapped slots', () => {
@@ -259,7 +259,7 @@ describe('useContent typing', () => {
             'useContent<{foo: string;}, boolean, number>',
         );
 
-        expect(getReturnType(code)).toBe('number | ... 1 more ... | {...;}');
+        expect(getReturnType(code)).toBe('number | ... 1 more ... | {foo: string;}');
     });
 
     it('should require specifying JSON object as return type for mapped slots', () => {

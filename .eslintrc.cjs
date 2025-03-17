@@ -26,6 +26,7 @@ module.exports = {
         {
             files: [
                 '**/*.stories.tsx',
+                'jest.config.mjs',
             ],
             rules: {
                 'import/no-default-export': 'off',
