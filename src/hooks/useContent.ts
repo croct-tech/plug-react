@@ -28,7 +28,7 @@ function useCsrContent<I, F>(
         ...fetchOptions
     } = options;
 
-    const {preferredLocale} = fetchOptions;
+    const preferredLocale = normalizePreferredLocale(fetchOptions.preferredLocale);
     const defaultContent = useMemo(
         () => getSlotContent(id, preferredLocale) as SlotContent|null ?? undefined,
         [id, preferredLocale],
@@ -47,7 +47,11 @@ function useCsrContent<I, F>(
             + `:${preferredLocale ?? ''}`
             + `:${JSON.stringify(fetchOptions.attributes ?? {})}`,
         ),
-        loader: () => croct.fetch(id, {...fetchOptions, fallback: fallback}).then(({content}) => content),
+        loader: () => croct.fetch(id, {
+            ...fetchOptions,
+            preferredLocale: preferredLocale,
+            fallback: fallback,
+        }).then(({content}) => content),
         initial: initial,
         expiration: expiration,
     });
@@ -75,7 +79,7 @@ function useSsrContent<I, F>(
     {initial, preferredLocale}: UseContentOptions<I, F> = {},
 ): SlotContent | I | F {
     const resolvedInitialContent = initial === undefined
-        ? getSlotContent(slotId, preferredLocale) as I|null ?? undefined
+        ? getSlotContent(slotId, normalizePreferredLocale(preferredLocale)) as I|null ?? undefined
         : initial;
 
     if (resolvedInitialContent === undefined) {
@@ -86,6 +90,10 @@ function useSsrContent<I, F>(
     }
 
     return resolvedInitialContent;
+}
+
+function normalizePreferredLocale(preferredLocale: string|undefined): string|undefined {
+    return preferredLocale !== undefined && preferredLocale !== '' ? preferredLocale : undefined;
 }
 
 type UseContentHook = {

@@ -290,4 +290,27 @@ describe('useContent (CSR)', () => {
             preferredLocale: preferredLocale,
         });
     });
+
+    it('should normalize an empty preferred locale to undefined', () => {
+        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({
+            content: {},
+        });
+
+        jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
+
+        renderHook(
+            () => useContent('slot-id', {
+                preferredLocale: '',
+            }),
+        );
+
+        jest.mocked(useLoader)
+            .mock
+            .calls[0][0]
+            .loader();
+
+        expect(fetch).toHaveBeenCalledWith('slot-id', {
+            preferredLocale: undefined,
+        });
+    });
 });
