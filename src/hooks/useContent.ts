@@ -9,7 +9,6 @@ import {isSsr} from '../ssr-polyfills';
 import {hash} from '../hash';
 
 export type UseContentOptions<I, F> = FetchOptions<F> & {
-    fallback?: F,
     initial?: I,
     cacheKey?: string,
     expiration?: number,
