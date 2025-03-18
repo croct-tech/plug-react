@@ -309,8 +309,6 @@ describe('useContent (CSR)', () => {
             .calls[0][0]
             .loader();
 
-        expect(fetch).toHaveBeenCalledWith('slot-id', {
-            preferredLocale: undefined,
-        });
+        expect(jest.mocked(fetch).mock.calls[0][1]).toStrictEqual({});
     });
 });

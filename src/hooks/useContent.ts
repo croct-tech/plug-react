@@ -25,13 +25,14 @@ function useCsrContent<I, F>(
         fallback: fallbackContent,
         initial: initialContent,
         staleWhileLoading = false,
+        preferredLocale,
         ...fetchOptions
     } = options;
 
-    const preferredLocale = normalizePreferredLocale(fetchOptions.preferredLocale);
+    const normalizedLocale = normalizePreferredLocale(preferredLocale);
     const defaultContent = useMemo(
-        () => getSlotContent(id, preferredLocale) as SlotContent|null ?? undefined,
-        [id, preferredLocale],
+        () => getSlotContent(id, normalizedLocale) as SlotContent|null ?? undefined,
+        [id, normalizedLocale],
     );
     const fallback = fallbackContent === undefined ? defaultContent : fallbackContent;
     const [initial, setInitial] = useState<SlotContent | I | F | undefined>(
@@ -44,13 +45,13 @@ function useCsrContent<I, F>(
         cacheKey: hash(
             `useContent:${cacheKey ?? ''}`
             + `:${id}`
-            + `:${preferredLocale ?? ''}`
+            + `:${normalizedLocale ?? ''}`
             + `:${JSON.stringify(fetchOptions.attributes ?? {})}`,
         ),
         loader: () => croct.fetch(id, {
             ...fetchOptions,
-            preferredLocale: preferredLocale,
-            fallback: fallback,
+            ...(normalizedLocale !== undefined ? {preferredLocale: normalizedLocale} : {}),
+            ...(fallback !== undefined ? {fallback: fallback} : {}),
         }).then(({content}) => content),
         initial: initial,
         expiration: expiration,
