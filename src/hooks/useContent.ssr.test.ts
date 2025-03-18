@@ -64,4 +64,21 @@ describe('useContent (SSR)', () => {
 
         expect(result.current).toBe(initial);
     });
+
+    it('should normalize an empty preferred locale to undefined', () => {
+        const slotId = 'slot-id';
+        const preferredLocale = '';
+
+        jest.mocked(getSlotContent).mockReturnValue({
+            foo: 'bar',
+        });
+
+        renderHook(
+            () => useContent(slotId, {
+                preferredLocale: preferredLocale,
+            }),
+        );
+
+        expect(getSlotContent).toHaveBeenCalledWith(slotId, undefined);
+    });
 });
