@@ -1,3 +1,5 @@
+'use client';
+
 import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
 import {JsonObject} from '@croct/plug/sdk/json';
 import {FetchOptions} from '@croct/plug/plug';
