@@ -1,3 +1,5 @@
+'use client';
+
 import {Plug} from '@croct/plug';
 import {useContext} from 'react';
 import {CroctContext} from '../CroctProvider';
