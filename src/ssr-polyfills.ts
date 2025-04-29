@@ -1,4 +1,4 @@
-import csrPlug, {Plug} from '@croct/plug';
+import {plug, Plug} from '@croct/plug';
 
 /**
  * @internal
@@ -16,7 +16,7 @@ export const croct: Plug = !isSsr()
         let resolveCallback: () => void;
         let rejectCallback: (reason: any) => void;
 
-        return new Proxy(csrPlug, {
+        return new Proxy(plug, {
             get: function getProperty(target, property: keyof Plug): any {
                 switch (property) {
                     case 'plug':
@@ -47,7 +47,7 @@ export const croct: Plug = !isSsr()
             },
         });
     }())
-    : new Proxy(csrPlug, {
+    : new Proxy(plug, {
         get: function getProperty(_, property: keyof Plug): any {
             switch (property) {
                 case 'initialized':
