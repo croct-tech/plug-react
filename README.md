@@ -18,7 +18,8 @@
 <br/>
 <p align="center">
     <a href="https://www.npmjs.com/package/@croct/plug-react"><img alt="Version" src="https://img.shields.io/npm/v/@croct/plug-react"/></a>
-    <a href="https://codeclimate.com/repos/60665953e0608a018c001907/test_coverage"><img alt="Coverage" src="https://api.codeclimate.com/v1/badges/24f7d3e788ed2c66f2ab/test_coverage"/></a>
+    <a href="https://qlty.sh/gh/croct-tech/projects/plug-react"><img src="https://qlty.sh/badges/bc10f271-37b3-45e8-9e10-e7148e83cea7/coverage.svg" alt="Code Coverage" /></a>
+<a href="https://qlty.sh/gh/croct-tech/projects/plug-react"><img src="https://qlty.sh/badges/bc10f271-37b3-45e8-9e10-e7148e83cea7/maintainability.svg" alt="Maintainability" /></a>
 </p>
 
 ## Introduction
