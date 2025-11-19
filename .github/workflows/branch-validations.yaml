@@ -15,8 +15,8 @@ jobs:
   security-checks:
    runs-on: ubuntu-latest
    steps:
-     - uses: actions/checkout@v4
-     - uses: actions/setup-node@v4
+     - uses: actions/checkout@v5
+     - uses: actions/setup-node@v6
        with:
          registry-url: 'https://registry.npmjs.org'
          node-version: 23
@@ -40,8 +40,8 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: 23
 
@@ -64,8 +64,8 @@ jobs:
     needs:
       - validate
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: 23
 
@@ -88,8 +88,8 @@ jobs:
     needs:
       - validate
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
         with:
           node-version: 23
 
@@ -107,7 +107,7 @@ jobs:
       - name: Run tests
         run: npm run test
 
-      - uses: qltysh/qlty-action/coverage@v1
+      - uses: qltysh/qlty-action/coverage@v2
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: ${{ github.workspace }}/coverage/lcov.info
