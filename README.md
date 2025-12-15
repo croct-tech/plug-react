@@ -18,8 +18,6 @@
 <br/>
 <p align="center">
     <a href="https://www.npmjs.com/package/@croct/plug-react"><img alt="Version" src="https://img.shields.io/npm/v/@croct/plug-react"/></a>
-    <a href="https://qlty.sh/gh/croct-tech/projects/plug-react"><img src="https://qlty.sh/badges/bc10f271-37b3-45e8-9e10-e7148e83cea7/coverage.svg" alt="Code Coverage" /></a>
-<a href="https://qlty.sh/gh/croct-tech/projects/plug-react"><img src="https://qlty.sh/badges/bc10f271-37b3-45e8-9e10-e7148e83cea7/maintainability.svg" alt="Maintainability" /></a>
 </p>
 
 ## Introduction
