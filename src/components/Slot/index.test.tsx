@@ -18,7 +18,14 @@ describe('<Slot />', () => {
             fallback: {title: 'fallback'},
         };
 
-        const result = {content: {title: 'result'}} satisfies FetchResponse;
+        const result = {
+            metadata: {
+                version: '1.0',
+            },
+            content: {
+                title: 'result',
+            },
+        } satisfies FetchResponse;
 
         jest.mocked(useContent).mockReturnValue(result);
 
