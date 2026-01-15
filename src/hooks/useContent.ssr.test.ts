@@ -26,7 +26,9 @@ describe('useContent (SSR)', () => {
     it('should render the initial value on the server-side', () => {
         const {result} = renderHook(() => useContent('slot-id', {initial: 'foo'}));
 
-        expect(result.current).toBe('foo');
+        expect(result.current).toEqual({
+            content: 'foo',
+        });
     });
 
     it('should require an initial value for server-side rending', () => {
@@ -45,7 +47,9 @@ describe('useContent (SSR)', () => {
 
         expect(getSlotContent).toHaveBeenCalledWith(slotId, preferredLocale);
 
-        expect(result.current).toBe(content);
+        expect(result.current).toEqual({
+            content: content,
+        });
     });
 
     it('should use the provided initial value on the server-side', () => {
@@ -62,7 +66,9 @@ describe('useContent (SSR)', () => {
             }),
         );
 
-        expect(result.current).toBe(initial);
+        expect(result.current).toEqual({
+            content: initial,
+        });
     });
 
     it('should normalize an empty preferred locale to undefined', () => {

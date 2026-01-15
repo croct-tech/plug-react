@@ -5,10 +5,14 @@ import {JsonObject} from '@croct/plug/sdk/json';
 import {FetchOptions} from '@croct/plug/plug';
 import {useEffect, useMemo, useState} from 'react';
 import {getSlotContent} from '@croct/content';
+import {FetchResponse as BaseFetchResponse, FetchResponseOptions} from '@croct/sdk/contentFetcher';
+import {Optional} from '@croct/sdk/utilityTypes';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
 import {hash} from '../hash';
+
+export type FetchResponse<P = JsonObject, O = FetchResponseOptions> = Optional<BaseFetchResponse<P, O>, 'metadata'>;
 
 export type UseContentOptions<I, F> = FetchOptions<F> & {
     initial?: I,
@@ -17,10 +21,10 @@ export type UseContentOptions<I, F> = FetchOptions<F> & {
     staleWhileLoading?: boolean,
 };
 
-function useCsrContent<I, F>(
+function useCsrContent<I, F, O extends FetchResponseOptions>(
     id: VersionedSlotId,
     options: UseContentOptions<I, F> = {},
-): SlotContent | I | F {
+): FetchResponse<SlotContent | I | F, O> {
     const {
         cacheKey,
         expiration,
@@ -37,24 +41,32 @@ function useCsrContent<I, F>(
         [id, normalizedLocale],
     );
     const fallback = fallbackContent === undefined ? defaultContent : fallbackContent;
-    const [initial, setInitial] = useState<SlotContent | I | F | undefined>(
-        () => (initialContent === undefined ? defaultContent : initialContent),
+    const [initial, setInitial] = useState(
+        () => {
+            const content = initialContent === undefined ? defaultContent : initialContent;
+
+            if (content === undefined) {
+                return undefined;
+            }
+
+            return {content: content};
+        },
     );
 
     const croct = useCroct();
 
-    const result: SlotContent | I | F = useLoader({
+    const result = useLoader({
         cacheKey: hash(
             `useContent:${cacheKey ?? ''}`
             + `:${id}`
             + `:${normalizedLocale ?? ''}`
-            + `:${JSON.stringify(fetchOptions.attributes ?? {})}`,
+            + `:${JSON.stringify(fetchOptions?.attributes ?? {})}`,
         ),
-        loader: () => croct.fetch(id, {
+        loader: () => croct.fetch<VersionedSlotId, FetchResponseOptions>(id, {
             ...fetchOptions,
             ...(normalizedLocale !== undefined ? {preferredLocale: normalizedLocale} : {}),
             ...(fallback !== undefined ? {fallback: fallback} : {}),
-        }).then(({content}) => content),
+        }),
         initial: initial,
         expiration: expiration,
     });
@@ -77,10 +89,11 @@ function useCsrContent<I, F>(
     return result;
 }
 
-function useSsrContent<I, F>(
+function useSsrContent<I, F, O extends FetchResponseOptions>(
     slotId: VersionedSlotId,
-    {initial, preferredLocale}: UseContentOptions<I, F> = {},
-): SlotContent | I | F {
+    options: UseContentOptions<I, F> = {},
+): FetchResponse<SlotContent | I | F, O> {
+    const {initial, preferredLocale} = options;
     const resolvedInitialContent = initial === undefined
         ? getSlotContent(slotId, normalizePreferredLocale(preferredLocale)) as I|null ?? undefined
         : initial;
@@ -92,7 +105,7 @@ function useSsrContent<I, F>(
         );
     }
 
-    return resolvedInitialContent;
+    return {content: resolvedInitialContent};
 }
 
 function normalizePreferredLocale(preferredLocale: string|undefined): string|undefined {
@@ -100,30 +113,30 @@ function normalizePreferredLocale(preferredLocale: string|undefined): string|und
 }
 
 type UseContentHook = {
-    <P extends JsonObject, I = P, F = P>(
+    <P extends JsonObject, I = P, F = P, O extends FetchResponseOptions = FetchResponseOptions>(
         id: keyof VersionedSlotMap extends never ? string : never,
-        options?: UseContentOptions<I, F>
-    ): P | I | F,
+        options?: O & UseContentOptions<I, F>
+    ): FetchResponse<P | I | F, O>,
 
-    <S extends VersionedSlotId>(
+    <S extends VersionedSlotId, O extends FetchResponseOptions = FetchResponseOptions>(
         id: S,
-        options?: UseContentOptions<never, never>
-    ): SlotContent<S>,
+        options?: O & UseContentOptions<never, never>
+    ): FetchResponse<SlotContent<S>, O>,
 
-    <I, S extends VersionedSlotId>(
+    <I, S extends VersionedSlotId, O extends FetchResponseOptions = FetchResponseOptions>(
         id: S,
-        options?: UseContentOptions<I, never>
-    ): SlotContent<S> | I,
+        options?: O & UseContentOptions<I, never>
+    ): FetchResponse<SlotContent<S> | I, O>,
 
-    <F, S extends VersionedSlotId>(
+    <F, S extends VersionedSlotId, O extends FetchResponseOptions = FetchResponseOptions>(
         id: S,
-        options?: UseContentOptions<never, F>
-    ): SlotContent<S> | F,
+        options?: O & UseContentOptions<never, F>
+    ): FetchResponse<SlotContent<S> | F, O>,
 
-    <I, F, S extends VersionedSlotId>(
+    <I, F, S extends VersionedSlotId, O extends FetchResponseOptions = FetchResponseOptions>(
         id: S,
-        options?: UseContentOptions<I, F>
-    ): SlotContent<S> | I | F,
+        options?: O & UseContentOptions<I, F>
+    ): FetchResponse<SlotContent<S> | I | F, O>,
 };
 
 export const useContent: UseContentHook = isSsr() ? useSsrContent : useCsrContent;

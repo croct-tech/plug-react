@@ -3,7 +3,7 @@ import {getSlotContent} from '@croct/content';
 import {Plug} from '@croct/plug';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
-import {useContent} from './useContent';
+import {FetchResponse, useContent} from './useContent';
 import {hash} from '../hash';
 
 jest.mock(
@@ -91,7 +91,7 @@ describe('useContent (CSR)', () => {
         jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
 
         jest.mocked(useLoader).mockImplementation(
-            () => ({title: key.current === 'initial' ? 'first' : 'second'}),
+            (): FetchResponse => ({content: {title: key.current === 'initial' ? 'first' : 'second'}}),
         );
 
         const slotId = 'home-banner@1';
@@ -110,11 +110,17 @@ describe('useContent (CSR)', () => {
         expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
             cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
             initial: {
-                title: 'initial',
+                content: {
+                    title: 'initial',
+                },
             },
         }));
 
-        await waitFor(() => expect(result.current).toEqual({title: 'first'}));
+        await waitFor(
+            () => expect(result.current).toEqual({
+                content: {title: 'first'},
+            }),
+        );
 
         key.current = 'next';
 
@@ -123,11 +129,17 @@ describe('useContent (CSR)', () => {
         expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
             cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
             initial: {
-                title: 'initial',
+                content: {
+                    title: 'initial',
+                },
             },
         }));
 
-        await waitFor(() => expect(result.current).toEqual({title: 'second'}));
+        await waitFor(
+            () => expect(result.current).toEqual({
+                content: {title: 'second'},
+            }),
+        );
     });
 
     it('should use the last fetched content as initial value if the stale-while-loading flag is true', async () => {
@@ -168,7 +180,9 @@ describe('useContent (CSR)', () => {
         expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
             cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
             initial: {
-                title: 'initial',
+                content: {
+                    title: 'initial',
+                },
             },
         }));
 
@@ -201,7 +215,9 @@ describe('useContent (CSR)', () => {
 
         expect(useLoader).toHaveBeenCalledWith(
             expect.objectContaining({
-                initial: content,
+                initial: {
+                    content: content,
+                },
             }),
         );
     });
@@ -222,7 +238,9 @@ describe('useContent (CSR)', () => {
 
         expect(useLoader).toHaveBeenCalledWith(
             expect.objectContaining({
-                initial: initial,
+                initial: {
+                    content: initial,
+                },
             }),
         );
     });
