@@ -1,6 +1,6 @@
 'use client';
 
-import {SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
+import {DynamicSlotId, SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
 import {JsonObject} from '@croct/plug/sdk/json';
 import {FetchOptions} from '@croct/plug/plug';
 import {useEffect, useMemo, useState} from 'react';
@@ -40,10 +40,10 @@ function useCsrContent<I, F, O extends FetchResponseOptions>(
         () => getSlotContent(id, normalizedLocale) as SlotContent|null ?? undefined,
         [id, normalizedLocale],
     );
-    const fallback = fallbackContent === undefined ? defaultContent : fallbackContent;
+    const fallback = (fallbackContent === undefined ? defaultContent : fallbackContent) as SlotContent;
     const [initial, setInitial] = useState(
         () => {
-            const content = initialContent === undefined ? defaultContent : initialContent;
+            const content = (initialContent === undefined ? defaultContent : initialContent);
 
             if (content === undefined) {
                 return undefined;
@@ -62,7 +62,7 @@ function useCsrContent<I, F, O extends FetchResponseOptions>(
             + `:${normalizedLocale ?? ''}`
             + `:${JSON.stringify(fetchOptions?.attributes ?? {})}`,
         ),
-        loader: () => croct.fetch<VersionedSlotId, FetchResponseOptions>(id, {
+        loader: () => croct.fetch<DynamicSlotId, FetchResponseOptions>(id, {
             ...fetchOptions,
             ...(normalizedLocale !== undefined ? {preferredLocale: normalizedLocale} : {}),
             ...(fallback !== undefined ? {fallback: fallback} : {}),
