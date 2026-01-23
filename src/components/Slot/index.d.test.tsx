@@ -75,7 +75,7 @@ describe('<Slot  /> typing', () => {
     it('should infer whether the schema is requested', () => {
         const code: CodeOptions = {
             code: `
-                <Slot id={'home-banner'} initial={true} schema>
+                <Slot id={'home-banner'} initial={true} includeSchema>
                     {(params) => typeof params.metadata}
                 </Slot>;
             `,
@@ -85,7 +85,8 @@ describe('<Slot  /> typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getParameterType(code)).toBe(
-            'FetchResponse<boolean | HomeBannerV1, {children: {};id: "home-banner";initial: boolean;schema: true;}>',
+            'FetchResponse<boolean | HomeBannerV1, '
+            + '{children: {};id: "home-banner";initial: boolean;includeSchema: true;}>',
         );
     });
 

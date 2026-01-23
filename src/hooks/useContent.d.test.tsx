@@ -110,7 +110,7 @@ describe('useContent typing', () => {
     it('should infer whether the schema is requested', () => {
         const code: CodeOptions = {
             code: `
-                useContent('home-banner', {schema: true});
+                useContent('home-banner', {includeSchema: true});
             `,
             mapping: true,
         };
@@ -118,10 +118,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<"home-banner", {schema: true;}>',
+            'useContent<"home-banner", {includeSchema: true;}>',
         );
 
-        expect(getReturnType(code)).toBe('FetchResponse<HomeBannerV1, {schema: true;}>');
+        expect(getReturnType(code)).toBe('FetchResponse<HomeBannerV1, {includeSchema: true;}>');
     });
 
     it('should define the return type as a JSON object by default for unmapped slots', () => {
