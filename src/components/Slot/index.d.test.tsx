@@ -72,11 +72,29 @@ describe('<Slot  /> typing', () => {
         return info.name;
     }
 
+    it('should infer whether the schema is requested', () => {
+        const code: CodeOptions = {
+            code: `
+                <Slot id={'home-banner'} initial={true} includeSchema>
+                    {(params) => typeof params.metadata}
+                </Slot>;
+            `,
+            mapping: true,
+        };
+
+        expect(() => compileCode(code)).not.toThrow();
+
+        expect(getParameterType(code)).toBe(
+            'FetchResponse<boolean | HomeBannerV1, '
+            + '{children: {};id: "home-banner";initial: boolean;includeSchema: true;}>',
+        );
+    });
+
     it('should allow a renderer that accepts JSON objects or covariants for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
-                    {(params: {foo: string}) => typeof params}
+                    {(params: {content: {foo: string}}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -89,7 +107,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
-                    {(params: true) => typeof params}
+                    {(params: {content: true}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -102,7 +120,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
-                    {(params: {foo: string}|boolean) => typeof params}
+                    {(params: {content: {foo: string}|boolean}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -115,7 +133,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
-                    {(params: {foo: string}) => typeof params}
+                    {(params: {content: {foo: string}}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -128,7 +146,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
-                    {(params: {foo: string}|boolean) => typeof params}
+                    {(params: {content: {foo: string}|boolean}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -141,7 +159,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
-                    {(params: {foo: string}) => typeof params}
+                    {(params: {content: {foo: string}}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -154,7 +172,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
-                    {(params: {foo: string}|boolean|number) => typeof params}
+                    {(params: {content: {foo: string}|boolean|number}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -167,7 +185,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
-                    {(params: {foo: string}|boolean) => typeof params}
+                    {(params: {content: {foo: string}|boolean}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -180,7 +198,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
-                    {(params: {foo: string}|number) => typeof params}
+                    {(params: {content: {foo: string}|number}) => typeof params.content}
                 </Slot>;
             `,
             mapping: false,
@@ -201,14 +219,14 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('HomeBannerV1');
+        expect(getParameterType(code)).toBe('FetchResponse<HomeBannerV1, FetchResponseOptions>');
     });
 
     it('should allow a covariant renderer parameter type for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
-                    {(params: {title: string}) => typeof params}
+                    {(params: {content: {title: string}}) => typeof params}
                 </Slot>;
             `,
             mapping: true,
@@ -221,7 +239,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'}>
-                    {(params: {foo: string}) => typeof params}
+                    {(params: {content: {foo: string}}) => typeof params}
                 </Slot>;
             `,
             mapping: true,
@@ -242,14 +260,14 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('boolean | HomeBannerV1');
+        expect(getParameterType(code)).toBe('FetchResponse<boolean | HomeBannerV1, FetchResponseOptions>');
     });
 
     it('should allow a renderer that accepts the initial value for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
-                    {(params: {title: string}|boolean) => typeof params}
+                    {(params: {content: {title: string}|boolean}) => typeof params.content}
                 </Slot>;
             `,
             mapping: true,
@@ -262,7 +280,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true}>
-                    {(params: {title: string}) => typeof params}
+                    {(params: {content: {title: string}}) => typeof params.content}
                 </Slot>;
             `,
             mapping: true,
@@ -283,14 +301,14 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('boolean | HomeBannerV1');
+        expect(getParameterType(code)).toBe('FetchResponse<boolean | HomeBannerV1, FetchResponseOptions>');
     });
 
     it('should allow a renderer that accepts the fallback value for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
-                    {(params: {title: string}|boolean) => typeof params}
+                    {(params: {content: {title: string}|boolean}) => typeof params.content}
                 </Slot>;
             `,
             mapping: true,
@@ -303,7 +321,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} fallback={true}>
-                    {(params: {title: string}) => typeof params}
+                    {(params: {content: {title: string}}) => typeof params.content}
                 </Slot>;
             `,
             mapping: true,
@@ -324,14 +342,14 @@ describe('<Slot  /> typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getParameterType(code)).toBe('number | boolean | HomeBannerV1');
+        expect(getParameterType(code)).toBe('FetchResponse<number | boolean | HomeBannerV1, FetchResponseOptions>');
     });
 
     it('should allow a renderer that accepts both the initial and fallback values for mapped slots', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
-                    {(params: {title: string}|boolean|number) => typeof params}
+                    {(params: {content: {title: string}|boolean|number}) => typeof params.content}
                 </Slot>;
             `,
             mapping: true,
@@ -344,7 +362,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
-                    {(params: {title: string}|boolean) => typeof params}
+                    {(params: {content: {title: string}|boolean}) => typeof params.content}
                 </Slot>;
             `,
             mapping: true,
@@ -357,7 +375,7 @@ describe('<Slot  /> typing', () => {
         const code: CodeOptions = {
             code: `
                 <Slot id={'home-banner'} initial={true} fallback={1}>
-                    {(params: {title: string}|number) => typeof params}
+                    {(params: {content: {title: string}|number}) => typeof params.content}
                 </Slot>;
             `,
             mapping: true,

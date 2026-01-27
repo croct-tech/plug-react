@@ -107,6 +107,23 @@ describe('useContent typing', () => {
         return info.name;
     }
 
+    it('should infer whether the schema is requested', () => {
+        const code: CodeOptions = {
+            code: `
+                useContent('home-banner', {includeSchema: true});
+            `,
+            mapping: true,
+        };
+
+        expect(() => compileCode(code)).not.toThrow();
+
+        expect(getTypeName(code)).toBe(
+            'useContent<"home-banner", {includeSchema: true;}>',
+        );
+
+        expect(getReturnType(code)).toBe('FetchResponse<HomeBannerV1, {includeSchema: true;}>');
+    });
+
     it('should define the return type as a JSON object by default for unmapped slots', () => {
         const code: CodeOptions = {
             code: `
@@ -118,10 +135,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<JsonObject, JsonObject, JsonObject>',
+            'useContent<JsonObject, JsonObject, JsonObject, FetchResponseOptions>',
         );
 
-        expect(getReturnType(code)).toBe('JsonObject');
+        expect(getReturnType(code)).toBe('FetchResponse<JsonObject, FetchResponseOptions>');
     });
 
     it('should define the return type as an union of component for unknown slots', () => {
@@ -135,11 +152,12 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<any>',
+            'useContent<any, FetchResponseOptions>',
         );
 
         expect(getReturnType(code)).toBe(
-            '(Banner & {_component: "banner@1" | null;}) | (Carousel & {...;})',
+            'FetchResponse<(Banner & {_component: "banner@1" | null;}) | '
+            + '(Carousel & {_component: "carousel@1" | null;}), FetchResponseOptions>',
         );
     });
 
@@ -154,10 +172,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<JsonObject, boolean, JsonObject>',
+            'useContent<JsonObject, boolean, JsonObject, FetchResponseOptions>',
         );
 
-        expect(getReturnType(code)).toBe('boolean | JsonObject');
+        expect(getReturnType(code)).toBe('FetchResponse<boolean | JsonObject, FetchResponseOptions>');
     });
 
     it('should include the type of the fallback value on the return type for unmapped slots', () => {
@@ -171,10 +189,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<JsonObject, JsonObject, number>',
+            'useContent<JsonObject, JsonObject, number, FetchResponseOptions>',
         );
 
-        expect(getReturnType(code)).toBe('number | JsonObject');
+        expect(getReturnType(code)).toBe('FetchResponse<number | JsonObject, FetchResponseOptions>');
     });
 
     it('should include the types of both the initial and fallback values on the return type for unmapped slots', () => {
@@ -188,10 +206,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<JsonObject, boolean, number>',
+            'useContent<JsonObject, boolean, number, FetchResponseOptions>',
         );
 
-        expect(getReturnType(code)).toBe('number | ... 1 more ... | JsonObject');
+        expect(getReturnType(code)).toBe('FetchResponse<number | boolean | JsonObject, FetchResponseOptions>');
     });
 
     it('should allow narrowing the return type for unmapped slots', () => {
@@ -205,10 +223,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<{foo: string;}, {foo: string;}, {foo: string;}>',
+            'useContent<{foo: string;}, {foo: string;}, {foo: string;}, FetchResponseOptions>',
         );
 
-        expect(getReturnType(code)).toBe('{foo: string;}');
+        expect(getReturnType(code)).toBe('FetchResponse<{foo: string;}, FetchResponseOptions>');
     });
 
     it('should allow specifying the initial value type for mapped slots', () => {
@@ -222,10 +240,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<{foo: string;}, boolean, {foo: string;}>',
+            'useContent<{foo: string;}, boolean, {foo: string;}, FetchResponseOptions>',
         );
 
-        expect(getReturnType(code)).toBe('boolean | {foo: string;}');
+        expect(getReturnType(code)).toBe('FetchResponse<boolean | {foo: string;}, FetchResponseOptions>');
     });
 
     it('should allow specifying the fallback value type for mapped slots', () => {
@@ -239,10 +257,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<{foo: string;}, never, number>',
+            'useContent<{foo: string;}, never, number, FetchResponseOptions>',
         );
 
-        expect(getReturnType(code)).toBe('number | {foo: string;}');
+        expect(getReturnType(code)).toBe('FetchResponse<number | {foo: string;}, FetchResponseOptions>');
     });
 
     it('show allow specifying the initial and fallback value types for mapped slots', () => {
@@ -256,10 +274,10 @@ describe('useContent typing', () => {
         expect(() => compileCode(code)).not.toThrow();
 
         expect(getTypeName(code)).toBe(
-            'useContent<{foo: string;}, boolean, number>',
+            'useContent<{foo: string;}, boolean, number, FetchResponseOptions>',
         );
 
-        expect(getReturnType(code)).toBe('number | ... 1 more ... | {foo: string;}');
+        expect(getReturnType(code)).toBe('FetchResponse<number | boolean | {foo: string;}, FetchResponseOptions>');
     });
 
     it('should require specifying JSON object as return type for mapped slots', () => {
@@ -283,9 +301,9 @@ describe('useContent typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getTypeName(code)).toBe('useContent<"home-banner">');
+        expect(getTypeName(code)).toBe('useContent<"home-banner", FetchResponseOptions>');
 
-        expect(getReturnType(code)).toBe('HomeBannerV1');
+        expect(getReturnType(code)).toBe('FetchResponse<HomeBannerV1, FetchResponseOptions>');
     });
 
     it('should include the type of the initial value on the return type for mapped slots', () => {
@@ -298,9 +316,9 @@ describe('useContent typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getTypeName(code)).toBe('useContent<boolean, "home-banner">');
+        expect(getTypeName(code)).toBe('useContent<boolean, "home-banner", FetchResponseOptions>');
 
-        expect(getReturnType(code)).toBe('boolean | HomeBannerV1');
+        expect(getReturnType(code)).toBe('FetchResponse<boolean | HomeBannerV1, FetchResponseOptions>');
     });
 
     it('should include the type of the fallback value on the return type for mapped slots', () => {
@@ -313,9 +331,9 @@ describe('useContent typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getTypeName(code)).toBe('useContent<number, "home-banner">');
+        expect(getTypeName(code)).toBe('useContent<number, "home-banner", FetchResponseOptions>');
 
-        expect(getReturnType(code)).toBe('number | HomeBannerV1');
+        expect(getReturnType(code)).toBe('FetchResponse<number | HomeBannerV1, FetchResponseOptions>');
     });
 
     it('should include the types of both the initial and fallback values on the return type for mapped slots', () => {
@@ -328,9 +346,9 @@ describe('useContent typing', () => {
 
         expect(() => compileCode(code)).not.toThrow();
 
-        expect(getTypeName(code)).toBe('useContent<boolean, number, "home-banner">');
+        expect(getTypeName(code)).toBe('useContent<boolean, number, "home-banner", FetchResponseOptions>');
 
-        expect(getReturnType(code)).toBe('number | boolean | HomeBannerV1');
+        expect(getReturnType(code)).toBe('FetchResponse<number | boolean | HomeBannerV1, FetchResponseOptions>');
     });
 
     it('should not allow overriding the return type for mapped slots', () => {

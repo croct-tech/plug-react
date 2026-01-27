@@ -3,7 +3,7 @@ import {getSlotContent} from '@croct/content';
 import {Plug} from '@croct/plug';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
-import {useContent} from './useContent';
+import {FetchResponse, useContent} from './useContent';
 import {hash} from '../hash';
 
 jest.mock(
@@ -34,14 +34,19 @@ describe('useContent (CSR)', () => {
     });
 
     it('should fetch the content', () => {
-        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({
-            content: {},
-        });
+        const fetch: Plug['fetch'] = jest.fn();
+
+        const response: FetchResponse<{title: string}> = {
+            metadata: {
+                version: '1.0',
+            },
+            content: {
+                title: 'foo',
+            },
+        };
 
         jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
-        jest.mocked(useLoader).mockReturnValue({
-            title: 'foo',
-        });
+        jest.mocked(useLoader).mockReturnValue(response);
 
         const slotId = 'home-banner@1';
         const preferredLocale = 'en';
@@ -78,7 +83,7 @@ describe('useContent (CSR)', () => {
             attributes: attributes,
         });
 
-        expect(result.current).toEqual({title: 'foo'});
+        expect(result.current).toEqual(response);
     });
 
     it('should use the initial value when the cache key changes if the stale-while-loading flag is false', async () => {
@@ -86,12 +91,12 @@ describe('useContent (CSR)', () => {
             current: 'initial',
         };
 
-        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({content: {}});
+        const fetch: Plug['fetch'] = jest.fn();
 
         jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
 
         jest.mocked(useLoader).mockImplementation(
-            () => ({title: key.current === 'initial' ? 'first' : 'second'}),
+            (): FetchResponse => ({content: {title: key.current === 'initial' ? 'first' : 'second'}}),
         );
 
         const slotId = 'home-banner@1';
@@ -110,11 +115,17 @@ describe('useContent (CSR)', () => {
         expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
             cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
             initial: {
-                title: 'initial',
+                content: {
+                    title: 'initial',
+                },
             },
         }));
 
-        await waitFor(() => expect(result.current).toEqual({title: 'first'}));
+        await waitFor(
+            () => expect(result.current).toEqual({
+                content: {title: 'first'},
+            }),
+        );
 
         key.current = 'next';
 
@@ -123,11 +134,17 @@ describe('useContent (CSR)', () => {
         expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
             cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
             initial: {
-                title: 'initial',
+                content: {
+                    title: 'initial',
+                },
             },
         }));
 
-        await waitFor(() => expect(result.current).toEqual({title: 'second'}));
+        await waitFor(
+            () => expect(result.current).toEqual({
+                content: {title: 'second'},
+            }),
+        );
     });
 
     it('should use the last fetched content as initial value if the stale-while-loading flag is true', async () => {
@@ -135,7 +152,7 @@ describe('useContent (CSR)', () => {
             current: 'initial',
         };
 
-        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({content: {}});
+        const fetch: Plug['fetch'] = jest.fn();
 
         jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
 
@@ -168,7 +185,9 @@ describe('useContent (CSR)', () => {
         expect(useLoader).toHaveBeenCalledWith(expect.objectContaining({
             cacheKey: hash(`useContent:${key.current}:${slotId}::${JSON.stringify({})}`),
             initial: {
-                title: 'initial',
+                content: {
+                    title: 'initial',
+                },
             },
         }));
 
@@ -201,7 +220,9 @@ describe('useContent (CSR)', () => {
 
         expect(useLoader).toHaveBeenCalledWith(
             expect.objectContaining({
-                initial: content,
+                initial: {
+                    content: content,
+                },
             }),
         );
     });
@@ -222,7 +243,9 @@ describe('useContent (CSR)', () => {
 
         expect(useLoader).toHaveBeenCalledWith(
             expect.objectContaining({
-                initial: initial,
+                initial: {
+                    content: initial,
+                },
             }),
         );
     });
@@ -265,9 +288,7 @@ describe('useContent (CSR)', () => {
         const slotId = 'slot-id';
         const preferredLocale = 'en';
 
-        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({
-            content: {},
-        });
+        const fetch: Plug['fetch'] = jest.fn();
 
         jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
 
@@ -292,9 +313,7 @@ describe('useContent (CSR)', () => {
     });
 
     it('should normalize an empty preferred locale to undefined', () => {
-        const fetch: Plug['fetch'] = jest.fn().mockResolvedValue({
-            content: {},
-        });
+        const fetch: Plug['fetch'] = jest.fn();
 
         jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
 
@@ -310,5 +329,36 @@ describe('useContent (CSR)', () => {
             .loader();
 
         expect(jest.mocked(fetch).mock.calls[0][1]).toStrictEqual({});
+    });
+
+    it('should return the metadata along with the content', () => {
+        const fetch: Plug['fetch'] = jest.fn();
+
+        const response: FetchResponse<{title: string}> = {
+            metadata: {
+                version: '1.0',
+            },
+            content: {
+                title: 'foo',
+            },
+        };
+
+        jest.mocked(useCroct).mockReturnValue({fetch: fetch} as Plug);
+        jest.mocked(useLoader).mockReturnValue(response);
+
+        const slotId = 'home-banner@1';
+
+        const {result} = renderHook(
+            () => useContent<{title: string}>(slotId),
+        );
+
+        jest.mocked(useLoader)
+            .mock
+            .calls[0][0]
+            .loader();
+
+        expect(fetch).toHaveBeenCalledWith(slotId, {});
+
+        expect(result.current).toEqual(response);
     });
 });
