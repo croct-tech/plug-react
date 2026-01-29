@@ -13,7 +13,7 @@ export function isSsr(): boolean {
  */
 export const croct: Plug = !isSsr()
     ? (function factory(): Plug {
-        let timeoutId: ReturnType<typeof setTimeout>|null = null;
+        let timeoutId: ReturnType<typeof setTimeout> | null = null;
         let resolveCallback: () => void;
         let rejectCallback: (reason: any) => void;
 

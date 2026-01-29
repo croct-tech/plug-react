@@ -300,7 +300,7 @@ describe('useLoader', () => {
         expect(loader).toHaveBeenCalledTimes(2);
     });
 
-    it.each<[number, number|undefined]>(
+    it.each<[number, number | undefined]>(
         [
             // [Expected elapsed time, Expiration]
             [60_000, undefined],

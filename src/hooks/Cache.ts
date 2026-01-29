@@ -85,7 +85,7 @@ export class Cache {
         throw entry.promise;
     }
 
-    public get<R>(cacheKey: string): Entry<R>|undefined {
+    public get<R>(cacheKey: string): Entry<R> | undefined {
         const entry = this.cache[cacheKey];
 
         if (entry === undefined) {

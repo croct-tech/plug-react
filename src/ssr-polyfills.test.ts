@@ -1,4 +1,5 @@
-import croct, {Configuration} from '@croct/plug';
+import type {Configuration} from '@croct/plug';
+import croct from '@croct/plug';
 import {croct as croctPolyfill, isSsr} from './ssr-polyfills';
 import spyOn = jest.spyOn;
 

@@ -1,12 +1,12 @@
 'use client';
 
-import {DynamicSlotId, SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
-import {JsonObject} from '@croct/plug/sdk/json';
-import {FetchOptions} from '@croct/plug/plug';
+import type {DynamicSlotId, SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
+import type {JsonObject} from '@croct/plug/sdk/json';
+import type {FetchOptions} from '@croct/plug/plug';
 import {useEffect, useMemo, useState} from 'react';
 import {getSlotContent} from '@croct/content';
-import {FetchResponse as BaseFetchResponse, FetchResponseOptions} from '@croct/sdk/contentFetcher';
-import {Optional} from '@croct/sdk/utilityTypes';
+import type {FetchResponse as BaseFetchResponse, FetchResponseOptions} from '@croct/sdk/contentFetcher';
+import type {Optional} from '@croct/sdk/utilityTypes';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';
 import {isSsr} from '../ssr-polyfills';
@@ -37,7 +37,7 @@ function useCsrContent<I, F, O extends FetchResponseOptions>(
 
     const normalizedLocale = normalizePreferredLocale(preferredLocale);
     const defaultContent = useMemo(
-        () => getSlotContent(id, normalizedLocale) as SlotContent|null ?? undefined,
+        () => getSlotContent(id, normalizedLocale) as SlotContent | null ?? undefined,
         [id, normalizedLocale],
     );
     const fallback = (fallbackContent === undefined ? defaultContent : fallbackContent) as SlotContent;
@@ -95,7 +95,7 @@ function useSsrContent<I, F, O extends FetchResponseOptions>(
 ): FetchResponse<SlotContent | I | F, O> {
     const {initial, preferredLocale} = options;
     const resolvedInitialContent = initial === undefined
-        ? getSlotContent(slotId, normalizePreferredLocale(preferredLocale)) as I|null ?? undefined
+        ? getSlotContent(slotId, normalizePreferredLocale(preferredLocale)) as I | null ?? undefined
         : initial;
 
     if (resolvedInitialContent === undefined) {
@@ -108,7 +108,7 @@ function useSsrContent<I, F, O extends FetchResponseOptions>(
     return {content: resolvedInitialContent};
 }
 
-function normalizePreferredLocale(preferredLocale: string|undefined): string|undefined {
+function normalizePreferredLocale(preferredLocale: string | undefined): string | undefined {
     return preferredLocale !== undefined && preferredLocale !== '' ? preferredLocale : undefined;
 }
 
