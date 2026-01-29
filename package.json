@@ -31,7 +31,7 @@
     "node": ">=10"
   },
   "scripts": {
-    "lint": "eslint 'src/**/*.ts' 'src/**/*.tsx' --fix",
+    "lint": "eslint 'src/**/*.ts' 'src/**/*.tsx'",
     "test": "jest -c jest.config.mjs --coverage",
     "validate": "tsc --noEmit",
     "build": "tsup",
