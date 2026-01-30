@@ -1,4 +1,4 @@
-import {EapFeatures} from '@croct/plug/eap';
+import type {EapFeatures} from '@croct/plug/eap';
 
 declare global {
     interface Window {
