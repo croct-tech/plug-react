@@ -5,15 +5,6 @@ export default defineConfig(
     configs.react,
     configs.typescript,
     {
-        ignores: [
-            'build/**',
-            'node_modules/**',
-            'dist/',
-            '.snapshots/',
-            '*.min.js',
-        ],
-    },
-    {
         languageOptions: {
             parserOptions: {
                 ecmaFeatures: {
