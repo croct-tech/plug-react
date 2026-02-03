@@ -1,7 +1,7 @@
 'use client';
 
-import {JsonValue} from '@croct/plug/sdk/json';
-import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
+import type {JsonValue} from '@croct/plug/sdk/json';
+import type {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
 import {useEffect, useState} from 'react';
 import {useLoader} from './useLoader';
 import {useCroct} from './useCroct';

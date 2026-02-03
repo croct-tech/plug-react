@@ -1,4 +1,5 @@
-import {Cache, EntryOptions} from './Cache';
+import type {EntryOptions} from './Cache';
+import {Cache} from './Cache';
 
 describe('Cache', () => {
     afterEach(() => {
@@ -20,11 +21,11 @@ describe('Cache', () => {
             loader: loader,
         };
 
-        let promise: Promise<any>|undefined;
+        let promise: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 
@@ -38,7 +39,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 
@@ -63,19 +64,19 @@ describe('Cache', () => {
             loader: loader,
         };
 
-        let promise1: Promise<any>|undefined;
+        let promise1: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise1 = result;
         }
 
-        let promise2: Promise<any>|undefined;
+        let promise2: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise2 = result;
         }
 
@@ -104,11 +105,11 @@ describe('Cache', () => {
             expiration: 15,
         };
 
-        let promise: Promise<any>|undefined;
+        let promise: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 
@@ -122,7 +123,7 @@ describe('Cache', () => {
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 
@@ -146,11 +147,11 @@ describe('Cache', () => {
             expiration: -1,
         };
 
-        let promise: Promise<any>|undefined;
+        let promise: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 
@@ -173,11 +174,11 @@ describe('Cache', () => {
             fallback: 'fallback',
         };
 
-        let promise: Promise<any>|undefined;
+        let promise: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 
@@ -201,17 +202,17 @@ describe('Cache', () => {
             loader: loader,
         };
 
-        let promise: Promise<any>|undefined;
+        let promise: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 
         await expect(promise).resolves.toBeUndefined();
 
-        await expect(() => cache.load(options)).toThrow(error);
+        expect(() => cache.load(options)).toThrow(error);
     });
 
     it('should cache the error', async () => {
@@ -224,11 +225,11 @@ describe('Cache', () => {
             loader: loader,
         };
 
-        let promise: Promise<any>|undefined;
+        let promise: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 
@@ -249,11 +250,11 @@ describe('Cache', () => {
             loader: loader,
         };
 
-        let promise: Promise<any>|undefined;
+        let promise: Promise<any> | undefined;
 
         try {
             cache.load(options);
-        } catch (result: any|undefined) {
+        } catch (result: any | undefined) {
             promise = result;
         }
 

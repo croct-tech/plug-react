@@ -1,7 +1,8 @@
 import {render} from '@testing-library/react';
-import {Plug} from '@croct/plug';
+import type {Plug} from '@croct/plug';
 import {croct} from './ssr-polyfills';
-import {CroctContext, CroctProvider, CroctProviderProps} from './CroctProvider';
+import type {CroctProviderProps} from './CroctProvider';
+import {CroctContext, CroctProvider} from './CroctProvider';
 
 jest.mock(
     './ssr-polyfills',
@@ -57,7 +58,7 @@ describe('<CroctProvider />', () => {
             initialized = true;
         });
 
-        const callback = jest.fn((context: {plug: Plug}|null) => {
+        const callback = jest.fn((context: {plug: Plug} | null) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- Trigger initialization.
             context?.plug;
 
@@ -92,9 +93,9 @@ describe('<CroctProvider />', () => {
             track: true,
         };
 
-        let plug: Plug|undefined;
+        let plug: Plug | undefined;
 
-        const callback = jest.fn((context: {plug: Plug}|null) => {
+        const callback = jest.fn((context: {plug: Plug} | null) => {
             plug = context?.plug;
 
             return 'foo';
