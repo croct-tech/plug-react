@@ -21,6 +21,7 @@ describe('<Slot />', () => {
         const result = {
             metadata: {
                 version: '1.0',
+                contentSource: 'slot',
             },
             content: {
                 title: 'result',
