@@ -1,8 +1,10 @@
 'use client';
 
-import {ReactElement, Fragment} from 'react';
-import {JsonValue} from '@croct/plug/sdk/json';
-import {UseEvaluationOptions, useEvaluation} from '../../hooks';
+import type {ReactElement} from 'react';
+import {Fragment} from 'react';
+import type {JsonValue} from '@croct/plug/sdk/json';
+import type {UseEvaluationOptions} from '../../hooks';
+import {useEvaluation} from '../../hooks';
 
 type Renderer<T> = (result: T) => ReactElement | string | number;
 
@@ -13,9 +15,9 @@ export type PersonalizationProps<T extends JsonValue = JsonValue, I = T, F = T> 
 
 export function Personalization<T extends JsonValue, I, F>(
     props:
-        Extract<T | I | F, JsonValue> extends never
-            ? PersonalizationProps
-            : PersonalizationProps<T, I, F>,
+    Extract<T | I | F, JsonValue> extends never
+        ? PersonalizationProps
+        : PersonalizationProps<T, I, F>,
 ): ReactElement;
 
 export function Personalization<I, F>(props: PersonalizationProps<JsonValue, I, F>): ReactElement {

@@ -1,5 +1,6 @@
 import {useCallback, useEffect, useRef, useState} from 'react';
-import {Cache, EntryOptions} from './Cache';
+import type {EntryOptions} from './Cache';
+import {Cache} from './Cache';
 
 const cache = new Cache(60 * 1000);
 
@@ -21,7 +22,7 @@ export function useLoader<R>({initial, ...currentOptions}: CacheOptions<R>): R {
                 setValue(cache.load(options));
             } catch (result: unknown) {
                 if (result instanceof Promise) {
-                    result.then((resolvedValue: R) => {
+                    void result.then((resolvedValue: R) => {
                         if (mountedRef.current) {
                             setValue(resolvedValue);
                         }

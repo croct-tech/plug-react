@@ -1,10 +1,12 @@
 'use client';
 
-import {Fragment, ReactElement, ReactNode} from 'react';
-import {DynamicSlotId, SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
-import {JsonObject} from '@croct/plug/sdk/json';
-import {FetchResponseOptions} from '@croct/sdk/contentFetcher';
-import {FetchResponse, useContent, UseContentOptions} from '../../hooks';
+import type {ReactElement, ReactNode} from 'react';
+import {Fragment} from 'react';
+import type {DynamicSlotId, SlotContent, VersionedSlotId, VersionedSlotMap} from '@croct/plug/slot';
+import type {JsonObject} from '@croct/plug/sdk/json';
+import type {FetchResponseOptions} from '@croct/sdk/contentFetcher';
+import type {FetchResponse, UseContentOptions} from '../../hooks';
+import {useContent} from '../../hooks';
 
 type Renderer<P> = (props: P) => ReactNode;
 
@@ -13,7 +15,7 @@ export type SlotProps<
     I = P,
     F = P,
     S extends VersionedSlotId = VersionedSlotId,
-    O extends FetchResponseOptions = FetchResponseOptions
+    O extends FetchResponseOptions = FetchResponseOptions,
 > = O & UseContentOptions<I, F> & {
     id: S,
     children: Renderer<FetchResponse<P | I | F, O>>,
@@ -22,9 +24,9 @@ export type SlotProps<
 type SlotComponent = {
     <P, I, F, O extends FetchResponseOptions>(
         props:
-            Extract<P | I | F, JsonObject> extends never
-                ? SlotProps<JsonObject, never, never, keyof VersionedSlotMap extends never ? string : never, O>
-                : SlotProps<P, I, F, keyof VersionedSlotMap extends never ? string : never, O>
+        Extract<P | I | F, JsonObject> extends never
+            ? SlotProps<JsonObject, never, never, keyof VersionedSlotMap extends never ? string : never, O>
+            : SlotProps<P, I, F, keyof VersionedSlotMap extends never ? string : never, O>
     ): ReactElement,
 
     <S extends VersionedSlotId, O extends FetchResponseOptions>(
