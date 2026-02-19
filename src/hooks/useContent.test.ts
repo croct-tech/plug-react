@@ -40,6 +40,7 @@ describe('useContent (CSR)', () => {
         const response: FetchResponse<{title: string}> = {
             metadata: {
                 version: '1.0',
+                contentSource: 'slot',
             },
             content: {
                 title: 'foo',
@@ -338,6 +339,7 @@ describe('useContent (CSR)', () => {
         const response: FetchResponse<{title: string}> = {
             metadata: {
                 version: '1.0',
+                contentSource: 'slot',
             },
             content: {
                 title: 'foo',
