@@ -1,5 +1,6 @@
 import {render, screen} from '@testing-library/react';
-import {Personalization, PersonalizationProps} from './index';
+import type {PersonalizationProps} from './index';
+import {Personalization} from './index';
 import {useEvaluation} from '../../hooks';
 import '@testing-library/jest-dom';
 

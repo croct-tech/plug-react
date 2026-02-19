@@ -1,6 +1,8 @@
 import {render, screen} from '@testing-library/react';
-import {Slot, SlotProps} from './index';
-import {FetchResponse, useContent} from '../../hooks';
+import type {SlotProps} from './index';
+import {Slot} from './index';
+import type {FetchResponse} from '../../hooks';
+import {useContent} from '../../hooks';
 import '@testing-library/jest-dom';
 
 jest.mock(

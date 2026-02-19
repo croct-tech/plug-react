@@ -1,9 +1,10 @@
 import {renderHook, waitFor} from '@testing-library/react';
 import {getSlotContent} from '@croct/content';
-import {Plug} from '@croct/plug';
+import type {Plug} from '@croct/plug';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
-import {FetchResponse, useContent} from './useContent';
+import type {FetchResponse} from './useContent';
+import {useContent} from './useContent';
 import {hash} from '../hash';
 
 jest.mock(
@@ -73,7 +74,7 @@ describe('useContent (CSR)', () => {
             loader: expect.any(Function),
         });
 
-        jest.mocked(useLoader)
+        void jest.mocked(useLoader)
             .mock
             .calls[0][0]
             .loader();
@@ -273,7 +274,7 @@ describe('useContent (CSR)', () => {
 
         expect(getSlotContent).toHaveBeenCalledWith(slotId, preferredLocale);
 
-        jest.mocked(useLoader)
+        void jest.mocked(useLoader)
             .mock
             .calls[0][0]
             .loader();
@@ -302,7 +303,7 @@ describe('useContent (CSR)', () => {
             }),
         );
 
-        jest.mocked(useLoader)
+        void jest.mocked(useLoader)
             .mock
             .calls[0][0]
             .loader();
@@ -324,7 +325,7 @@ describe('useContent (CSR)', () => {
             }),
         );
 
-        jest.mocked(useLoader)
+        void jest.mocked(useLoader)
             .mock
             .calls[0][0]
             .loader();
@@ -354,7 +355,7 @@ describe('useContent (CSR)', () => {
             () => useContent<{title: string}>(slotId),
         );
 
-        jest.mocked(useLoader)
+        void jest.mocked(useLoader)
             .mock
             .calls[0][0]
             .loader();

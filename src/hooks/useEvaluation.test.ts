@@ -1,6 +1,6 @@
 import {renderHook, waitFor} from '@testing-library/react';
-import {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
-import {Plug} from '@croct/plug';
+import type {EvaluationOptions} from '@croct/sdk/facade/evaluatorFacade';
+import type {Plug} from '@croct/plug';
 import {useEvaluation} from './useEvaluation';
 import {useCroct} from './useCroct';
 import {useLoader} from './useLoader';
@@ -58,7 +58,7 @@ describe('useEvaluation', () => {
             loader: expect.any(Function),
         });
 
-        jest.mocked(useLoader)
+        void jest.mocked(useLoader)
             .mock
             .calls[0][0]
             .loader();
@@ -83,7 +83,7 @@ describe('useEvaluation', () => {
 
         renderHook(() => useEvaluation(query, evaluationOptions));
 
-        jest.mocked(useLoader)
+        void jest.mocked(useLoader)
             .mock
             .calls[0][0]
             .loader();
