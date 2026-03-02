@@ -59,7 +59,7 @@
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
     "esbuild-fix-imports-plugin": "^1.0.19",
-    "eslint": "^9.39.2",
+    "eslint": "^10.0.0",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
     "jest-environment-node": "^30.0.0",
