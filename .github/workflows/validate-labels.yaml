@@ -10,7 +10,6 @@ on:
 
 jobs:
   validate:
-    name: Check labels
     runs-on: ubuntu-latest
     steps:
       - uses: docker://agilepathway/pull-request-label-checker:latest
