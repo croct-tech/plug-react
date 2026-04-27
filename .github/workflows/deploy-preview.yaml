@@ -1,9 +1,10 @@
-name: Release
+name: Deploy preview
 
 on:
-  release:
+  pull_request:
     types:
-      - published
+      - synchronize
+      - opened
 
 jobs:
   deploy:
@@ -12,10 +13,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          registry-url: 'https://registry.npmjs.org'
           node-version: 23
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Cache dependencies
         id: cache-dependencies
@@ -40,18 +38,8 @@ jobs:
           sed -i -e "s~\./build~.~" package.json
           sed -i -e "s~./src~.~" package.json
 
-      - name: Publish pre-release to NPM
-        if: ${{ github.event.release.prerelease }}
+      - name: Publish preview
         run: |-
-          cd build
-          npm publish --access public --tag next
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish release to NPM
-        if: ${{ !github.event.release.prerelease }}
-        run: |-
-          cd build
-          npm publish --access public
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npx pkg-pr-new publish \
+            --compact --comment=update \
+            ./build
