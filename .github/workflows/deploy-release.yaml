@@ -14,11 +14,7 @@ jobs:
         cd build &&
         find . -type f -path '*/*\.js.map' -exec sed -i -e "s~../src~src~" {} + &&
         tmp=$(mktemp) &&
-        jq --arg version "$GITHUB_REF_NAME" '
-          .version = $version |
-          .main |= gsub("\\./build"; ".") |
-          .main |= gsub("\\./src"; ".")
-        ' package.json > "$tmp" &&
+        jq --arg version "$GITHUB_REF_NAME" '.version = $version | .main |= gsub("\\./build"; ".") | .main |= gsub("\\./src"; ".")' package.json > "$tmp" &&
         mv "$tmp" package.json
     secrets:
       NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
