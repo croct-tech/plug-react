@@ -42,7 +42,7 @@
     "react-dom": "^16.8.0  || ^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "@croct/plug": "https://pkg.pr.new/@croct/plug@385",
+    "@croct/plug": "^0.25.0",
     "@croct/sdk": "^0.22.0"
   },
   "devDependencies": {
